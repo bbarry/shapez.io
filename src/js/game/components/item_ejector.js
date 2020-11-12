@@ -112,7 +112,54 @@ export class ItemEjectorComponent extends Component {
         }
         return null;
     }
-
+    /**
+     * Returns the first free slot on this ejector or null if there is none
+     * @returns {number?}
+     */
+    getNextFreeSlotForTriple(slot, lastUsedSlot) {
+        if (!this.canEjectOnSlot(0) && !this.canEjectOnSlot(1) && !this.canEjectOnSlot(2)) {
+            return null;
+        }
+        if (this.canEjectOnSlot(0) && this.canEjectOnSlot(1) && this.canEjectOnSlot(2)) {
+            return this.getFirstFreeSlot();
+        }
+        switch (slot) {
+            case 0:
+                if (this.canEjectOnSlot(0) && lastUsedSlot != 0) {
+                    return 0;
+                } else if (this.canEjectOnSlot(1) && lastUsedSlot != 1) {
+                    return 1;
+                } else if (this.canEjectOnSlot(2) && lastUsedSlot != 2) {
+                    return 2;
+                } else {
+                    return null;
+                }
+                break;
+            case 1:
+                if (this.canEjectOnSlot(2) && lastUsedSlot != 2) {
+                    return 2;
+                } else if (this.canEjectOnSlot(0) && lastUsedSlot != 0) {
+                    return 0;
+                } else if (this.canEjectOnSlot(1) && lastUsedSlot != 1) {
+                    return 1;
+                } else {
+                    return null;
+                }
+            case 2:
+                if (this.canEjectOnSlot(0) && lastUsedSlot != 0) {
+                    return 0;
+                } else if (this.canEjectOnSlot(1) && lastUsedSlot != 1) {
+                    return 1;
+                } else if (this.canEjectOnSlot(2) && lastUsedSlot != 2) {
+                    return 2;
+                } else {
+                    return null;
+                }
+            default:
+                break;
+        }
+        return null;
+    }
     /**
      * Tries to eject a given item
      * @param {number} slotIndex
