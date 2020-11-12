@@ -16,14 +16,18 @@ export const enumBalancerVariants = {
     mergerInverse: "merger-inverse",
     splitter: "splitter",
     splitterInverse: "splitter-inverse",
+    splitterTriple: "splitter-triple",
+    //do stuff in all this code with this
 };
 
 const overlayMatrices = {
     [defaultBuildingVariant]: null,
+    [enumBalancerVariants.splitterTriple]: null,
     [enumBalancerVariants.merger]: generateMatrixRotations([0, 1, 0, 0, 1, 1, 0, 1, 0]),
     [enumBalancerVariants.mergerInverse]: generateMatrixRotations([0, 1, 0, 1, 1, 0, 0, 1, 0]),
     [enumBalancerVariants.splitter]: generateMatrixRotations([0, 1, 0, 0, 1, 1, 0, 1, 0]),
     [enumBalancerVariants.splitterInverse]: generateMatrixRotations([0, 1, 0, 1, 1, 0, 0, 1, 0]),
+    [enumBalancerVariants.splitterTriple]: generateMatrixRotations([0, 1, 0, 1, 1, 1, 0, 1, 0]),
 };
 
 export class MetaBalancerBuilding extends MetaBuilding {
@@ -39,6 +43,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
             case enumBalancerVariants.mergerInverse:
             case enumBalancerVariants.splitter:
             case enumBalancerVariants.splitterInverse:
+            case enumBalancerVariants.splitterTriple:
                 return new Vector(1, 1);
             default:
                 assertAlways(false, "Unknown balancer variant: " + variant);
@@ -72,6 +77,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
             case enumBalancerVariants.mergerInverse:
             case enumBalancerVariants.splitter:
             case enumBalancerVariants.splitterInverse:
+            case enumBalancerVariants.splitterTriple:
                 speedMultiplier = 1;
         }
 
@@ -89,7 +95,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
      */
     getAvailableVariants(root) {
         let available = [defaultBuildingVariant];
-
+        available.push(enumBalancerVariants.splitterTriple);
         if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_merger)) {
             available.push(enumBalancerVariants.merger, enumBalancerVariants.mergerInverse);
         }
@@ -215,6 +221,36 @@ export class MetaBalancerBuilding extends MetaBuilding {
                             variant === enumBalancerVariants.splitterInverse
                                 ? enumDirection.left
                                 : enumDirection.right,
+                    },
+                ]);
+
+                entity.components.BeltUnderlays.underlays = [
+                    { pos: new Vector(0, 0), direction: enumDirection.top },
+                ];
+
+                break;
+            }
+            
+            case enumBalancerVariants.splitterTriple: {
+                entity.components.ItemAcceptor.setSlots([
+                    {
+                        pos: new Vector(0, 0),
+                        directions: [enumDirection.bottom],
+                    },
+                ]);
+
+                entity.components.ItemEjector.setSlots([
+                    {
+                        pos: new Vector(0, 0),
+                        direction: enumDirection.top,
+                    },
+                    {
+                        pos: new Vector(0, 0),
+                        direction: enumDirection.left,
+                    },
+                    {
+                        pos: new Vector(0, 0),
+                        direction: enumDirection.right,
                     },
                 ]);
 
