@@ -75,7 +75,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             const ejectorComp = entity.components.ItemEjector;
 
             const currentCharge = processorComp.ongoingCharges[0];
-
+            this.lastUsedSlot = null;
             if (currentCharge) {
                 // Process next charge
                 if (currentCharge.remainingTime > 0.0) {
