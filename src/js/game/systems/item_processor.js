@@ -109,20 +109,25 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                         else if (preferredSlot !== null && preferredSlot !== undefined) 
                         {
                             // We have a slot preference, try using it but otherwise use a free slot
-                            if (entity.components.ItemEjector.slots[2]) {
-                                slot = ejectorComp.getNextFreeSlotForTriple(preferredSlot, this.lastUsedSlot);
-                                if (slot !== null)
-                                {
-                                    this.lastUsedSlot = slot;
-                                }
-                            }
+                            
                             else if (ejectorComp.canEjectOnSlot(preferredSlot)) 
                             {
                                 slot = preferredSlot;
                             }
                             else 
                             {
+                                if (entity.components.ItemEjector.slots[2]) 
+                                {
+                                slot = ejectorComp.getNextFreeSlotForTriple(preferredSlot, this.lastUsedSlot);
+                                    if (slot !== null)
+                                    {
+                                        this.lastUsedSlot = slot;
+                                    }
+                                }
+                                else
+                                {
                                 slot = ejectorComp.getFirstFreeSlot();
+                                }
                             }
                         } else {
                             // We can eject on any slot
