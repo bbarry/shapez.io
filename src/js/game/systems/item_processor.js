@@ -92,6 +92,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
 
                     // Go over all items and try to eject them
                     for (let j = 0; j < itemsToEject.length; ++j) {
+                        console.log(this.lastUsedSlot);
                         const { item, requiredSlot, preferredSlot } = itemsToEject[j];
 
                         assert(ejectorComp, "To eject items, the building needs to have an ejector");
