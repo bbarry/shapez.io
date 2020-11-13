@@ -102,29 +102,29 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                         if (requiredSlot !== null && requiredSlot !== undefined) 
                         {
                             // We have a slot override, check if that is free
-                            if (ejectorComp.canEjectOnSlot(requiredSlot) && requiredSlot !== this.lastUsedSlot) 
+                            if (ejectorComp.canEjectOnSlot(requiredSlot) && requiredSlot !== ejectorComp.lastUsedSlot) 
                             {
                                 slot = requiredSlot;
-                                this.lastUsedSlot = slot;
+                                ejectorComp.lastUsedSlot = slot;
                             }
                         } 
                         else if (preferredSlot !== null && preferredSlot !== undefined) 
                         {
                             // We have a slot preference, try using it but otherwise use a free slot
                             
-                            if (ejectorComp.canEjectOnSlot(preferredSlot) && preferredSlot !== this.lastUsedSlot)
+                            if (ejectorComp.canEjectOnSlot(preferredSlot) && preferredSlot !== ejectorComp.lastUsedSlot)
                             {
                                 slot = preferredSlot;
-                                this.lastUsedSlot = slot;
+                                ejectorComp.lastUsedSlot = slot;
                             }
                             else 
                             {
                                 if (entity.components.ItemEjector.slots[2]) 
                                 {
-                                slot = ejectorComp.getNextFreeSlotForTriple(preferredSlot, this.lastUsedSlot);
+                                slot = ejectorComp.getNextFreeSlotForTriple(preferredSlot, ejectorComp.lastUsedSlot);
                                     if (slot !== null)
                                     {
-                                        this.lastUsedSlot = slot;
+                                        ejectorComp.lastUsedSlot = slot;
                                     }
                                 }
                                 else
