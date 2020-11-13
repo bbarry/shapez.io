@@ -97,21 +97,32 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                         assert(ejectorComp, "To eject items, the building needs to have an ejector");
 
                         let slot = null;
-                        if (entity.components.ItemEjector.slots[2]) {
-                                slot = ejectorComp.getNextFreeSlotForTriple(preferredSlot, this.lastUsedSlot);
-                                this.lastUsedSlot = slot;
-                        }
-                        else if (requiredSlot !== null && requiredSlot !== undefined) {
+                        
+                        if (requiredSlot !== null && requiredSlot !== undefined) 
+                        {
                             // We have a slot override, check if that is free
-                            if (ejectorComp.canEjectOnSlot(requiredSlot)) {
+                            if (ejectorComp.canEjectOnSlot(requiredSlot)) 
+                            {
                                 slot = requiredSlot;
                             }
-                        } else if (preferredSlot !== null && preferredSlot !== undefined) {
+                        } 
+                        else if (preferredSlot !== null && preferredSlot !== undefined) 
+                        {
                             // We have a slot preference, try using it but otherwise use a free slot
-                            if (ejectorComp.canEjectOnSlot(preferredSlot)) {
+                            if (entity.components.ItemEjector.slots[2]) {
+                                slot = ejectorComp.getNextFreeSlotForTriple(preferredSlot, this.lastUsedSlot);
+                                if (slot !== null)
+                                {
+                                    this.lastUsedSlot = slot;
+                                }
+                            }
+                            else if (ejectorComp.canEjectOnSlot(preferredSlot)) 
+                            {
                                 slot = preferredSlot;
-                            } else {
-                                    slot = ejectorComp.getFirstFreeSlot();
+                            }
+                            else 
+                            {
+                                slot = ejectorComp.getFirstFreeSlot();
                             }
                         } else {
                             // We can eject on any slot
@@ -135,6 +146,15 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                     }
                 }
             }
+
+            // Check if we have an empty queue and can start a new charge
+            if (processorComp.ongoingCharges.length < MAX_QUEUED_CHARGES) {
+                if (this.canProcess(entity)) {
+                    this.startNewCharge(entity);
+                }
+            }
+        }
+    }
 
             // Check if we have an empty queue and can start a new charge
             if (processorComp.ongoingCharges.length < MAX_QUEUED_CHARGES) {
