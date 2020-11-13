@@ -123,6 +123,15 @@ export class ItemEjectorComponent extends Component {
         if (this.canEjectOnSlot(0) && this.canEjectOnSlot(1) && this.canEjectOnSlot(2)) {
             return this.getFirstFreeSlot();
         }
+        if (this.canEjectOnSlot(0) && !this.canEjectOnSlot(1) && !this.canEjectOnSlot(2)) {
+            return 0;
+        }
+        if (!this.canEjectOnSlot(0) && this.canEjectOnSlot(1) && !this.canEjectOnSlot(2)) {
+            return 1;
+        }
+        if (!this.canEjectOnSlot(0) && !this.canEjectOnSlot(1) && this.canEjectOnSlot(2)) {
+            return 2;
+        }
         switch (slot) {
             case 0:
                 if (this.canEjectOnSlot(0) && lastUsedSlot != 0) {
