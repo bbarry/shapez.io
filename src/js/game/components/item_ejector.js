@@ -117,7 +117,6 @@ export class ItemEjectorComponent extends Component {
      * @returns {number?}
      */
     getNextFreeSlotForTriple(slot, lastUsedSlot) {
-        console.log(lastUsedSlot);
         if (!this.canEjectOnSlot(0) && !this.canEjectOnSlot(1) && !this.canEjectOnSlot(2)) {
             return null;
         }
