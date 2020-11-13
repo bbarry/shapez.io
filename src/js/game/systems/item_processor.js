@@ -97,7 +97,11 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                         assert(ejectorComp, "To eject items, the building needs to have an ejector");
 
                         let slot = null;
-                        if (requiredSlot !== null && requiredSlot !== undefined) {
+                        if (entity.components.ItemEjector.slots[2]) {
+                                slot = ejectorComp.getNextFreeSlotForTriple(preferredSlot, this.lastUsedSlot);
+                                this.lastUsedSlot = slot;
+                        }
+                        else if (requiredSlot !== null && requiredSlot !== undefined) {
                             // We have a slot override, check if that is free
                             if (ejectorComp.canEjectOnSlot(requiredSlot)) {
                                 slot = requiredSlot;
@@ -106,12 +110,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                             // We have a slot preference, try using it but otherwise use a free slot
                             if (ejectorComp.canEjectOnSlot(preferredSlot)) {
                                 slot = preferredSlot;
-                            } else if (entity.components.ItemEjector.slots[2]) {
-                                    slot = ejectorComp.getNextFreeSlotForTriple(preferredSlot, this.lastUsedSlot);
-                                    if (slot !== null) {
-                                        this.lastUsedSlot = slot;
-                                    }
-                                } else {
+                            } else {
                                     slot = ejectorComp.getFirstFreeSlot();
                                 }
                             }
