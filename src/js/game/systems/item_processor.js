@@ -101,7 +101,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                         if (requiredSlot !== null && requiredSlot !== undefined) 
                         {
                             // We have a slot override, check if that is free
-                            if (ejectorComp.canEjectOnSlot(requiredSlot)) 
+                            if (ejectorComp.canEjectOnSlot(requiredSlot) && requiredSlot !== this.lastUsedSlot) 
                             {
                                 slot = requiredSlot;
                                 this.lastUsedSlot = slot;
