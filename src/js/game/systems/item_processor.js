@@ -113,6 +113,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                             if (ejectorComp.canEjectOnSlot(preferredSlot) && preferredSlot !== this.lastUsedSlot)
                             {
                                 slot = preferredSlot;
+                                this.lastUsedSlot = slot;
                             }
                             else 
                             {
