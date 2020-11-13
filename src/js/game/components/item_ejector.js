@@ -136,22 +136,22 @@ export class ItemEjectorComponent extends Component {
                 }
                 break;
             case 1:
-                if (this.canEjectOnSlot(1) && lastUsedSlot != 1) {
-                    return 1;
-                } else if (this.canEjectOnSlot(2) && lastUsedSlot != 2) {
-                    return 2;
-                } else if (this.canEjectOnSlot(0) && lastUsedSlot != 0) {
-                    return 0;
-                } else {
-                    return null;
-                }
-            case 2:
                 if (this.canEjectOnSlot(2) && lastUsedSlot != 2) {
                     return 2;
                 } else if (this.canEjectOnSlot(0) && lastUsedSlot != 0) {
                     return 0;
                 } else if (this.canEjectOnSlot(1) && lastUsedSlot != 1) {
                     return 1;
+                } else {
+                    return null;
+                }
+            case 2:
+                if (this.canEjectOnSlot(0) && lastUsedSlot != 0) {
+                    return 0;
+                } else if (this.canEjectOnSlot(1) && lastUsedSlot != 1) {
+                    return 1;
+                } else if (this.canEjectOnSlot(2) && lastUsedSlot != 2) {
+                    return 2;
                 } else {
                     return null;
                 }
