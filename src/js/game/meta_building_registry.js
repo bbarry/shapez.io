@@ -71,8 +71,8 @@ export function initMetaBuildingRegistry() {
     registerBuildingVariant(6, MetaBalancerBuilding, enumBalancerVariants.mergerInverse);
     registerBuildingVariant(47, MetaBalancerBuilding, enumBalancerVariants.splitter);
     registerBuildingVariant(48, MetaBalancerBuilding, enumBalancerVariants.splitterInverse);
-    registerBuildingVariant(62, MetaBalancerBuilding, enumBalancerVariants.splitterTriple);
-    registerBuildingVariant(63, MetaBalancerBuilding, enumBalancerVariants.mergerTriple);
+    registerBuildingVariant(62, MetaBalancerBuilding, enumBalancerVariants.mergerTriple);
+    registerBuildingVariant(63, MetaBalancerBuilding, enumBalancerVariants.splitterTriple);
 
     // Miner
     registerBuildingVariant(7, MetaMinerBuilding);
