@@ -17,6 +17,7 @@ export const enumBalancerVariants = {
     splitter: "splitter",
     splitterInverse: "splitter-inverse",
     splitterTriple: "splitter-triple",
+    mergerTriple: "merger-triple",
     //do stuff in all this code with this
 };
 
@@ -28,6 +29,7 @@ const overlayMatrices = {
     [enumBalancerVariants.splitter]: generateMatrixRotations([0, 1, 0, 0, 1, 1, 0, 1, 0]),
     [enumBalancerVariants.splitterInverse]: generateMatrixRotations([0, 1, 0, 1, 1, 0, 0, 1, 0]),
     [enumBalancerVariants.splitterTriple]: generateMatrixRotations([0, 1, 0, 1, 1, 1, 0, 1, 0]),
+    [enumBalancerVariants.mergerTriple]: generateMatrixRotations([0, 1, 0, 1, 1, 1, 0, 1, 0]),
 };
 
 export class MetaBalancerBuilding extends MetaBuilding {
@@ -44,6 +46,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
             case enumBalancerVariants.splitter:
             case enumBalancerVariants.splitterInverse:
             case enumBalancerVariants.splitterTriple:
+            case enumBalancerVariants.mergerTriple:
                 return new Vector(1, 1);
             default:
                 assertAlways(false, "Unknown balancer variant: " + variant);
@@ -78,6 +81,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
             case enumBalancerVariants.splitter:
             case enumBalancerVariants.splitterInverse:
             case enumBalancerVariants.splitterTriple:
+            case enumBalancerVariants.mergerTriple:
                 speedMultiplier = 1;
         }
 
@@ -95,13 +99,14 @@ export class MetaBalancerBuilding extends MetaBuilding {
      */
     getAvailableVariants(root) {
         let available = [defaultBuildingVariant];
-        available.push(enumBalancerVariants.splitterTriple);
         if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_merger)) {
-            available.push(enumBalancerVariants.merger, enumBalancerVariants.mergerInverse);
+            available.push(enumBalancerVariants.mergerTriple);
+            //available.push(enumBalancerVariants.merger, enumBalancerVariants.mergerInverse);
         }
 
         if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_splitter)) {
-            available.push(enumBalancerVariants.splitter, enumBalancerVariants.splitterInverse);
+            available.push(enumBalancerVariants.splitterTriple);
+            //available.push(enumBalancerVariants.splitter, enumBalancerVariants.splitterInverse);
         }
 
         return available;
@@ -188,6 +193,32 @@ export class MetaBalancerBuilding extends MetaBuilding {
                                 ? enumDirection.left
                                 : enumDirection.right,
                         ],
+                    },
+                ]);
+
+                entity.components.ItemEjector.setSlots([
+                    { pos: new Vector(0, 0), direction: enumDirection.top },
+                ]);
+
+                entity.components.BeltUnderlays.underlays = [
+                    { pos: new Vector(0, 0), direction: enumDirection.top },
+                ];
+
+                break;
+            }
+            case enumBalancerVariants.mergerTriple: {
+                entity.components.ItemAcceptor.setSlots([
+                    {
+                        pos: new Vector(0, 0),
+                        directions: [enumDirection.bottom],
+                    },
+                    {
+                        pos: new Vector(0, 0),
+                        directions: [enumDirection.left],
+                    },
+                    {
+                        pos: new Vector(0, 0),
+                        directions: [enumDirection.right],
                     },
                 ]);
 
