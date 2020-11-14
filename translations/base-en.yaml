@@ -578,7 +578,11 @@ buildings:
             
         splitter-triple:
             name: Splitter (compact)
-            description: Splits one conveyor belt into three.
+            description: Splits one conveyor belt into up to three outputs.
+            
+        merger-triple:
+            name: Splitter (compact)
+            description: Merges up to three conveyor belts into one.
 
     cutter:
         default:
