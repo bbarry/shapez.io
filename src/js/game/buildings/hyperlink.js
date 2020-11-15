@@ -23,7 +23,7 @@ const overlayMatrices = {
 
 export class MetaHyperlinkBuilding extends MetaBuilding {
     constructor() {
-        super("balancer");
+        super("hyperlink");
     }
 
     getDimensions(variant) {
