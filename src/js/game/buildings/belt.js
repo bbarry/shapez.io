@@ -13,8 +13,8 @@ export const arrayBeltVariantToRotation = [enumDirection.top, enumDirection.left
 
 export const beltOverlayMatrices = {
     [enumDirection.top]: generateMatrixRotations([0, 1, 0, 0, 1, 0, 0, 1, 0]),
-    //[enumDirection.left]: generateMatrixRotations([0, 0, 0, 1, 1, 0, 0, 1, 0]),
-    //[enumDirection.right]: generateMatrixRotations([0, 0, 0, 0, 1, 1, 0, 1, 0]),
+    [enumDirection.left]: generateMatrixRotations([0, 0, 0, 1, 1, 0, 0, 1, 0]),
+    [enumDirection.right]: generateMatrixRotations([0, 0, 0, 0, 1, 1, 0, 1, 0]),
 };
 
 export class MetaBeltBuilding extends MetaBuilding {
@@ -64,12 +64,12 @@ export class MetaBeltBuilding extends MetaBuilding {
             case enumDirection.top: {
                 return Loader.getSprite("sprites/buildings/belt_top.png");
             }
-            //case enumDirection.left: {
-            //    return Loader.getSprite("sprites/buildings/belt_left.png");
-            //}
-            //case enumDirection.right: {
-            //    return Loader.getSprite("sprites/buildings/belt_right.png");
-            //}
+            case enumDirection.left: {
+                return Loader.getSprite("sprites/buildings/belt_left.png");
+            }
+            case enumDirection.right: {
+                return Loader.getSprite("sprites/buildings/belt_right.png");
+            }
             default: {
                 assertAlways(false, "Invalid belt rotation variant");
             }
@@ -81,12 +81,12 @@ export class MetaBeltBuilding extends MetaBuilding {
             case enumDirection.top: {
                 return Loader.getSprite("sprites/blueprints/belt_top.png");
             }
-            //case enumDirection.left: {
-            //    return Loader.getSprite("sprites/blueprints/belt_left.png");
-            //}
-            //case enumDirection.right: {
-            //    return Loader.getSprite("sprites/blueprints/belt_right.png");
-            //}
+            case enumDirection.left: {
+                return Loader.getSprite("sprites/blueprints/belt_left.png");
+            }
+            case enumDirection.right: {
+                return Loader.getSprite("sprites/blueprints/belt_right.png");
+            }
             default: {
                 assertAlways(false, "Invalid belt rotation variant");
             }
@@ -140,10 +140,7 @@ export class MetaBeltBuilding extends MetaBuilding {
         const rightDirection = enumAngleToDirection[(rotation + 90) % 360];
         const bottomDirection = enumAngleToDirection[(rotation + 180) % 360];
         const leftDirection = enumAngleToDirection[(rotation + 270) % 360];
-        return {
-            rotation,
-            rotationVariant: 0,
-        };
+
         const { ejectors, acceptors } = root.logic.getEjectorsAndAcceptorsAtTile(tile);
 
         let hasBottomEjector = false;
@@ -224,6 +221,10 @@ export class MetaBeltBuilding extends MetaBuilding {
             }
         }
 
-        
+        return {
+            rotation,
+            rotationVariant: 0,
+        };
     }
 }
+
