@@ -10,7 +10,6 @@ import { enumCutterVariants, MetaCutterBuilding } from "./buildings/cutter";
 import { MetaDisplayBuilding } from "./buildings/display";
 import { MetaFilterBuilding } from "./buildings/filter";
 import { MetaHubBuilding } from "./buildings/hub";
-import { MetaHyperlinkBuilding } from "./buildings/hyperlink";
 import { enumHyperlinkVariants, MetaHyperlinkBuilding } from "./buildings/hyperlink";
 import { MetaItemProducerBuilding } from "./buildings/item_producer";
 import { MetaLeverBuilding } from "./buildings/lever";
