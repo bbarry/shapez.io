@@ -2,6 +2,8 @@
 import { BeltComponent } from "./components/belt";
 import { BeltUnderlaysComponent } from "./components/belt_underlays";
 import { HubComponent } from "./components/hub";
+import { HyperlinkAcceptorComponent } from "./components/hyperlink_acceptor";
+import { HyperlinkEjectorComponent } from "./components/hyperlink_ejector";
 import { ItemAcceptorComponent } from "./components/item_acceptor";
 import { ItemEjectorComponent } from "./components/item_ejector";
 import { ItemProcessorComponent } from "./components/item_processor";
@@ -34,6 +36,12 @@ export class EntityComponentStorage {
 
         /** @type {BeltComponent} */
         this.Belt;
+
+        /** @type {HyperlinkEjectorComponent} */
+        this.HyperlinkEjector;
+
+        /** @type {HyperlinkAcceptorComponent} */
+        this.HyperlinkAcceptor;
 
         /** @type {ItemEjectorComponent} */
         this.ItemEjector;
