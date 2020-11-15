@@ -59,7 +59,6 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
      */
     getAdditionalStatistics(root, variant) {
         let speedMultiplier = 2;
-        }
 
         const speed =
             (root.hubGoals.getProcessorBaseSpeed(enumItemProcessorTypes.balancer) / 2) * speedMultiplier;
