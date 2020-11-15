@@ -1,6 +1,6 @@
 import { enumDirection, Vector } from "../../core/vector";
-import { HyperlinkAcceptorComponent } from "../components/hyperlink_acceptor";
-import { HyperlinkEjectorComponent } from "../components/hyperlink_ejector";
+import { ItemAcceptorComponent } from "../components/item_acceptor";
+import { ItemEjectorComponent } from "../components/item_ejector";
 import { enumItemProcessorTypes, ItemProcessorComponent } from "../components/item_processor";
 import { Entity } from "../entity";
 import { MetaBuilding, defaultBuildingVariant } from "../meta_building";
@@ -125,7 +125,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
      */
     setupEntityComponents(entity) {
         entity.addComponent(
-            new HyperlinkAcceptorComponent({
+            new ItemAcceptorComponent({
                 slots: [], // set later
             })
         );
@@ -138,7 +138,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
         );
 
         entity.addComponent(
-            new HyperlinkEjectorComponent({
+            new ItemEjectorComponent({
                 slots: [], // set later
                 renderFloatingItems: false,
             })
@@ -156,7 +156,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
     updateVariants(entity, rotationVariant, variant) {
         switch (variant) {
             case defaultBuildingVariant: {
-                entity.components.HyperlinkAcceptor.setSlots([
+                entity.components.ItemAcceptor.setSlots([
                     {
                         pos: new Vector(0, 0),
                         directions: [enumDirection.bottom],
@@ -167,7 +167,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
                     },
                 ]);
 
-                entity.components.HyperlinkEjector.setSlots([
+                entity.components.ItemEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.top },
                     { pos: new Vector(1, 0), direction: enumDirection.top },
                 ]);
@@ -181,7 +181,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
             }
             case enumBalancerVariants.merger:
             case enumBalancerVariants.mergerInverse: {
-                entity.components.HyperlinkAcceptor.setSlots([
+                entity.components.ItemAcceptor.setSlots([
                     {
                         pos: new Vector(0, 0),
                         directions: [enumDirection.bottom],
@@ -196,7 +196,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
                     },
                 ]);
 
-                entity.components.HyperlinkEjector.setSlots([
+                entity.components.ItemEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.top },
                 ]);
 
@@ -207,7 +207,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
                 break;
             }
             case enumBalancerVariants.mergerTriple: {
-                entity.components.HyperlinkAcceptor.setSlots([
+                entity.components.ItemAcceptor.setSlots([
                     {
                         pos: new Vector(0, 0),
                         directions: [enumDirection.bottom],
@@ -222,7 +222,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
                     },
                 ]);
 
-                entity.components.HyperlinkEjector.setSlots([
+                entity.components.ItemEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.top },
                 ]);
 
@@ -234,14 +234,14 @@ export class MetaBalancerBuilding extends MetaBuilding {
             }
             case enumBalancerVariants.splitter:
             case enumBalancerVariants.splitterInverse: {
-                entity.components.HyperlinkAcceptor.setSlots([
+                entity.components.ItemAcceptor.setSlots([
                     {
                         pos: new Vector(0, 0),
                         directions: [enumDirection.bottom],
                     },
                 ]);
 
-                entity.components.HyperlinkEjector.setSlots([
+                entity.components.ItemEjector.setSlots([
                     {
                         pos: new Vector(0, 0),
                         direction: enumDirection.top,
@@ -263,14 +263,14 @@ export class MetaBalancerBuilding extends MetaBuilding {
             }
             
             case enumBalancerVariants.splitterTriple: {
-                entity.components.HyperlinkAcceptor.setSlots([
+                entity.components.ItemAcceptor.setSlots([
                     {
                         pos: new Vector(0, 0),
                         directions: [enumDirection.bottom],
                     },
                 ]);
 
-                entity.components.HyperlinkEjector.setSlots([
+                entity.components.ItemEjector.setSlots([
                     {
                         pos: new Vector(0, 0),
                         direction: enumDirection.top,
