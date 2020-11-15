@@ -227,3 +227,4 @@ export class MetaBeltBuilding extends MetaBuilding {
         };
     }
 }
+

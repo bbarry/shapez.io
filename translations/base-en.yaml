@@ -793,12 +793,12 @@ storyRewards:
     reward_merger:
         title: Compact Merger
         desc: >-
-            You have unlocked a <strong>merger</strong> variant of the <strong>balancer</strong> - It accepts two inputs and merges them into one belt!
+            You have unlocked a <strong>merger</strong> variant of the <strong>balancer</strong> - It accepts up to three inputs and merges them into one belt!
 
     reward_splitter:
         title: Compact Splitter
         desc: >-
-            You have unlocked a <strong>splitter</strong> variant of the <strong>balancer</strong> - It accepts one input and splits them into two!
+            You have unlocked a <strong>splitter</strong> variant of the <strong>balancer</strong> - It accepts one input and splits it into up to three outputs!
 
     reward_belt_reader:
         title: Belt reader
