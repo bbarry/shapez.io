@@ -10,6 +10,8 @@ import { enumCutterVariants, MetaCutterBuilding } from "./buildings/cutter";
 import { MetaDisplayBuilding } from "./buildings/display";
 import { MetaFilterBuilding } from "./buildings/filter";
 import { MetaHubBuilding } from "./buildings/hub";
+import { MetaHyperlinkBuilding } from "./buildings/hyperlink";
+import { enumHyperlinkVariants, MetaHyperlinkBuilding } from "./buildings/hyperlink";
 import { MetaItemProducerBuilding } from "./buildings/item_producer";
 import { MetaLeverBuilding } from "./buildings/lever";
 import { enumLogicGateVariants, MetaLogicGateBuilding } from "./buildings/logic_gate";
@@ -46,6 +48,7 @@ export function initMetaBuildingRegistry() {
     gMetaBuildingRegistry.register(MetaBeltBuilding);
     gMetaBuildingRegistry.register(MetaUndergroundBeltBuilding);
     gMetaBuildingRegistry.register(MetaHubBuilding);
+    gMetaBuildingRegistry.register(MetaHyperlinkBuilding);
     gMetaBuildingRegistry.register(MetaWireBuilding);
     gMetaBuildingRegistry.register(MetaConstantSignalBuilding);
     gMetaBuildingRegistry.register(MetaLogicGateBuilding);
@@ -113,6 +116,10 @@ export function initMetaBuildingRegistry() {
 
     // Hub
     registerBuildingVariant(26, MetaHubBuilding);
+
+    // Hyperlink
+    registerBuildingVariant(64, MetaHyperlinkBuilding);
+    registerBuildingVariant(65, MetaHyperlinkBuilding, enumHyperlinkVariants.hyperlinkEntrance);
 
     // Wire
     registerBuildingVariant(27, MetaWireBuilding, defaultBuildingVariant, 0);

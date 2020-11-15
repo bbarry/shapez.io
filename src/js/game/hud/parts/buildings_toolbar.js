@@ -11,6 +11,7 @@ import { MetaRotaterBuilding } from "../../buildings/rotater";
 import { MetaBalancerBuilding } from "../../buildings/balancer";
 import { MetaStackerBuilding } from "../../buildings/stacker";
 import { MetaTrashBuilding } from "../../buildings/trash";
+import { MetaHyperlinkBuilding } from "../../buildings/hyperlink";
 import { MetaUndergroundBeltBuilding } from "../../buildings/underground_belt";
 import { HUDBaseToolbar } from "./base_toolbar";
 import { MetaStorageBuilding } from "../../buildings/storage";
@@ -31,6 +32,7 @@ export class HUDBuildingsToolbar extends HUDBaseToolbar {
                 MetaMixerBuilding,
                 MetaPainterBuilding,
                 MetaTrashBuilding,
+                MetaHyperlinkBuilding,
                 ...(queryParamOptions.sandboxMode || G_IS_DEV ? [MetaItemProducerBuilding] : []),
             ],
             secondaryBuildings: [

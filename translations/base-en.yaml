@@ -529,6 +529,15 @@ buildings:
         levelShortcut: LVL
         endOfDemo: End of Demo
 
+    hyperlink:
+        default:
+            name: &hyperlink hyperlink
+            description: this is a placeholder
+
+        hyperlink-entrance:
+            name: Hyperlink Entrance
+            description: this is a placeholder
+
     belt:
         default:
             name: &belt Conveyor Belt
