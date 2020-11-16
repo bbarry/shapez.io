@@ -1173,6 +1173,7 @@ keybindings:
         transistor: *transistor
         analyzer: *analyzer
         comparator: *comparator
+        hyperlink: *hyperlink
         item_producer: Item Producer (Sandbox)
         # ---
 
