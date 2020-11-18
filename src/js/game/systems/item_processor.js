@@ -387,7 +387,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
      */
     process_BALANCER(payload) {
         assert(
-            payload.entity.components.ItemEjector,
+            payload.entity.components.ItemEjector || payload.entity.components.HyperlinkEjector,
             "To be a balancer, the building needs to have an ejector"
         );
         const availableSlots = payload.entity.components.ItemEjector.slots.length;
