@@ -390,7 +390,11 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             payload.entity.components.ItemEjector || payload.entity.components.HyperlinkEjector,
             "To be a balancer, the building needs to have an ejector"
         );
+        if(payload.entity.components.HyperlinkEjector){
+        const availableSlots = payload.entity.components.HyperlinkEjector.slots.length;
+        } else {
         const availableSlots = payload.entity.components.ItemEjector.slots.length;
+        }
         const processorComp = payload.entity.components.ItemProcessor;
 
         const nextSlot = processorComp.nextOutputSlot++ % availableSlots;
