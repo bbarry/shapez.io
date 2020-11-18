@@ -89,8 +89,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                 // Check if it finished
                 if (currentCharge.remainingTime <= 0.0) {
                     const itemsToEject = currentCharge.items;
-                    if (ejectorComp)//fix later
-                    {
+                    if (ejectorComp) {
                         // Go over all items and try to eject them
                         for (let j = 0; j < itemsToEject.length; ++j) {
                         const { item, requiredSlot, preferredSlot } = itemsToEject[j];
