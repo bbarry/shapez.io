@@ -150,11 +150,11 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
             case enumHyperlinkVariants.hyperlinkEntrance: {
                 entity.components.ItemAcceptor.setSlots([
                     {
-                        pos: new Vector(0, -1),
+                        pos: new Vector(0, 2),
                         directions: [enumDirection.left],
                     },
                     {
-                        pos: new Vector(0, -1),
+                        pos: new Vector(0, 2),
                         directions: [enumDirection.right],
                     },
                 ]);
