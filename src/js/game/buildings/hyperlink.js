@@ -1,4 +1,6 @@
 import { enumDirection, Vector } from "../../core/vector";
+import { ItemAcceptorComponent } from "../components/item_acceptor";
+import { ItemEjectorComponent } from "../components/item_ejector";
 import { HyperlinkAcceptorComponent } from "../components/hyperlink_acceptor";
 import { HyperlinkEjectorComponent } from "../components/hyperlink_ejector";
 import { enumItemProcessorTypes, ItemProcessorComponent } from "../components/item_processor";
@@ -95,6 +97,12 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
      */
     setupEntityComponents(entity) {
         entity.addComponent(
+            new ItemAcceptorComponent({
+                slots: [], // set later
+            })
+        );
+
+        entity.addComponent(
             new HyperlinkAcceptorComponent({
                 slots: [], // set later
             })
@@ -140,10 +148,14 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 break;
             }
             case enumHyperlinkVariants.hyperlinkEntrance: {
-                entity.components.HyperlinkAcceptor.setSlots([
+                entity.components.ItemAcceptor.setSlots([
                     {
                         pos: new Vector(0, 0),
-                        directions: [enumDirection.bottom],
+                        directions: [enumDirection.left],
+                    },
+                    {
+                        pos: new Vector(0, 0),
+                        directions: [enumDirection.right],
                     },
                 ]);
 

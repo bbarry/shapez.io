@@ -12,7 +12,7 @@ import { typeItemSingleton } from "../item_resolver";
  *    direction: enumDirection,
  *    item: BaseItem,
  *    progress: number?,
- *    cachedDestSlot?: import("./item_acceptor").ItemAcceptorLocatedSlot,
+ *    cachedDestSlot?: import("./hyperlink_acceptor").ItemAcceptorLocatedSlot,
  *    cachedBeltPath?: BeltPath,
  *    cachedTargetEntity?: Entity
  * }} ItemEjectorSlot
@@ -48,7 +48,7 @@ export class HyperlinkEjectorComponent extends Component {
         this.renderFloatingItems = renderFloatingItems;
         this.lastUsedSlot = null;
     }
-
+    ItemAcceptorLocatedSlot
     /**
      * @param {Array<{pos: Vector, direction: enumDirection }>} slots The slots to eject on
      */

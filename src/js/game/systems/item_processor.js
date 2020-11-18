@@ -72,6 +72,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
 
             const processorComp = entity.components.ItemProcessor;
             const ejectorComp = entity.components.ItemEjector;
+            const hyperlinkEjectorComp = entity.components.HyperlinkEjector;
 
             const currentCharge = processorComp.ongoingCharges[0];
             this.lastUsedSlot = null;
@@ -88,9 +89,10 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                 // Check if it finished
                 if (currentCharge.remainingTime <= 0.0) {
                     const itemsToEject = currentCharge.items;
-
-                    // Go over all items and try to eject them
-                    for (let j = 0; j < itemsToEject.length; ++j) {
+                    if (ejectorComp)//fix later
+                    {
+                        // Go over all items and try to eject them
+                        for (let j = 0; j < itemsToEject.length; ++j) {
                         const { item, requiredSlot, preferredSlot } = itemsToEject[j];
 
                         assert(ejectorComp, "To eject items, the building needs to have an ejector");
@@ -145,6 +147,65 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                             }
                         }
                     }
+                    else
+                    {
+                        // Go over all items and try to eject them
+                        for (let j = 0; j < itemsToEject.length; ++j) {
+                        const { item, requiredSlot, preferredSlot } = itemsToEject[j];
+                        
+                        assert(hyperlinkEjectorComp, "To eject items, the building needs to have an ejector");
+
+                        let slot = null;
+                        
+                        if (requiredSlot !== null && requiredSlot !== undefined) 
+                        {
+                            // We have a slot override, check if that is free
+                            if (hyperlinkEjectorComp.canEjectOnSlot(requiredSlot) && requiredSlot !== hyperlinkEjectorComp.lastUsedSlot) 
+                            {
+                                slot = requiredSlot;
+                                hyperlinkEjectorComp.lastUsedSlot = slot;
+                            }
+                        } 
+                        else if (preferredSlot !== null && preferredSlot !== undefined) 
+                        {
+                            // We have a slot preference, try using it but otherwise use a free slot
+                            
+                            if (hyperlinkEjectorComp.canEjectOnSlot(preferredSlot) && preferredSlot !== hyperlinkEjectorComp.lastUsedSlot)
+                            {
+                                slot = preferredSlot;
+                                hyperlinkEjectorComp.lastUsedSlot = slot;
+                            }
+                            else 
+                            {
+                                if (entity.components.ItemEjector.slots[2]) 
+                                {
+                                slot = hyperlinkEjectorComp.getNextFreeSlotForTriple(preferredSlot, hyperlinkEjectorComp.lastUsedSlot);
+                                    if (slot !== null)
+                                    {
+                                        hyperlinkEjectorComp.lastUsedSlot = slot;
+                                    }
+                                }
+                                else
+                                {
+                                slot = hyperlinkEjectorComp.getFirstFreeSlot();
+                                }
+                            }
+                        } else {
+                            // We can eject on any slot
+                            slot = hyperlinkEjectorComp.getFirstFreeSlot();
+                        }
+
+                        if (slot !== null) {
+                            // Alright, we can actually eject
+                            if (!hyperlinkEjectorComp.tryEject(slot, item)) {
+                                assert(false, "Failed to eject");
+                            } else {
+                                itemsToEject.splice(j, 1);
+                                j -= 1;
+                            }
+                        }
+                    }
+                    
 
                     // If the charge was entirely emptied to the outputs, start the next charge
                     if (itemsToEject.length === 0) {
