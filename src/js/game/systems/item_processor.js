@@ -174,7 +174,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                 }
                                 else 
                                 {
-                                    if (entity.components.ItemEjector.slots[2]) 
+                                    if (entity.components.HyperlinkEjector.slots[2]) 
                                     {
                                     slot = hyperlinkEjectorComp.getNextFreeSlotForTriple(preferredSlot, hyperlinkEjectorComp.lastUsedSlot);
                                         if (slot !== null)
