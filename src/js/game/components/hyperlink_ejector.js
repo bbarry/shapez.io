@@ -48,7 +48,7 @@ export class HyperlinkEjectorComponent extends Component {
         this.renderFloatingItems = renderFloatingItems;
         this.lastUsedSlot = null;
     }
-    ItemAcceptorLocatedSlot
+    
     /**
      * @param {Array<{pos: Vector, direction: enumDirection }>} slots The slots to eject on
      */
