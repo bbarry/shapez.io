@@ -44,6 +44,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
          * @type {Object<enumItemProcessorTypes, function(ProcessorImplementationPayload) : string>}
          */
         this.handlers = {
+            [enumItemProcessorTypes.hyperlink]: this.process_HYPERLINK,
             [enumItemProcessorTypes.balancer]: this.process_BALANCER,
             [enumItemProcessorTypes.cutter]: this.process_CUTTER,
             [enumItemProcessorTypes.cutterQuad]: this.process_CUTTER_QUAD,
@@ -385,6 +386,26 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
     /**
      * @param {ProcessorImplementationPayload} payload
      */
+    process_HYPERLINK(payload) {
+        assert(
+            payload.entity.components.HyperlinkEjector || payload.entity.components.HyperlinkAcceptor,
+            "To be a hyperlink, the building needs to have a hyperlink part"
+        );
+        const availableSlots = payload.entity.components.HyperlinkEjector.slots.length;
+        const processorComp = payload.entity.components.ItemProcessor;
+
+        const nextSlot = processorComp.nextOutputSlot++ % availableSlots;
+
+        for (let i = 0; i < payload.items.length; ++i) {
+            payload.outItems.push({
+                item: payload.items[i].item,
+                preferredSlot: (nextSlot + i) % availableSlots,
+                doNotTrack: true,
+            });
+        }
+        return true;
+    }
+
     process_BALANCER(payload) {
         assert(
             payload.entity.components.ItemEjector,
