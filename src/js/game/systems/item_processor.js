@@ -90,7 +90,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                 // Check if it finished
                 if (currentCharge.remainingTime <= 0.0) {
                     const itemsToEject = currentCharge.items;
-                    if (ejectorComp) {
+                    if (!hyperlinkEjectorComp) {
                         // Go over all items and try to eject them
                         for (let j = 0; j < itemsToEject.length; ++j) {
                             const { item, requiredSlot, preferredSlot } = itemsToEject[j];
@@ -134,16 +134,17 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                 // We can eject on any slot
                                 slot = ejectorComp.getFirstFreeSlot();
                             }
-                        }
-                        if (slot !== null) {
-                            // Alright, we can actually eject
-                            if (!ejectorComp.tryEject(slot, item)) {
-                                assert(false, "Failed to eject");
-                            } else {
-                                itemsToEject.splice(j, 1);
-                                j -= 1;
+                            if (slot !== null) {
+                                // Alright, we can actually eject
+                                if (!ejectorComp.tryEject(slot, item)) {
+                                    assert(false, "Failed to eject");
+                                } else {
+                                    itemsToEject.splice(j, 1);
+                                    j -= 1;
+                                }
                             }
                         }
+                        
                     } else {
                         // Go over all items and try to eject them
                         for (let j = 0; j < itemsToEject.length; ++j) {
@@ -190,16 +191,17 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                 // We can eject on any slot
                                 slot = hyperlinkEjectorComp.getFirstFreeSlot();
                             }
-                        }
-                        if (slot !== null) {
-                            // Alright, we can actually eject
-                            if (!hyperlinkEjectorComp.tryEject(slot, item)) {
-                                assert(false, "Failed to eject");
-                            } else {
-                                itemsToEject.splice(j, 1);
-                                j -= 1;
+                            if (slot !== null) {
+                                // Alright, we can actually eject
+                                if (!hyperlinkEjectorComp.tryEject(slot, item)) {
+                                    assert(false, "Failed to eject");
+                                } else {
+                                    itemsToEject.splice(j, 1);
+                                    j -= 1;
+                                }
                             }
                         }
+                        
                     }
                     
 
