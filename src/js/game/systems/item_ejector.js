@@ -206,6 +206,10 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
         for (let i = 0; i < this.allEntities.length; ++i) {
             const sourceEntity = this.allEntities[i];
             const sourceEjectorComp = sourceEntity.components.ItemEjector;
+            if(!sourceEjectorComp)
+            {
+                console.log("this");
+            }
             const sourceHyperlinkEjectorComp = sourceEntity.components.HyperlinkEjector;
             if(!sourceHyperlinkEjectorComp){
                 const slots = sourceEjectorComp.slots;
