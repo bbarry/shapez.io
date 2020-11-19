@@ -270,7 +270,7 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
                     }
                 }
             } else {
-            
+                console.log("ok");
                 const hyperlinkSlots = sourceHyperlinkEjectorComp.slots;
                 for (let j = 0; j < hyperlinkSlots.length; ++j) {
                     const sourceSlot = hyperlinkSlots[j];
