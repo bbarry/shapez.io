@@ -146,6 +146,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                         }
                         
                     } else {
+                        console.log("yahayah")
                         // Go over all items and try to eject them
                         for (let j = 0; j < itemsToEject.length; ++j) {
                             const { item, requiredSlot, preferredSlot } = itemsToEject[j];
@@ -196,7 +197,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                 if (!hyperlinkEjectorComp.tryEject(slot, item)) {
                                     assert(false, "Failed to eject");
                                 } else {
-                                console.log("yahayah")
                                     itemsToEject.splice(j, 1);
                                     j -= 1;
                                 }
