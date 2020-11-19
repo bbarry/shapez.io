@@ -138,7 +138,7 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
                 }
             }
         } else {
-        console.log("ok");
+        //console.log("ok");
             for (let slotIndex = 0; slotIndex < hyperlinkEjectorComp.slots.length; ++slotIndex) {
                 const ejectorSlot = hyperlinkEjectorComp.slots[slotIndex];
 
@@ -167,6 +167,7 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
 
                     // Check for item acceptors
                     const targetAcceptorComp = targetEntity.components.HyperlinkAcceptor;
+                    console.log(targetEntity.components.HyperlinkAcceptor);
                     if (!targetAcceptorComp) {
                         // Entity doesn't accept items
                         continue;
