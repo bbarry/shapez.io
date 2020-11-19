@@ -205,6 +205,7 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
         // Go over all cache entries
         for (let i = 0; i < this.allEntities.length; ++i) {
             const sourceEntity = this.allEntities[i];
+            console.log(sourceEntity.components);
             const sourceEjectorComp = sourceEntity.components.ItemEjector;
             const sourceHyperlinkEjectorComp = sourceEntity.components.HyperlinkEjector;
             if(sourceHyperlinkEjectorComp !== undefined)
