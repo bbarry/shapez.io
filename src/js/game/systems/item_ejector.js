@@ -75,7 +75,7 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
         const ejectorComp = entity.components.ItemEjector;
         const hyperlinkEjectorComp = entity.components.HyperlinkEjector;
         const staticComp = entity.components.StaticMapEntity;
-        if(!hyperlinkEjectorComp){
+        if(hyperlinkEjectorComp == undefined){
             console.log("standard");
             for (let slotIndex = 0; slotIndex < ejectorComp.slots.length; ++slotIndex) {
                 const ejectorSlot = ejectorComp.slots[slotIndex];
@@ -211,7 +211,7 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
                 console.log("this");
             }
             const sourceHyperlinkEjectorComp = sourceEntity.components.HyperlinkEjector;
-            if(!sourceHyperlinkEjectorComp){
+            if(sourceHyperlinkEjectorComp == undefined){
                 const slots = sourceEjectorComp.slots;
                 for (let j = 0; j < slots.length; ++j) {
                     const sourceSlot = slots[j];
