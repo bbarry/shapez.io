@@ -75,116 +75,116 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
         const ejectorComp = entity.components.ItemEjector;
         const hyperlinkEjectorComp = entity.components.HyperlinkEjector;
         const staticComp = entity.components.StaticMapEntity;
+        if(!hyperlinkEjectorComp){
+            for (let slotIndex = 0; slotIndex < ejectorComp.slots.length; ++slotIndex) {
+                const ejectorSlot = ejectorComp.slots[slotIndex];
 
-        for (let slotIndex = 0; slotIndex < ejectorComp.slots.length; ++slotIndex) {
-            const ejectorSlot = ejectorComp.slots[slotIndex];
+                // Clear the old cache.
+                ejectorSlot.cachedDestSlot = null;
+                ejectorSlot.cachedTargetEntity = null;
+                ejectorSlot.cachedBeltPath = null;
 
-            // Clear the old cache.
-            ejectorSlot.cachedDestSlot = null;
-            ejectorSlot.cachedTargetEntity = null;
-            ejectorSlot.cachedBeltPath = null;
+                // Figure out where and into which direction we eject items
+                const ejectSlotWsTile = staticComp.localTileToWorld(ejectorSlot.pos);
+                const ejectSlotWsDirection = staticComp.localDirectionToWorld(ejectorSlot.direction);
+                const ejectSlotWsDirectionVector = enumDirectionToVector[ejectSlotWsDirection];
+                const ejectSlotTargetWsTile = ejectSlotWsTile.add(ejectSlotWsDirectionVector);
 
-            // Figure out where and into which direction we eject items
-            const ejectSlotWsTile = staticComp.localTileToWorld(ejectorSlot.pos);
-            const ejectSlotWsDirection = staticComp.localDirectionToWorld(ejectorSlot.direction);
-            const ejectSlotWsDirectionVector = enumDirectionToVector[ejectSlotWsDirection];
-            const ejectSlotTargetWsTile = ejectSlotWsTile.add(ejectSlotWsDirectionVector);
+                // Try to find the given acceptor component to take the item
+                // Since there can be cross layer dependencies, check on all layers
+                const targetEntities = this.root.map.getLayersContentsMultipleXY(
+                    ejectSlotTargetWsTile.x,
+                    ejectSlotTargetWsTile.y
+                );
 
-            // Try to find the given acceptor component to take the item
-            // Since there can be cross layer dependencies, check on all layers
-            const targetEntities = this.root.map.getLayersContentsMultipleXY(
-                ejectSlotTargetWsTile.x,
-                ejectSlotTargetWsTile.y
-            );
+                for (let i = 0; i < targetEntities.length; ++i) {
+                    const targetEntity = targetEntities[i];
 
-            for (let i = 0; i < targetEntities.length; ++i) {
-                const targetEntity = targetEntities[i];
+                    const targetStaticComp = targetEntity.components.StaticMapEntity;
+                    const targetBeltComp = targetEntity.components.Belt;
 
-                const targetStaticComp = targetEntity.components.StaticMapEntity;
-                const targetBeltComp = targetEntity.components.Belt;
-
-                // Check for belts (special case)
-                if (targetBeltComp) {
-                    const beltAcceptingDirection = targetStaticComp.localDirectionToWorld(enumDirection.top);
-                    if (ejectSlotWsDirection === beltAcceptingDirection) {
-                        ejectorSlot.cachedTargetEntity = targetEntity;
-                        ejectorSlot.cachedBeltPath = targetBeltComp.assignedPath;
-                        break;
+                    // Check for belts (special case)
+                    if (targetBeltComp) {
+                        const beltAcceptingDirection = targetStaticComp.localDirectionToWorld(enumDirection.top);
+                        if (ejectSlotWsDirection === beltAcceptingDirection) {
+                            ejectorSlot.cachedTargetEntity = targetEntity;
+                            ejectorSlot.cachedBeltPath = targetBeltComp.assignedPath;
+                            break;
+                        }
                     }
+
+                    // Check for item acceptors
+                    const targetAcceptorComp = targetEntity.components.ItemAcceptor;
+                    if (!targetAcceptorComp) {
+                        // Entity doesn't accept items
+                        continue;
+                    }
+
+                    const matchingSlot = targetAcceptorComp.findMatchingSlot(
+                        targetStaticComp.worldToLocalTile(ejectSlotTargetWsTile),
+                        targetStaticComp.worldDirectionToLocal(ejectSlotWsDirection)
+                    );
+
+                    if (!matchingSlot) {
+                        // No matching slot found
+                        continue;
+                    }
+
+                    // A slot can always be connected to one other slot only
+                    ejectorSlot.cachedTargetEntity = targetEntity;
+                    ejectorSlot.cachedDestSlot = matchingSlot;
+                    break;
                 }
-
-                // Check for item acceptors
-                const targetAcceptorComp = targetEntity.components.ItemAcceptor;
-                if (!targetAcceptorComp) {
-                    // Entity doesn't accept items
-                    continue;
-                }
-
-                const matchingSlot = targetAcceptorComp.findMatchingSlot(
-                    targetStaticComp.worldToLocalTile(ejectSlotTargetWsTile),
-                    targetStaticComp.worldDirectionToLocal(ejectSlotWsDirection)
-                );
-
-                if (!matchingSlot) {
-                    // No matching slot found
-                    continue;
-                }
-
-                // A slot can always be connected to one other slot only
-                ejectorSlot.cachedTargetEntity = targetEntity;
-                ejectorSlot.cachedDestSlot = matchingSlot;
-                break;
             }
-        }
+        } else {
+            for (let slotIndex = 0; slotIndex < hyperlinkEjectorComp.slots.length; ++slotIndex) {
+                const ejectorSlot = hyperlinkEjectorComp.slots[slotIndex];
 
+                // Clear the old cache.
+                ejectorSlot.cachedDestSlot = null;
+                ejectorSlot.cachedTargetEntity = null;
+                ejectorSlot.cachedBeltPath = null;
 
-        for (let slotIndex = 0; slotIndex < hyperlinkEjectorComp.slots.length; ++slotIndex) {
-            const ejectorSlot = hyperlinkEjectorComp.slots[slotIndex];
+                // Figure out where and into which direction we eject items
+                const ejectSlotWsTile = staticComp.localTileToWorld(ejectorSlot.pos);
+                const ejectSlotWsDirection = staticComp.localDirectionToWorld(ejectorSlot.direction);
+                const ejectSlotWsDirectionVector = enumDirectionToVector[ejectSlotWsDirection];
+                const ejectSlotTargetWsTile = ejectSlotWsTile.add(ejectSlotWsDirectionVector);
 
-            // Clear the old cache.
-            ejectorSlot.cachedDestSlot = null;
-            ejectorSlot.cachedTargetEntity = null;
-            ejectorSlot.cachedBeltPath = null;
-
-            // Figure out where and into which direction we eject items
-            const ejectSlotWsTile = staticComp.localTileToWorld(ejectorSlot.pos);
-            const ejectSlotWsDirection = staticComp.localDirectionToWorld(ejectorSlot.direction);
-            const ejectSlotWsDirectionVector = enumDirectionToVector[ejectSlotWsDirection];
-            const ejectSlotTargetWsTile = ejectSlotWsTile.add(ejectSlotWsDirectionVector);
-
-            // Try to find the given acceptor component to take the item
-            // Since there can be cross layer dependencies, check on all layers
-            const targetEntities = this.root.map.getLayersContentsMultipleXY(
-                ejectSlotTargetWsTile.x,
-                ejectSlotTargetWsTile.y
-            );
-
-            for (let i = 0; i < targetEntities.length; ++i) {
-                const targetEntity = targetEntities[i];
-
-                const targetStaticComp = targetEntity.components.StaticMapEntity;
-
-                // Check for item acceptors
-                const targetAcceptorComp = targetEntity.components.HyperlinkAcceptor;
-                if (!targetAcceptorComp) {
-                    // Entity doesn't accept items
-                    continue;
-                }
-
-                const matchingSlot = targetAcceptorComp.findMatchingSlot(
-                    targetStaticComp.worldToLocalTile(ejectSlotTargetWsTile),
-                    targetStaticComp.worldDirectionToLocal(ejectSlotWsDirection)
+                // Try to find the given acceptor component to take the item
+                // Since there can be cross layer dependencies, check on all layers
+                const targetEntities = this.root.map.getLayersContentsMultipleXY(
+                    ejectSlotTargetWsTile.x,
+                    ejectSlotTargetWsTile.y
                 );
 
-                if (!matchingSlot) {
-                    // No matching slot found
-                    continue;
-                }
+                for (let i = 0; i < targetEntities.length; ++i) {
+                    const targetEntity = targetEntities[i];
 
-                // A slot can always be connected to one other slot only
-                ejectorSlot.cachedTargetEntity = targetEntity;
-                ejectorSlot.cachedDestSlot = matchingSlot;
-                break;
+                    const targetStaticComp = targetEntity.components.StaticMapEntity;
+
+                    // Check for item acceptors
+                    const targetAcceptorComp = targetEntity.components.HyperlinkAcceptor;
+                    if (!targetAcceptorComp) {
+                        // Entity doesn't accept items
+                        continue;
+                    }
+
+                    const matchingSlot = targetAcceptorComp.findMatchingSlot(
+                        targetStaticComp.worldToLocalTile(ejectSlotTargetWsTile),
+                        targetStaticComp.worldDirectionToLocal(ejectSlotWsDirection)
+                    );
+
+                    if (!matchingSlot) {
+                        // No matching slot found
+                        continue;
+                    }
+
+                    // A slot can always be connected to one other slot only
+                    ejectorSlot.cachedTargetEntity = targetEntity;
+                    ejectorSlot.cachedDestSlot = matchingSlot;
+                    break;
+                }
             }
         }
     }
