@@ -206,11 +206,11 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
         for (let i = 0; i < this.allEntities.length; ++i) {
             const sourceEntity = this.allEntities[i];
             const sourceEjectorComp = sourceEntity.components.ItemEjector;
-            if(sourceEjectorComp == undefined)
+            const sourceHyperlinkEjectorComp = sourceEntity.components.HyperlinkEjector;
+            if(sourceHyperlinkEjectorComp !== undefined)
             {
                 console.log("this");
             }
-            const sourceHyperlinkEjectorComp = sourceEntity.components.HyperlinkEjector;
             if(sourceHyperlinkEjectorComp == undefined){
                 const slots = sourceEjectorComp.slots;
                 for (let j = 0; j < slots.length; ++j) {
