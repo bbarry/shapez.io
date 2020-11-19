@@ -146,7 +146,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                         }
                         
                     } else {
-                        console.log("yahayah")
+                        console.log(itemsToEject.length);
                         // Go over all items and try to eject them
                         for (let j = 0; j < itemsToEject.length; ++j) {
                             const { item, requiredSlot, preferredSlot } = itemsToEject[j];
