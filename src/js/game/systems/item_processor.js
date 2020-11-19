@@ -146,7 +146,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                         }
                         
                     } else {
-                        console.log(itemsToEject.length);
                         // Go over all items and try to eject them
                         for (let j = 0; j < itemsToEject.length; ++j) {
                             const { item, requiredSlot, preferredSlot } = itemsToEject[j];
@@ -192,6 +191,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                 // We can eject on any slot
                                 slot = hyperlinkEjectorComp.getFirstFreeSlot();
                             }
+                            console.log(slot);
                             if (slot !== null) {
                                 // Alright, we can actually eject
                                 if (!hyperlinkEjectorComp.tryEject(slot, item)) {
