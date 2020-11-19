@@ -204,133 +204,135 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
             const sourceEntity = this.allEntities[i];
             const sourceEjectorComp = sourceEntity.components.ItemEjector;
             const sourceHyperlinkEjectorComp = sourceEntity.components.HyperlinkEjector;
-
-            const slots = sourceEjectorComp.slots;
-            for (let j = 0; j < slots.length; ++j) {
-                const sourceSlot = slots[j];
-                const item = sourceSlot.item;
-                if (!item) {
-                    // No item available to be ejected
-                    continue;
-                }
-
-                // Advance items on the slot
-                sourceSlot.progress = Math.min(
-                    1,
-                    sourceSlot.progress +
-                        progressGrowth *
-                            this.root.hubGoals.getBeltBaseSpeed() *
-                            globalConfig.itemSpacingOnBelts
-                );
-
-                if (G_IS_DEV && globalConfig.debug.disableEjectorProcessing) {
-                    sourceSlot.progress = 1.0;
-                }
-
-                // Check if we are still in the process of ejecting, can't proceed then
-                if (sourceSlot.progress < 1.0) {
-                    continue;
-                }
-
-                // Check if we are ejecting to a belt path
-                const destPath = sourceSlot.cachedBeltPath;
-                if (destPath) {
-                    // Try passing the item over
-                    if (destPath.tryAcceptItem(item)) {
-                        sourceSlot.item = null;
-                    }
-
-                    // Always stop here, since there can *either* be a belt path *or*
-                    // a slot
-                    continue;
-                }
-
-                // Check if the target acceptor can actually accept this item
-                const destEntity = sourceSlot.cachedTargetEntity;
-                const destSlot = sourceSlot.cachedDestSlot;
-                if (destSlot) {
-                    const targetAcceptorComp = destEntity.components.ItemAcceptor;
-                    if (!targetAcceptorComp.canAcceptItem(destSlot.index, item)) {
+            if(!sourceHyperlinkEjectorComp){
+                const slots = sourceEjectorComp.slots;
+                for (let j = 0; j < slots.length; ++j) {
+                    const sourceSlot = slots[j];
+                    const item = sourceSlot.item;
+                    if (!item) {
+                        // No item available to be ejected
                         continue;
                     }
-
-                    // Try to hand over the item
-                    if (this.tryPassOverItem(item, destEntity, destSlot.index)) {
-                        // Handover successful, clear slot
-                        if (!this.root.app.settings.getAllSettings().simplifiedBelts) {
-                            targetAcceptorComp.onItemAccepted(
-                                destSlot.index,
-                                destSlot.acceptedDirection,
-                                item
-                            );
+                
+                    // Advance items on the slot
+                    sourceSlot.progress = Math.min(
+                        1,
+                        sourceSlot.progress +
+                            progressGrowth *
+                                this.root.hubGoals.getBeltBaseSpeed() *
+                                globalConfig.itemSpacingOnBelts
+                    );
+                
+                    if (G_IS_DEV && globalConfig.debug.disableEjectorProcessing) {
+                        sourceSlot.progress = 1.0;
+                    }
+                
+                    // Check if we are still in the process of ejecting, can't proceed then
+                    if (sourceSlot.progress < 1.0) {
+                        continue;
+                    }
+                
+                    // Check if we are ejecting to a belt path
+                    const destPath = sourceSlot.cachedBeltPath;
+                    if (destPath) {
+                        // Try passing the item over
+                        if (destPath.tryAcceptItem(item)) {
+                            sourceSlot.item = null;
                         }
-                        sourceSlot.item = null;
+                
+                        // Always stop here, since there can *either* be a belt path *or*
+                        // a slot
                         continue;
                     }
-                }
-            }
-
-            const hyperlinkSlots = sourceHyperlinkEjectorComp.slots;
-            for (let j = 0; j < hyperlinkSlots.length; ++j) {
-                const sourceSlot = hyperlinkSlots[j];
-                const item = sourceSlot.item;
-                if (!item) {
-                    // No item available to be ejected
-                    continue;
-                }
-
-                // Advance items on the slot
-                sourceSlot.progress = Math.min(
-                    1,
-                    sourceSlot.progress +
-                        progressGrowth *
-                            this.root.hubGoals.getBeltBaseSpeed() *
-                            globalConfig.itemSpacingOnBelts
-                );
-
-                if (G_IS_DEV && globalConfig.debug.disableEjectorProcessing) {
-                    sourceSlot.progress = 1.0;
-                }
-
-                // Check if we are still in the process of ejecting, can't proceed then
-                if (sourceSlot.progress < 1.0) {
-                    continue;
-                }
-
-                // Check if we are ejecting to a belt path
-                const destPath = sourceSlot.cachedBeltPath;
-                if (destPath) {
-                    // Try passing the item over
-                    if (destPath.tryAcceptItem(item)) {
-                        sourceSlot.item = null;
-                    }
-
-                    // Always stop here, since there can *either* be a belt path *or*
-                    // a slot
-                    continue;
-                }
-
-                // Check if the target acceptor can actually accept this item
-                const destEntity = sourceSlot.cachedTargetEntity;
-                const destSlot = sourceSlot.cachedDestSlot;
-                if (destSlot) {
-                    const targetAcceptorComp = destEntity.components.HyperlinkAcceptor;
-                    if (!targetAcceptorComp.canAcceptItem(destSlot.index, item)) {
-                        continue;
-                    }
-
-                    // Try to hand over the item
-                    if (this.tryPassOverItem(item, destEntity, destSlot.index)) {
-                        // Handover successful, clear slot
-                        if (!this.root.app.settings.getAllSettings().simplifiedBelts) {
-                            targetAcceptorComp.onItemAccepted(
-                                destSlot.index,
-                                destSlot.acceptedDirection,
-                                item
-                            );
+                
+                    // Check if the target acceptor can actually accept this item
+                    const destEntity = sourceSlot.cachedTargetEntity;
+                    const destSlot = sourceSlot.cachedDestSlot;
+                    if (destSlot) {
+                        const targetAcceptorComp = destEntity.components.ItemAcceptor;
+                        if (!targetAcceptorComp.canAcceptItem(destSlot.index, item)) {
+                            continue;
                         }
-                        sourceSlot.item = null;
+                
+                        // Try to hand over the item
+                        if (this.tryPassOverItem(item, destEntity, destSlot.index)) {
+                            // Handover successful, clear slot
+                            if (!this.root.app.settings.getAllSettings().simplifiedBelts) {
+                                targetAcceptorComp.onItemAccepted(
+                                    destSlot.index,
+                                    destSlot.acceptedDirection,
+                                    item
+                                );
+                            }
+                            sourceSlot.item = null;
+                            continue;
+                        }
+                    }
+                }
+            } else {
+            
+                const hyperlinkSlots = sourceHyperlinkEjectorComp.slots;
+                for (let j = 0; j < hyperlinkSlots.length; ++j) {
+                    const sourceSlot = hyperlinkSlots[j];
+                    const item = sourceSlot.item;
+                    if (!item) {
+                        // No item available to be ejected
                         continue;
+                    }
+
+                    // Advance items on the slot
+                    sourceSlot.progress = Math.min(
+                        1,
+                        sourceSlot.progress +
+                            progressGrowth *
+                                this.root.hubGoals.getBeltBaseSpeed() *
+                                globalConfig.itemSpacingOnBelts
+                    );
+
+                    if (G_IS_DEV && globalConfig.debug.disableEjectorProcessing) {
+                        sourceSlot.progress = 1.0;
+                    }
+
+                    // Check if we are still in the process of ejecting, can't proceed then
+                    if (sourceSlot.progress < 1.0) {
+                        continue;
+                    }
+
+                    // Check if we are ejecting to a belt path
+                    const destPath = sourceSlot.cachedBeltPath;
+                    if (destPath) {
+                        // Try passing the item over
+                        if (destPath.tryAcceptItem(item)) {
+                            sourceSlot.item = null;
+                        }
+
+                        // Always stop here, since there can *either* be a belt path *or*
+                        // a slot
+                        continue;
+                    }
+
+                    // Check if the target acceptor can actually accept this item
+                    const destEntity = sourceSlot.cachedTargetEntity;
+                    const destSlot = sourceSlot.cachedDestSlot;
+                    if (destSlot) {
+                        const targetAcceptorComp = destEntity.components.HyperlinkAcceptor;
+                        if (!targetAcceptorComp.canAcceptItem(destSlot.index, item)) {
+                            continue;
+                        }
+
+                        // Try to hand over the item
+                        if (this.tryPassOverItem(item, destEntity, destSlot.index)) {
+                            // Handover successful, clear slot
+                            if (!this.root.app.settings.getAllSettings().simplifiedBelts) {
+                                targetAcceptorComp.onItemAccepted(
+                                    destSlot.index,
+                                    destSlot.acceptedDirection,
+                                    item
+                                );
+                            }
+                            sourceSlot.item = null;
+                            continue;
+                        }
                     }
                 }
             }
@@ -422,7 +424,7 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
             // Disabled in potato mode
             return;
         }
-
+        //
         const contents = chunk.containedEntitiesByLayer.regular;
 
         for (let i = 0; i < contents.length; ++i) {
