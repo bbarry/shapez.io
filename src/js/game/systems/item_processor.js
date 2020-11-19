@@ -191,10 +191,10 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                 // We can eject on any slot
                                 slot = hyperlinkEjectorComp.getFirstFreeSlot();
                             }
-                            console.log(slot);
                             if (slot !== null) {
                                 // Alright, we can actually eject
                                 if (!hyperlinkEjectorComp.tryEject(slot, item)) {
+                                    console.log(slot);
                                     assert(false, "Failed to eject");
                                 } else {
                                     itemsToEject.splice(j, 1);
