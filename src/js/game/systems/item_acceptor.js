@@ -3,12 +3,13 @@ import { DrawParameters } from "../../core/draw_parameters";
 import { fastArrayDelete } from "../../core/utils";
 import { enumDirectionToVector } from "../../core/vector";
 import { ItemAcceptorComponent } from "../components/item_acceptor";
+import { HyperlinkAcceptorComponent } from "../components/item_acceptor";
 import { GameSystemWithFilter } from "../game_system_with_filter";
 import { MapChunkView } from "../map_chunk_view";
 
 export class ItemAcceptorSystem extends GameSystemWithFilter {
     constructor(root) {
-        super(root, [ItemAcceptorComponent]);
+        super(root, [ItemAcceptorComponent, HyperlinkAcceptorComponent]);
 
         // Well ... it's better to be verbose I guess?
         this.accumulatedTicksWhileInMapOverview = 0;
@@ -42,6 +43,10 @@ export class ItemAcceptorSystem extends GameSystemWithFilter {
         for (let i = 0; i < this.allEntities.length; ++i) {
             const entity = this.allEntities[i];
             const aceptorComp = entity.components.ItemAcceptor;
+            if(!aceptorComp)
+            {
+                aceptorComp = entity.components.HyperlinkAcceptor;
+            }
             const animations = aceptorComp.itemConsumptionAnimations;
 
             // Process item consumption animations to avoid items popping from the belts
