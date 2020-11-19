@@ -66,7 +66,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
             (root.hubGoals.getProcessorBaseSpeed(enumItemProcessorTypes.hyperlink) / 2) * speedMultiplier;
         return [[T.ingame.buildingPlacement.infoTexts.speed, formatItemsPerSecond(speed)]];
     }
-
+    
     getSilhouetteColor() {
         return "#555759";
     }

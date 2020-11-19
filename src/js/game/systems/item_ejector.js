@@ -8,6 +8,8 @@ import { BaseItem } from "../base_item";
 import { BeltComponent } from "../components/belt";
 import { ItemAcceptorComponent } from "../components/item_acceptor";
 import { ItemEjectorComponent } from "../components/item_ejector";
+import { HyperlinkAcceptorComponent } from "../components/hyperlink_acceptor";
+import { HyperlinkEjectorComponent } from "../components/hyperlink_ejector";
 import { Entity } from "../entity";
 import { GameSystemWithFilter } from "../game_system_with_filter";
 import { MapChunkView } from "../map_chunk_view";
@@ -25,7 +27,7 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
         });
 
         this.staleAreaDetector.recomputeOnComponentsChanged(
-            [ItemEjectorComponent, ItemAcceptorComponent, BeltComponent],
+            [ItemEjectorComponent, ItemAcceptorComponent, HyperlinkEjectorComponent, HyperlinkAcceptorComponent, BeltComponent],
             1
         );
 
@@ -45,7 +47,7 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
                 const tileY = area.y + y;
                 // @NOTICE: Item ejector currently only supports regular layer
                 const contents = this.root.map.getLayerContentXY(tileX, tileY, "regular");
-                if (contents && contents.components.ItemEjector) {
+                if (contents && (contents.components.ItemEjector || contents.components.HyperlinkEjector)) {
                     if (!seenUids.has(contents.uid)) {
                         seenUids.add(contents.uid);
                         this.recomputeSingleEntityCache(contents);
@@ -71,6 +73,7 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
      */
     recomputeSingleEntityCache(entity) {
         const ejectorComp = entity.components.ItemEjector;
+        const hyperlinkEjectorComp = entity.components.HyperlinkEjector;
         const staticComp = entity.components.StaticMapEntity;
 
         for (let slotIndex = 0; slotIndex < ejectorComp.slots.length; ++slotIndex) {
@@ -133,6 +136,57 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
                 break;
             }
         }
+
+
+        for (let slotIndex = 0; slotIndex < hyperlinkEjectorComp.slots.length; ++slotIndex) {
+            const ejectorSlot = hyperlinkEjectorComp.slots[slotIndex];
+
+            // Clear the old cache.
+            ejectorSlot.cachedDestSlot = null;
+            ejectorSlot.cachedTargetEntity = null;
+            ejectorSlot.cachedBeltPath = null;
+
+            // Figure out where and into which direction we eject items
+            const ejectSlotWsTile = staticComp.localTileToWorld(ejectorSlot.pos);
+            const ejectSlotWsDirection = staticComp.localDirectionToWorld(ejectorSlot.direction);
+            const ejectSlotWsDirectionVector = enumDirectionToVector[ejectSlotWsDirection];
+            const ejectSlotTargetWsTile = ejectSlotWsTile.add(ejectSlotWsDirectionVector);
+
+            // Try to find the given acceptor component to take the item
+            // Since there can be cross layer dependencies, check on all layers
+            const targetEntities = this.root.map.getLayersContentsMultipleXY(
+                ejectSlotTargetWsTile.x,
+                ejectSlotTargetWsTile.y
+            );
+
+            for (let i = 0; i < targetEntities.length; ++i) {
+                const targetEntity = targetEntities[i];
+
+                const targetStaticComp = targetEntity.components.StaticMapEntity;
+
+                // Check for item acceptors
+                const targetAcceptorComp = targetEntity.components.HyperlinkAcceptor;
+                if (!targetAcceptorComp) {
+                    // Entity doesn't accept items
+                    continue;
+                }
+
+                const matchingSlot = targetAcceptorComp.findMatchingSlot(
+                    targetStaticComp.worldToLocalTile(ejectSlotTargetWsTile),
+                    targetStaticComp.worldDirectionToLocal(ejectSlotWsDirection)
+                );
+
+                if (!matchingSlot) {
+                    // No matching slot found
+                    continue;
+                }
+
+                // A slot can always be connected to one other slot only
+                ejectorSlot.cachedTargetEntity = targetEntity;
+                ejectorSlot.cachedDestSlot = matchingSlot;
+                break;
+            }
+        }
     }
 
     update() {
@@ -149,6 +203,7 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
         for (let i = 0; i < this.allEntities.length; ++i) {
             const sourceEntity = this.allEntities[i];
             const sourceEjectorComp = sourceEntity.components.ItemEjector;
+            const sourceHyperlinkEjectorComp = sourceEntity.components.HyperlinkEjector;
 
             const slots = sourceEjectorComp.slots;
             for (let j = 0; j < slots.length; ++j) {
@@ -195,6 +250,71 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
                 const destSlot = sourceSlot.cachedDestSlot;
                 if (destSlot) {
                     const targetAcceptorComp = destEntity.components.ItemAcceptor;
+                    if (!targetAcceptorComp.canAcceptItem(destSlot.index, item)) {
+                        continue;
+                    }
+
+                    // Try to hand over the item
+                    if (this.tryPassOverItem(item, destEntity, destSlot.index)) {
+                        // Handover successful, clear slot
+                        if (!this.root.app.settings.getAllSettings().simplifiedBelts) {
+                            targetAcceptorComp.onItemAccepted(
+                                destSlot.index,
+                                destSlot.acceptedDirection,
+                                item
+                            );
+                        }
+                        sourceSlot.item = null;
+                        continue;
+                    }
+                }
+            }
+
+            const hyperlinkSlots = sourceHyperlinkEjectorComp.slots;
+            for (let j = 0; j < hyperlinkSlots.length; ++j) {
+                const sourceSlot = hyperlinkSlots[j];
+                const item = sourceSlot.item;
+                if (!item) {
+                    // No item available to be ejected
+                    continue;
+                }
+
+                // Advance items on the slot
+                sourceSlot.progress = Math.min(
+                    1,
+                    sourceSlot.progress +
+                        progressGrowth *
+                            this.root.hubGoals.getBeltBaseSpeed() *
+                            globalConfig.itemSpacingOnBelts
+                );
+
+                if (G_IS_DEV && globalConfig.debug.disableEjectorProcessing) {
+                    sourceSlot.progress = 1.0;
+                }
+
+                // Check if we are still in the process of ejecting, can't proceed then
+                if (sourceSlot.progress < 1.0) {
+                    continue;
+                }
+
+                // Check if we are ejecting to a belt path
+                const destPath = sourceSlot.cachedBeltPath;
+                if (destPath) {
+                    // Try passing the item over
+                    if (destPath.tryAcceptItem(item)) {
+                        sourceSlot.item = null;
+                    }
+
+                    // Always stop here, since there can *either* be a belt path *or*
+                    // a slot
+                    continue;
+                }
+
+                // Check if the target acceptor can actually accept this item
+                const destEntity = sourceSlot.cachedTargetEntity;
+                const destSlot = sourceSlot.cachedDestSlot;
+                if (destSlot) {
+                    const targetAcceptorComp = destEntity.components.HyperlinkAcceptor;
                     if (!targetAcceptorComp.canAcceptItem(destSlot.index, item)) {
                         continue;
                     }

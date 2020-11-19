@@ -128,7 +128,7 @@ export class HyperlinkAcceptorComponent extends Component {
                 }
             }
         }
-
+        
         return null;
     }
 }
