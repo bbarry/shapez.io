@@ -10,7 +10,6 @@ import { MapChunkView } from "../map_chunk_view";
 export class ItemAcceptorSystem extends GameSystemWithFilter {
     constructor(root) {
         super(root, [ItemAcceptorComponent]);
-        super(root, [HyperlinkAcceptorComponent]);
 
         // Well ... it's better to be verbose I guess?
         this.accumulatedTicksWhileInMapOverview = 0;
