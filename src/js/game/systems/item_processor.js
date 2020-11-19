@@ -196,6 +196,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                 if (!hyperlinkEjectorComp.tryEject(slot, item)) {
                                     assert(false, "Failed to eject");
                                 } else {
+                                console.log("yahayah")
                                     itemsToEject.splice(j, 1);
                                     j -= 1;
                                 }
