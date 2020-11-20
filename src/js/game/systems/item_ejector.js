@@ -25,7 +25,7 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
         });
 
         this.staleAreaDetector.recomputeOnComponentsChanged(
-            [ItemEjectorComponent, ItemAcceptorComponent, HyperlinkEjectorComponent, HyperlinkAcceptorComponent, BeltComponent],
+            [ItemEjectorComponent, ItemAcceptorComponent, BeltComponent],
             1
         );
 
