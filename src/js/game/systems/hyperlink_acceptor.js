@@ -69,7 +69,7 @@ export class HyperlinkAcceptorSystem extends GameSystemWithFilter {
         const contents = chunk.containedEntitiesByLayer.regular;
         for (let i = 0; i < contents.length; ++i) {
             const entity = contents[i];
-            const acceptorComp = entity.components.ItemAcceptor;
+            const acceptorComp = entity.components.HyperlinkAcceptor;
             if (!acceptorComp) {
                 continue;
             }
