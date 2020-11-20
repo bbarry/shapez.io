@@ -573,7 +573,10 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
 
             const acceptorSlotWsTile = staticComp.localTileToWorld(slot.pos);
             const acceptorSlotWsPos = acceptorSlotWsTile.toWorldSpaceCenterOfTile();
-
+            if(!slot)
+            {
+                continue;
+            }
             // Go over all slots
             for (
                 let acceptorDirectionIndex = 0;
