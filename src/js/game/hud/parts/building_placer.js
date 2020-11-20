@@ -577,7 +577,7 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
             // Go over all slots
             for (
                 let acceptorDirectionIndex = 0;
-                acceptorDirectionIndex < slot.directions.length;
+                acceptorDirectionIndex < slot.directions.length && slot.directions.length !== undefined;
                 ++acceptorDirectionIndex
             ) {
                 const direction = slot.directions[acceptorDirectionIndex];
