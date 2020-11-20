@@ -119,6 +119,7 @@ export function initMetaBuildingRegistry() {
     // Hyperlink
     registerBuildingVariant(64, MetaHyperlinkBuilding);
     registerBuildingVariant(65, MetaHyperlinkBuilding, enumHyperlinkVariants.hyperlinkEntrance);
+    registerBuildingVariant(66, MetaHyperlinkBuilding, enumHyperlinkVariants.hyperlinkExit);
 
     // Wire
     registerBuildingVariant(27, MetaWireBuilding, defaultBuildingVariant, 0);
