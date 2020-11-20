@@ -537,6 +537,9 @@ buildings:
         hyperlink-entrance:
             name: Hyperlink Entrance
             description: this is a placeholder
+        hyperlink-exit:
+            name: Hyperlink Exit
+            description: this is a placeholder
 
     belt:
         default:

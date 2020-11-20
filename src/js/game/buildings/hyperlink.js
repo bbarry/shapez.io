@@ -15,12 +15,14 @@ import { BeltUnderlaysComponent } from "../components/belt_underlays";
 /** @enum {string} */
 export const enumHyperlinkVariants = {
     hyperlinkEntrance: "hyperlink-entrance",
+    hyperlinkExit: "hyperlink-exit",
     //do stuff in all this code with this
 };
 
 const overlayMatrices = {
-    [defaultBuildingVariant]: null,
+    [defaultBuildingVariant]: generateMatrixRotations([1, 0, 1, 1, 0, 1, 1, 0, 1]),
     [enumHyperlinkVariants.hyperlinkEntrance]: null,
+    [enumHyperlinkVariants.hyperlinkExit]: null,
 };
 
 export class MetaHyperlinkBuilding extends MetaBuilding {
@@ -33,6 +35,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
             case defaultBuildingVariant:
                 return new Vector(1, 1);
             case enumHyperlinkVariants.hyperlinkEntrance:
+            case enumHyperlinkVariants.hyperlinkExit:
                 return new Vector(1, 2);
             default:
                 assertAlways(false, "Unknown hyperlink variant: " + variant);
@@ -75,7 +78,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
      * @param {GameRoot} root
      */
     getAvailableVariants(root) {
-        let available = [defaultBuildingVariant, enumHyperlinkVariants.hyperlinkEntrance];
+        let available = [defaultBuildingVariant, enumHyperlinkVariants.hyperlinkEntrance, enumHyperlinkVariants.hyperlinkExit];
         //if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_splitter)) {
         //    available.push(enumBalancerVariants.splitterTriple);
         //    //available.push(enumBalancerVariants.splitter, enumBalancerVariants.splitterInverse);
@@ -96,29 +99,11 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
      * @param {Entity} entity
      */
     setupEntityComponents(entity) {
-        entity.addComponent(
-            new ItemAcceptorComponent({
-                slots: [], // set later
-            })
-        );
-
-        entity.addComponent(
-            new HyperlinkAcceptorComponent({
-                slots: [], // set later
-            })
-        );
 
         entity.addComponent(
             new ItemProcessorComponent({
-                inputsPerCharge: 1,
+                inputsPerCharge: 2,
                 processorType: enumItemProcessorTypes.hyperlink,
-            })
-        );
-
-        entity.addComponent(
-            new HyperlinkEjectorComponent({
-                slots: [], // set later
-                renderFloatingItems: false,
             })
         );
 
@@ -134,13 +119,26 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
     updateVariants(entity, rotationVariant, variant) {
         switch (variant) {
             case defaultBuildingVariant: {
+            
+
+                entity.addComponent(
+                    new HyperlinkAcceptorComponent({
+                        slots: [], // set later
+                    })
+                );
                 entity.components.HyperlinkAcceptor.setSlots([
                     {
                         pos: new Vector(0, 0),
                         directions: [enumDirection.bottom],
                     },
                 ]);
+                
 
+                entity.addComponent(
+                    new HyperlinkEjectorComponent({
+                        slots: [], // set later
+                    })
+                );
                 entity.components.HyperlinkEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.top },
                 ]);
@@ -148,6 +146,12 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 break;
             }
             case enumHyperlinkVariants.hyperlinkEntrance: {
+            
+                entity.addComponent(
+                    new ItemAcceptorComponent({
+                        slots: [], // set later
+                    })
+                );
                 entity.components.ItemAcceptor.setSlots([
                     {
                         pos: new Vector(0, 1),
@@ -158,11 +162,45 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                         directions: [enumDirection.right],
                     },
                 ]);
-
                 
 
+                entity.addComponent(
+                    new HyperlinkEjectorComponent({
+                        slots: [], // set later
+                    })
+                );
                 entity.components.HyperlinkEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.top },
+                ]);
+
+                break;
+            }
+            case enumHyperlinkVariants.hyperlinkExit: {
+            
+                entity.addComponent(
+                    new ItemEjectorComponent({
+                        slots: [], // set later
+                    })
+                );
+                entity.components.ItemEjector.setSlots([
+                    {
+                        pos: new Vector(0, 0),
+                        directions: [enumDirection.left],
+                    },
+                    {
+                        pos: new Vector(0, 0),
+                        directions: [enumDirection.right],
+                    },
+                ]);
+                
+
+                entity.addComponent(
+                    new HyperlinkAcceptorComponent({
+                        slots: [], // set later
+                    })
+                );
+                entity.components.HyperlinkAcceptor.setSlots([
+                    { pos: new Vector(0, 1), direction: enumDirection.bottom },
                 ]);
 
                 break;
