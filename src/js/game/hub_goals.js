@@ -504,7 +504,7 @@ export class HubGoals extends BasicSerializableObject {
             case enumItemProcessorTypes.balancer:
                 return globalConfig.beltSpeedItemsPerSecond * this.upgradeImprovements.belt * 2;
             case enumItemProcessorTypes.hyperlink:
-                return globalConfig.beltSpeedItemsPerSecond * this.upgradeImprovements.belt * 4;
+                return globalConfig.beltSpeedItemsPerSecond * this.upgradeImprovements.belt * 8;
             case enumItemProcessorTypes.reader:
                 return globalConfig.beltSpeedItemsPerSecond * this.upgradeImprovements.belt;
 
