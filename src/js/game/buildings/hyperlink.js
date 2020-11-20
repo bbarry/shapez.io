@@ -106,27 +106,6 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 processorType: enumItemProcessorTypes.hyperlink,
             })
         );
-        
-        entity.addComponent(
-            new HyperlinkAcceptorComponent({
-                slots: [], // set later
-            })
-        );
-        entity.addComponent(
-            new HyperlinkEjectorComponent({
-                slots: [], // set later
-            })
-        );
-        entity.addComponent(
-            new ItemAcceptorComponent({
-                slots: [], // set later
-            })
-        );
-        entity.addComponent(
-            new ItemEjectorComponent({
-                slots: [], // set later
-            })
-        );
 
         //entity.addComponent(new BeltUnderlaysComponent({ underlays: [] }));
     }
@@ -141,7 +120,10 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
         switch (variant) {
             case defaultBuildingVariant: {
             
-
+                if(!entity.components.HyperlinkAcceptor && variant === defaultBuildingVariant)
+                {
+                    entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}))
+                }
                 entity.components.HyperlinkAcceptor.setSlots([
                     {
                         pos: new Vector(0, 0),
@@ -149,7 +131,10 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                     },
                 ]);
                 
-
+                if(!entity.components.HyperlinkEjector && variant === defaultBuildingVariant)
+                {
+                    entity.addComponent(new HyperlinkEjectorComponent({slots: [],}))
+                }
                 entity.components.HyperlinkEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.top },
                 ]);
@@ -157,7 +142,10 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 break;
             }
             case enumHyperlinkVariants.hyperlinkEntrance: {
-            
+                if(!entity.components.ItemAcceptor && variant === enumHyperlinkVariants.hyperlinkEntrance)
+                {
+                    entity.addComponent(new ItemAcceptorComponent({slots: [],}))
+                }
                 entity.components.ItemAcceptor.setSlots([
                     {
                         pos: new Vector(0, 1),
@@ -169,7 +157,10 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                     },
                 ]);
                 
-
+                if(!entity.components.HyperlinkEjector && variant === enumHyperlinkVariants.hyperlinkEntrance)
+                {
+                    entity.addComponent(new HyperlinkEjectorComponent({slots: [],}))
+                }
                 entity.components.HyperlinkEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.top },
                 ]);
@@ -177,7 +168,10 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 break;
             }
             case enumHyperlinkVariants.hyperlinkExit: {
-            
+                if(!entity.components.ItemEjector && variant === enumHyperlinkVariants.hyperlinkExit)
+                {
+                    entity.addComponent(new ItemEjectorComponent({slots: [],}))
+                }
                 entity.components.ItemEjector.setSlots([
                     {
                         pos: new Vector(0, 0),
@@ -188,7 +182,10 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                         directions: [enumDirection.right],
                     },
                 ]);
-                
+                if(!entity.components.HyperlinkAcceptor && variant === enumHyperlinkVariants.hyperlinkExit)
+                {
+                    entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}))
+                }
                 entity.components.HyperlinkAcceptor.setSlots([
                     { pos: new Vector(0, 1), direction: enumDirection.bottom },
                 ]);
