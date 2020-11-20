@@ -144,7 +144,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                 }
                             }
                         }
-                        
                     } else {
                         // Go over all items and try to eject them
                         for (let j = 0; j < itemsToEject.length; ++j) {
