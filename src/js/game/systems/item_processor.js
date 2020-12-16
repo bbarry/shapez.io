@@ -106,6 +106,10 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                         itemsToEject.splice(j, 1);
                                         j -= 1;
                                         ++slotNumber;
+                                        if(slotNumber > allSlots.length)
+                                        {
+                                            slotNumber = 0;
+                                        }
                                     }
                                 }
                             }
