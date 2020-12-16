@@ -394,7 +394,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             "To be a hyperlink, the building needs to have a hyperlink part"
         );
         let availableSlots = null;
-        if(!payload.entity.components.HyperlinkAcceptor)
+        if(payload.entity.components.HyperlinkEjector)
         {
             availableSlots = payload.entity.components.HyperlinkEjector.slots.length;
         }
