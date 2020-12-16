@@ -88,7 +88,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                 }
 
                 // Check if it finished
-                if (currentCharge.remainingTime <= 0.0) {
+                if (currentCharge.remainingTime <= 0.0 || entity.components.HyperlinkAcceptor) {
                     const itemsToEject = currentCharge.items;
                     if (!hyperlinkEjectorComp) {
                         // Go over all items and try to eject them
