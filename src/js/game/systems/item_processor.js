@@ -100,7 +100,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                 for(let j = 0; j < itemsToEject.length; ++j)
                                 {
                                     const { item, requiredSlot, preferredSlot } = itemsToEject[j];
-                                    if (!ejectorComp.tryEject(allSlots[slotNumber], item)) {
+                                    if (!ejectorComp.tryEject(allSlots[j], item)) {
                                         assert(false, "Failed to eject");
                                     } else {
                                         itemsToEject.splice(j, 1);
