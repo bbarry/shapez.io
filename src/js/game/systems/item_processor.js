@@ -91,59 +91,80 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                 if (currentCharge.remainingTime <= 0.0 || entity.components.HyperlinkAcceptor) {
                     const itemsToEject = currentCharge.items;
                     if (!hyperlinkEjectorComp) {
-                        // Go over all items and try to eject them
-                        for (let j = 0; j < itemsToEject.length; ++j) {
-                            const { item, requiredSlot, preferredSlot } = itemsToEject[j];
+                        if(entity.components.HyperlinkAcceptor){
+                            //eject on every slot
+                            const allSlots = ejectorComp.getAllSlots();
+                            if (allSlots !== null) {
+                                // Alright, we can actually eject
+                                let slotNumber = 0;
+                                for(let j = 0; j < itemsToEject.length; ++j)
+                                {
+                                    const { item, requiredSlot, preferredSlot } = itemsToEject[j];
+                                    if (!ejectorComp.tryEject(allSlots[slotNumber], item)) {
+                                        assert(false, "Failed to eject");
+                                    } else {
+                                        itemsToEject.splice(j, 1);
+                                        j -= 1;
+                                    }
+                                    ++slotNumber;
+                                }
+                            }
+                        }else{
+                            // Go over all items and try to eject them
+                            for (let j = 0; j < itemsToEject.length; ++j) {
+                                const { item, requiredSlot, preferredSlot } = itemsToEject[j];
 
-                            assert(ejectorComp, "To eject items, the building needs to have an ejector");
+                                assert(ejectorComp, "To eject items, the building needs to have an ejector");
 
-                            let slot = null;
+                                let slot = null;
                             
-                            if (requiredSlot !== null && requiredSlot !== undefined) 
-                            {
-                                // We have a slot override, check if that is free
-                                if (ejectorComp.canEjectOnSlot(requiredSlot) && requiredSlot !== ejectorComp.lastUsedSlot) 
+                                if (requiredSlot !== null && requiredSlot !== undefined) 
                                 {
-                                    slot = requiredSlot;
-                                    ejectorComp.lastUsedSlot = slot;
-                                }
-                            } else if (preferredSlot !== null && preferredSlot !== undefined) {
-                                // We have a slot preference, try using it but otherwise use a free slot
-                                
-                                if (ejectorComp.canEjectOnSlot(preferredSlot) && preferredSlot !== ejectorComp.lastUsedSlot)
-                                {
-                                    slot = preferredSlot;
-                                    ejectorComp.lastUsedSlot = slot;
-                                }
-                                else 
-                                {
-                                    if (entity.components.ItemEjector.slots[2]) 
+                                 // We have a slot override, check if that is free
+                                    if (ejectorComp.canEjectOnSlot(requiredSlot) && requiredSlot !== ejectorComp.lastUsedSlot) 
                                     {
-                                    slot = ejectorComp.getNextFreeSlotForTriple(preferredSlot, ejectorComp.lastUsedSlot);
-                                        if (slot !== null)
+                                        slot = requiredSlot;
+                                        ejectorComp.lastUsedSlot = slot;
+                                    }
+                                    } else if (preferredSlot !== null && preferredSlot !== undefined) {
+                                        // We have a slot preference, try using it but otherwise use a free slot
+                                
+                                        if (ejectorComp.canEjectOnSlot(preferredSlot) && preferredSlot !== ejectorComp.lastUsedSlot)
                                         {
+                                            slot = preferredSlot;
                                             ejectorComp.lastUsedSlot = slot;
                                         }
-                                    }
-                                    else
-                                    {
-                                    slot = ejectorComp.getFirstFreeSlot();
-                                    }
-                                }
-                            } else {
+                                        else 
+                                        {
+                                        if (entity.components.ItemEjector.slots[2]) 
+                                        {
+                                        slot = ejectorComp.getNextFreeSlotForTriple(preferredSlot, ejectorComp.lastUsedSlot);
+                                            if (slot !== null)
+                                            {
+                                                ejectorComp.lastUsedSlot = slot;
+                                            }
+                                        }
+                                        else
+                                        {
+                                        slot = ejectorComp.getFirstFreeSlot();
+                                        }
+                                        }
+                                } else {
                                 // We can eject on any slot
                                 slot = ejectorComp.getFirstFreeSlot();
-                            }
-                            if (slot !== null) {
-                                // Alright, we can actually eject
-                                if (!ejectorComp.tryEject(slot, item)) {
-                                    assert(false, "Failed to eject");
-                                } else {
-                                    itemsToEject.splice(j, 1);
-                                    j -= 1;
+                                }
+                                if (slot !== null) {
+                                    // Alright, we can actually eject
+                                    if (!ejectorComp.tryEject(slot, item)) {
+                                        assert(false, "Failed to eject");
+                                    } else {
+                                        itemsToEject.splice(j, 1);
+                                        j -= 1;
+                                    }
                                 }
                             }
                         }
+                        
                     } else {
                         // Go over all items and try to eject them
                         for (let j = 0; j < itemsToEject.length; ++j) {
