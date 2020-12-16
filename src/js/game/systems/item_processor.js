@@ -393,7 +393,16 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             payload.entity.components.HyperlinkEjector || payload.entity.components.HyperlinkAcceptor,
             "To be a hyperlink, the building needs to have a hyperlink part"
         );
-        const availableSlots = payload.entity.components.HyperlinkEjector.slots.length;
+        let availableSlots = null;
+        if(!payload.entity.components.HyperlinkAcceptor)
+        {
+            availableSlots = payload.entity.components.HyperlinkEjector.slots.length;
+        }
+        else
+        {
+            availableSlots = payload.entity.components.ItemEjector.slots.length;
+        }
+        
         const processorComp = payload.entity.components.ItemProcessor;
 
         const nextSlot = processorComp.nextOutputSlot++ % availableSlots;
