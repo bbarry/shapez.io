@@ -76,7 +76,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             const hyperlinkEjectorComp = entity.components.HyperlinkEjector;
 
             const currentCharge = processorComp.ongoingCharges[0];
-            this.lastUsedSlot = null;
             if (currentCharge) {
                 // Process next charge
                 if (currentCharge.remainingTime > 0.0) {
@@ -86,9 +85,12 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                         processorComp.bonusTime += -currentCharge.remainingTime;
                     }
                 }
-
+                if(entity.components.HyperlinkAcceptor)
+                {
+                    currentCharge.remainingTime = 0.0;
+                }
                 // Check if it finished
-                if (currentCharge.remainingTime <= 0.0 || entity.components.HyperlinkAcceptor) {
+                if (currentCharge.remainingTime <= 0.0) {
                     const itemsToEject = currentCharge.items;
                     if (!hyperlinkEjectorComp) {
                         if(false){
