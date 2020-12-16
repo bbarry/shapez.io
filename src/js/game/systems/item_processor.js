@@ -91,7 +91,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                 if (currentCharge.remainingTime <= 0.0 || entity.components.HyperlinkAcceptor) {
                     const itemsToEject = currentCharge.items;
                     if (!hyperlinkEjectorComp) {
-                        if(entity.components.HyperlinkAcceptor){
+                        if(false){
                             //eject on every slot
                             const allSlots = ejectorComp.getAllSlots();
                             if (allSlots !== null) {
