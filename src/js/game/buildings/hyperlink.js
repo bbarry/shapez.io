@@ -173,14 +173,8 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                     entity.addComponent(new ItemEjectorComponent({slots: [],}))
                 }
                 entity.components.ItemEjector.setSlots([
-                    {
-                        pos: new Vector(0, 0),
-                        directions: [enumDirection.left],
-                    },
-                    {
-                        pos: new Vector(0, 0),
-                        directions: [enumDirection.right],
-                    },
+                    { pos: new Vector(0, 0), direction: enumDirection.left },
+                    { pos: new Vector(0, 0), direction: enumDirection.right },
                 ]);
                 if(!entity.components.HyperlinkAcceptor && variant === enumHyperlinkVariants.hyperlinkExit)
                 {
