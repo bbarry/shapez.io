@@ -63,7 +63,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
      * @returns {Array<[string, string]>}
      */
     getAdditionalStatistics(root, variant) {
-        let speedMultiplier = 1;
+        let speedMultiplier = 2;
 
         const speed =
             (root.hubGoals.getProcessorBaseSpeed(enumItemProcessorTypes.hyperlink) / 2) * speedMultiplier;
@@ -168,7 +168,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 break;
             }
             case enumHyperlinkVariants.hyperlinkExit: {
-                if(!entity.components.ItemEjector && variant === enumHyperlinkVariants.hyperlinkExit)
+                if(!entity.components.ItemEjector)
                 {
                     entity.addComponent(new ItemEjectorComponent({slots: [],}))
                 }
@@ -176,7 +176,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                     { pos: new Vector(0, 0), direction: enumDirection.left },
                     { pos: new Vector(0, 0), direction: enumDirection.right },
                 ]);
-                if(!entity.components.HyperlinkAcceptor && variant === enumHyperlinkVariants.hyperlinkExit)
+                if(!entity.components.HyperlinkAcceptor)
                 {
                     entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}))
                 }
