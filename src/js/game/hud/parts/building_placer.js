@@ -492,6 +492,7 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
 
         if (hyperlinkAcceptorComp) {
             hyperlinkAcceptorSlots = hyperlinkAcceptorComp.slots.slice();
+            console.log("alright");
         }
 
         if (beltComp) {
@@ -580,7 +581,7 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
             // Go over all slots
             for (
                 let acceptorDirectionIndex = 0;
-                acceptorDirectionIndex < slot.directions.length;
+                slot.directions.length != undefined && acceptorDirectionIndex < slot.directions.length;
                 ++acceptorDirectionIndex
             ) {
                 const direction = slot.directions[acceptorDirectionIndex];
