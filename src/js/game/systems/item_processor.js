@@ -98,10 +98,9 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                             const allSlots = ejectorComp.getAllSlots();
                             if (allSlots !== null) {
                                 // Alright, we can actually eject
-                                let slotNumber = 0;
                                 for(let j = 0; j < itemsToEject.length; j += 2)
                                 {
-                                    for(let slot = 0; slot < allSlots.length; slot++)
+                                    for(let slot = 0; slot < allSlots.length - 1; slot++)
                                     {
                                         const { item, requiredSlot, preferredSlot } = itemsToEject[j];
                                         if (!ejectorComp.tryEject(allSlots[slot], item)) {
