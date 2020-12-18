@@ -118,9 +118,10 @@ export class ItemEjectorComponent extends Component {
      * @returns {array?}
      */
     getAllSlots() {
-        if (this.canEjectOnSlot(0) && this.canEjectOnSlot(1)){
+        if (this.slots.length > 1 && this.canEjectOnSlot(0) && this.canEjectOnSlot(1)){
             return this.slots;
         }
+        console.log(this.slots.length);
         return null;
     }
     /**
