@@ -85,7 +85,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                         processorComp.bonusTime += -currentCharge.remainingTime;
                     }
                 }
-                if(entity.components.HyperlinkAcceptor)
+                if(entity.components.HyperlinkAcceptor || hyperlinkEjectorComp)
                 {
                     currentCharge.remainingTime = 0.0;
                 }
@@ -99,20 +99,20 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                             if (allSlots !== null) {
                                 // Alright, we can actually eject
                                 let slotNumber = 0;
-                                for(let j = 0; j < itemsToEject.length; ++j)
+                                for(let j = 0; j < itemsToEject.length; j += 2)
                                 {
-                                    const { item, requiredSlot, preferredSlot } = itemsToEject[j];
-                                    if (!ejectorComp.tryEject(allSlots[j], item)) {
-                                        assert(false, "Failed to eject");
-                                    } else {
-                                        itemsToEject.splice(j, 1);
-                                        j -= 1;
-                                        //++slotNumber;
-                                        //if(slotNumber >= allSlots.length)
-                                        //{
-                                        //    slotNumber = 0;
-                                        //}
+                                    for(let slot = 0; slot < allSlots.length; slot++)
+                                    {
+                                        const { item, requiredSlot, preferredSlot } = itemsToEject[j + slot];
+                                        if (!ejectorComp.tryEject(allSlots[slot], item)) {
+                                            assert(false, "Failed to eject");
+                                        } else {
+                                            itemsToEject.splice(j, 1);
+                                            j -= 1;
+                                        }
                                     }
+                                    
+                                    
                                 }
                             }
                         }else{
