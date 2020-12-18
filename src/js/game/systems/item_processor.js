@@ -104,7 +104,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                     {
                                         const { item, requiredSlot, preferredSlot } = itemsToEject[j];
                                         if (!ejectorComp.tryEject(allSlots[slot], item)) {
-                                            assert(false, "Failed to eject");
+                                            
                                         } else {
                                             itemsToEject.splice(j, 1);
                                             j -= 1;
