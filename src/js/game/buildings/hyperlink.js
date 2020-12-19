@@ -185,8 +185,9 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 entity.components.HyperlinkAcceptor.setSlots([
                     { pos: new Vector(0, 1), directions: [enumDirection.bottom], },
                 ]);
-                entity.components.ItemProcessor.type = enumItemProcessorTypes.hyperlinkExit;
-
+                if(variant === enumHyperlinkVariants.hyperlinkExit){
+                    entity.components.ItemProcessor.type = enumItemProcessorTypes.hyperlinkExit;
+                }
                 break;
             }
             default:
