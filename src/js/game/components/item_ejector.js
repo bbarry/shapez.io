@@ -113,17 +113,17 @@ export class ItemEjectorComponent extends Component {
         }
         return null;
     }
-    /**
+    /*/**
      * Returns all the free slots on this ejector or null if there is none
      * @returns {array?}
-     */
+     
     getAllSlots() {
         if (this.slots.length > 1 && this.canEjectOnSlot(0) && this.canEjectOnSlot(1)){
             return this.slots;
         }
         console.log(this.slots.length);
         return null;
-    }
+    }*/
     /**
      * Returns the first free slot on this ejector or null if there is none
      * @returns {number?}

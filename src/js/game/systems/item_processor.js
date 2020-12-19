@@ -398,7 +398,11 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         }
 
         // Queue Charge
-        const baseSpeed = this.root.hubGoals.getProcessorBaseSpeed(processorComp.type);
+        let baseSpeed = this.root.hubGoals.getProcessorBaseSpeed(processorComp.type);
+        if(entity.components.HyperlinkAcceptor)
+        {
+            baseSpeed *= 2;
+        }
         const originalTime = 1 / baseSpeed;
 
         const bonusTimeToApply = Math.min(originalTime, processorComp.bonusTime);
