@@ -102,7 +102,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
 
         entity.addComponent(
             new ItemProcessorComponent({
-                inputsPerCharge: 1,
+                inputsPerCharge: 2,
                 processorType: enumItemProcessorTypes.hyperlink,
             })
         );
@@ -142,7 +142,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 break;
             }
             case enumHyperlinkVariants.hyperlinkEntrance: {
-                if(!entity.components.ItemAcceptor && variant === enumHyperlinkVariants.hyperlinkEntrance)
+                if(!entity.components.ItemAcceptor)
                 {
                     entity.addComponent(new ItemAcceptorComponent({slots: [],}))
                 }
@@ -157,7 +157,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                     },
                 ]);
                 
-                if(!entity.components.HyperlinkEjector && variant === enumHyperlinkVariants.hyperlinkEntrance)
+                if(!entity.components.HyperlinkEjector)
                 {
                     entity.addComponent(new HyperlinkEjectorComponent({slots: [],}))
                 }
@@ -183,6 +183,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 entity.components.HyperlinkAcceptor.setSlots([
                     { pos: new Vector(0, 1), directions: [enumDirection.bottom], },
                 ]);
+                entity.components.ItemProcessor.type = enumItemProcessorTypes.hyperlinkExit;
 
                 break;
             }

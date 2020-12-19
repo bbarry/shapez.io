@@ -5,6 +5,7 @@ import { Component } from "../component";
 /** @enum {string} */
 export const enumItemProcessorTypes = {
     hyperlink: "hyperlink",
+    hyperlinkExit: "hyperlinkExit",
     balancer: "balancer",
     cutter: "cutter",
     cutterQuad: "cutterQuad",

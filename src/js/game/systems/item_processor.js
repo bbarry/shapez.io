@@ -45,6 +45,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
          */
         this.handlers = {
             [enumItemProcessorTypes.hyperlink]: this.process_HYPERLINK,
+            [enumItemProcessorTypes.hyperlink]: this.process_HYPERLINK_EXIT,
             [enumItemProcessorTypes.balancer]: this.process_BALANCER,
             [enumItemProcessorTypes.cutter]: this.process_CUTTER,
             [enumItemProcessorTypes.cutterQuad]: this.process_CUTTER_QUAD,
@@ -93,30 +94,8 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                 if (currentCharge.remainingTime <= 0.0) {
                     const itemsToEject = currentCharge.items;
                     if (!hyperlinkEjectorComp) {
-                        if(false && entity.components.HyperlinkAcceptor !== null){
-                            //eject on every slot
-                            const allSlots = ejectorComp.getAllSlots();
-                            if (allSlots !== null) {
-                                // Alright, we can actually eject
-                                for(let j = 0; j < itemsToEject.length; j += 2)
-                                {
-                                    for(let slot = 0; slot < allSlots.length - 1; slot++)
-                                    {
-                                        const { item, requiredSlot, preferredSlot } = itemsToEject[j];
-                                        if (!ejectorComp.tryEject(allSlots[slot], item)) {
-                                            
-                                        } else {
-                                            itemsToEject.splice(j, 1);
-                                            j -= 1;
-                                        }
-                                    }
-                                    
-                                    
-                                }
-                            }
-                        }else{
-                            // Go over all items and try to eject them
-                            for (let j = 0; j < itemsToEject.length; ++j) {
+                        // Go over all items and try to eject them
+                        for (let j = 0; j < itemsToEject.length; ++j) {
                                 const { item, requiredSlot, preferredSlot } = itemsToEject[j];
 
                                 assert(ejectorComp, "To eject items, the building needs to have an ejector");
@@ -168,7 +147,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                     }
                                 }
                             }
-                        }
                         
                     } else {
                         // Go over all items and try to eject them
@@ -420,22 +398,33 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
      */
     process_HYPERLINK(payload) {
         assert(
-            payload.entity.components.HyperlinkEjector || payload.entity.components.HyperlinkAcceptor,
-            "To be a hyperlink, the building needs to have a hyperlink part"
+            payload.entity.components.HyperlinkEjector,
+            "To be a hyperlink, the building needs to have a hyperlink ejector"
         );
-        let availableSlots = null;
-        if(payload.entity.components.HyperlinkEjector)
-        {
-            availableSlots = payload.entity.components.HyperlinkEjector.slots.length;
-        }
-        else
-        {
-            availableSlots = payload.entity.components.ItemEjector.slots.length;
-        }
+        const availableSlots = payload.entity.components.HyperlinkEjector.slots.length;
         
         const processorComp = payload.entity.components.ItemProcessor;
 
         const nextSlot = processorComp.nextOutputSlot++ % availableSlots;
+
+        for (let i = 0; i < payload.items.length; ++i) {
+            payload.outItems.push({
+                item: payload.items[i].item,
+                preferredSlot: (nextSlot + i) % availableSlots,
+                doNotTrack: true,
+            });
+        }
+        return true;
+    }
+
+    /**
+     * @param {ProcessorImplementationPayload} payload
+     */
+    process_HYPERLINK_EXIT(payload) {
+        assert(
+            payload.entity.components.HyperlinkAcceptor,
+            "To be a hyperlink exit, the building needs to have a hyperlink acceptor"
+        );
 
         for (let i = 0; i < payload.items.length; ++i) {
             payload.outItems.push({
