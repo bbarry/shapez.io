@@ -45,7 +45,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
          */
         this.handlers = {
             [enumItemProcessorTypes.hyperlink]: this.process_HYPERLINK,
-            [enumItemProcessorTypes.hyperlink]: this.process_HYPERLINK_EXIT,
+            [enumItemProcessorTypes.hyperlinkExit]: this.process_HYPERLINK_EXIT,
             [enumItemProcessorTypes.balancer]: this.process_BALANCER,
             [enumItemProcessorTypes.cutter]: this.process_CUTTER,
             [enumItemProcessorTypes.cutterQuad]: this.process_CUTTER_QUAD,
@@ -421,10 +421,10 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
      * @param {ProcessorImplementationPayload} payload
      */
     process_HYPERLINK_EXIT(payload) {
-        //assert(
-        //    payload.entity.components.HyperlinkAcceptor,
-        //    "To be a hyperlink exit, the building needs to have a hyperlink acceptor"
-        //);
+        assert(
+            payload.entity.components.HyperlinkAcceptor,
+            "To be a hyperlink exit, the building needs to have a hyperlink acceptor"
+        );
 
         for (let i = 0; i < payload.items.length; ++i) {
             payload.outItems.push({
