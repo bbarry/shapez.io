@@ -138,6 +138,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 entity.components.HyperlinkEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.top },
                 ]);
+                entity.components.ItemProcessor.type = enumItemProcessorTypes.hyperlink;
 
                 break;
             }
@@ -164,6 +165,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 entity.components.HyperlinkEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.top },
                 ]);
+                entity.components.ItemProcessor.type = enumItemProcessorTypes.hyperlink;
 
                 break;
             }
