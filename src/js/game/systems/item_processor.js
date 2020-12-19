@@ -438,14 +438,11 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         const nextSlot = processorComp.nextOutputSlot++ % availableSlots;
 
         for (let i = 0; i < payload.items.length; ++i) {
-            if(!(payload.items.length <= 0))
-            {
-                payload.outItems.push({
-                    item: payload.items[i].item,
-                    preferredSlot: (nextSlot + i) % availableSlots,
-                    doNotTrack: true,
-                });
-            }
+            payload.outItems.push({
+                item: payload.items[i].item,
+                requiredSlot: i,
+                doNotTrack: true,
+            });
         }
         return true;
     }
