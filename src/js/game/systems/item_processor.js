@@ -421,10 +421,10 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
      * @param {ProcessorImplementationPayload} payload
      */
     process_HYPERLINK_EXIT(payload) {
-        assert(
-            payload.entity.components.HyperlinkAcceptor,
-            "To be a hyperlink exit, the building needs to have a hyperlink acceptor"
-        );
+        //assert(
+        //    payload.entity.components.HyperlinkAcceptor,
+        //    "To be a hyperlink exit, the building needs to have a hyperlink acceptor"
+        //);
 
         for (let i = 0; i < payload.items.length; ++i) {
             payload.outItems.push({
