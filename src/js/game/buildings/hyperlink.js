@@ -186,6 +186,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 ]);
                 if(variant === enumHyperlinkVariants.hyperlinkExit){
                     entity.components.ItemProcessor.type = enumItemProcessorTypes.hyperlinkExit;
+                    entity.components.ItemProcessor.inputsPerCharge = 2;
                 }
                 break;
             }
