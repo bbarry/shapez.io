@@ -104,7 +104,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                     if (ejectorComp.canEjectOnSlot(requiredSlot) && requiredSlot !== ejectorComp.lastUsedSlot) 
                                     {
                                         slot = requiredSlot;
-                                        ejectorComp.lastUsedSlot = slot;
                                     }
                                     } else if (preferredSlot !== null && preferredSlot !== undefined) {
                                         // We have a slot preference, try using it but otherwise use a free slot
@@ -159,7 +158,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                 if (hyperlinkEjectorComp.canEjectOnSlot(requiredSlot) && requiredSlot !== hyperlinkEjectorComp.lastUsedSlot) 
                                 {
                                     slot = requiredSlot;
-                                    hyperlinkEjectorComp.lastUsedSlot = slot;
                                 }
                             } 
                             else if (preferredSlot !== null && preferredSlot !== undefined) 
@@ -406,7 +404,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         for (let i = 0; i < payload.items.length; ++i) {
             payload.outItems.push({
                 item: payload.items[i].item,
-                preferredSlot: (nextSlot + i) % availableSlots,
+                requiredSlot: 0,
                 doNotTrack: true,
             });
         }
