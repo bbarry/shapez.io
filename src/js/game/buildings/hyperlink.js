@@ -102,7 +102,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
 
         entity.addComponent(
             new ItemProcessorComponent({
-                inputsPerCharge: 1,
+                inputsPerCharge: 2,
                 processorType: enumItemProcessorTypes.hyperlink,
             })
         );

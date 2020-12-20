@@ -86,10 +86,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                         processorComp.bonusTime += -currentCharge.remainingTime;
                     }
                 }
-                if(entity.components.HyperlinkAcceptor || hyperlinkEjectorComp)
-                {
-                    currentCharge.remainingTime = 0.0;
-                }
                 // Check if it finished
                 if (currentCharge.remainingTime <= 0.0) {
                     const itemsToEject = currentCharge.items;
