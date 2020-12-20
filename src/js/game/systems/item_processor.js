@@ -101,7 +101,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                 if (requiredSlot !== null && requiredSlot !== undefined) 
                                 {
                                  // We have a slot override, check if that is free
-                                    if (ejectorComp.canEjectOnSlot(requiredSlot) && requiredSlot !== ejectorComp.lastUsedSlot) 
+                                    if (ejectorComp.canEjectOnSlot(requiredSlot)) 
                                     {
                                         slot = requiredSlot;
                                     }
@@ -155,7 +155,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                             if (requiredSlot !== null && requiredSlot !== undefined) 
                             {
                                 // We have a slot override, check if that is free
-                                if (hyperlinkEjectorComp.canEjectOnSlot(requiredSlot) && requiredSlot !== hyperlinkEjectorComp.lastUsedSlot) 
+                                if (hyperlinkEjectorComp.canEjectOnSlot(requiredSlot)) 
                                 {
                                     slot = requiredSlot;
                                 }
@@ -191,7 +191,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                             if (slot !== null) {
                                 // Alright, we can actually eject
                                 if (!hyperlinkEjectorComp.tryEject(slot, item)) {
-                                    console.log(slot);
                                     assert(false, "Failed to eject");
                                 } else {
                                     itemsToEject.splice(j, 1);
@@ -404,7 +403,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         for (let i = 0; i < payload.items.length; ++i) {
             payload.outItems.push({
                 item: payload.items[i].item,
-                requiredSlot: 0,
+                preferredSlot: (nextSlot + i) % availableSlots,
                 doNotTrack: true,
             });
         }
@@ -419,16 +418,12 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             payload.entity.components.HyperlinkAcceptor,
             "To be a hyperlink exit, the building needs to have a hyperlink acceptor"
         );
-        payload.outItems.push({
-            item: payload.items[0].item,
-            requiredSlot: 0,
-            doNotTrack: true,
-        });
-        payload.outItems.push({
-            item: payload.items[1].item,
-            requiredSlot: 1,
-            doNotTrack: true,
-        });
+        for (let i = 0; i < payload.items.length; ++i) {
+            payload.outItems.push({
+                item: payload.items[i].item,
+                requiredSlot: i,
+            });
+        }
         return true;
     }
 
