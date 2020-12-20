@@ -66,6 +66,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         for (const key in this.handlers) {
             this.handlers[key] = this.handlers[key].bind(this);
         }
+        this.isFirstSlot = true;
     }
     update() {
         for (let i = 0; i < this.allEntities.length; ++i) {
@@ -420,11 +421,11 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         );
         const ejectorComp = payload.entity.components.ItemEjector;
         let slot = 0;
-        if(ejectorComp.lastUsedSlot == slot)
+        if(this.isFirstSlot)
         {
             slot = 1;
         }
-        ejectorComp.lastUsedSlot == slot;
+        this.isFirstSlot = !this.isFirstSlot;
         for (let i = 0; i < payload.items.length; ++i) {
             payload.outItems.push({
                 item: payload.items[i].item,
