@@ -63,7 +63,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
      * @returns {Array<[string, string]>}
      */
     getAdditionalStatistics(root, variant) {
-        let speedMultiplier = 2;
+        let speedMultiplier = 1;
 
         const speed =
             (root.hubGoals.getProcessorBaseSpeed(enumItemProcessorTypes.hyperlink) / 2) * speedMultiplier;
