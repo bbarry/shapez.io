@@ -180,7 +180,6 @@ export class HyperlinkEjectorComponent extends Component {
         if (!this.canEjectOnSlot(slotIndex)) {
             return false;
         }
-        console.log("working");
         this.slots[slotIndex].item = item;
         this.slots[slotIndex].progress = 0;
         return true;
