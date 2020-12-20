@@ -102,7 +102,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
 
         entity.addComponent(
             new ItemProcessorComponent({
-                inputsPerCharge: 2,
+                inputsPerCharge: 1,
                 processorType: enumItemProcessorTypes.hyperlink,
             })
         );
@@ -138,8 +138,6 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 entity.components.HyperlinkEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.top },
                 ]);
-                entity.components.ItemProcessor.type = enumItemProcessorTypes.hyperlink;
-
                 break;
             }
             case enumHyperlinkVariants.hyperlinkEntrance: {
@@ -165,7 +163,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 entity.components.HyperlinkEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.top },
                 ]);
-                entity.components.ItemProcessor.type = enumItemProcessorTypes.hyperlink;
+                entity.components.ItemProcessor.inputsPerCharge = 2;
 
                 break;
             }
