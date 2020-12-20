@@ -426,7 +426,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             payload.outItems.push({
                 item: payload.items[i].item,
                 requiredSlot: i,
-                doNotTrack: true,
             });
         }
         return true;
