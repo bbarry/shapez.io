@@ -176,11 +176,11 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                     { pos: new Vector(0, 0), direction: enumDirection.left },
                     { pos: new Vector(0, 0), direction: enumDirection.right },
                 ]);
-                if(!entity.components.ItemAcceptor)
+                if(!entity.components.HyperlinkAcceptor)
                 {
-                    entity.addComponent(new ItemAcceptorComponent({slots: [],}))
+                    entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}))
                 }
-                entity.components.ItemAcceptor.setSlots([
+                entity.components.HyperlinkAcceptor.setSlots([
                     { pos: new Vector(0, 1), directions: [enumDirection.bottom], },
                 ]);
                 if(variant === enumHyperlinkVariants.hyperlinkExit){
