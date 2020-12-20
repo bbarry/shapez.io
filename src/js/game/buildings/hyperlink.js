@@ -119,8 +119,10 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
     updateVariants(entity, rotationVariant, variant) {
         switch (variant) {
             case defaultBuildingVariant: {
-            
-                if(!entity.components.HyperlinkAcceptor && variant === defaultBuildingVariant)
+                
+                if(entity.components.ItemAcceptor){entity.removeComponent(ItemAcceptorComponent);}
+                if(entity.components.ItemEjector){entity.removeComponent(ItemEjectorComponent);}
+                if(!entity.components.HyperlinkAcceptor)
                 {
                     entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}))
                 }
@@ -131,7 +133,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                     },
                 ]);
                 
-                if(!entity.components.HyperlinkEjector && variant === defaultBuildingVariant)
+                if(!entity.components.HyperlinkEjector)
                 {
                     entity.addComponent(new HyperlinkEjectorComponent({slots: [],}))
                 }
@@ -141,6 +143,8 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 break;
             }
             case enumHyperlinkVariants.hyperlinkEntrance: {
+                if(entity.components.HyperlinkAcceptor){entity.removeComponent(HyperlinkAcceptorComponent);}
+                if(entity.components.ItemEjector){entity.removeComponent(ItemEjectorComponent);}
                 if(!entity.components.ItemAcceptor)
                 {
                     entity.addComponent(new ItemAcceptorComponent({slots: [],}))
@@ -168,6 +172,8 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 break;
             }
             case enumHyperlinkVariants.hyperlinkExit: {
+                if(entity.components.ItemAcceptor){entity.removeComponent(ItemAcceptorComponent);}
+                if(entity.components.HyperlinkEjector){entity.removeComponent(HyperlinkEjectorComponent);}
                 if(!entity.components.ItemEjector)
                 {
                     entity.addComponent(new ItemEjectorComponent({slots: [],}))
@@ -179,13 +185,13 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 if(!entity.components.HyperlinkAcceptor)
                 {
                     entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}))
+                    
                 }
                 entity.components.HyperlinkAcceptor.setSlots([
                     { pos: new Vector(0, 1), directions: [enumDirection.bottom], },
                 ]);
-                if(variant === enumHyperlinkVariants.hyperlinkExit){
-                    entity.components.ItemProcessor.type = enumItemProcessorTypes.hyperlinkExit;
-                }
+                entity.components.ItemProcessor.type = enumItemProcessorTypes.hyperlinkExit;
+                
                 break;
             }
             default:
