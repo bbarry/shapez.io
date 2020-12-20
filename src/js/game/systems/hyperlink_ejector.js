@@ -127,7 +127,7 @@ export class HyperlinkEjectorSystem extends GameSystemWithFilter {
         this.staleAreaDetector.update();
 
         // Precompute effective belt speed
-        let progressGrowth = 2 * this.root.dynamicTickrate.deltaSeconds;
+        let progressGrowth = 4 * this.root.dynamicTickrate.deltaSeconds;
 
         if (G_IS_DEV && globalConfig.debug.instantBelts) {
             progressGrowth = 1;
@@ -161,19 +161,6 @@ export class HyperlinkEjectorSystem extends GameSystemWithFilter {
             
                 // Check if we are still in the process of ejecting, can't proceed then
                 if (sourceSlot.progress < 1.0) {
-                    continue;
-                }
-            
-                // Check if we are ejecting to a belt path
-                const destPath = sourceSlot.cachedBeltPath;
-                if (destPath) {
-                    // Try passing the item over
-                    if (destPath.tryAcceptItem(item)) {
-                        sourceSlot.item = null;
-                    }
-            
-                    // Always stop here, since there can *either* be a belt path *or*
-                    // a slot
                     continue;
                 }
             

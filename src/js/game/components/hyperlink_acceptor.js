@@ -31,7 +31,7 @@ export class HyperlinkAcceptorComponent extends Component {
     /**
      *
      * @param {object} param0
-     * @param {Array<HyperlinkAcceptorSlotConfig>} param0.slots The slots from which we accept items
+     * @param {Array<ItemAcceptorSlotConfig>} param0.slots The slots from which we accept items
      */
     constructor({ slots = [] }) {
         super();
@@ -55,7 +55,7 @@ export class HyperlinkAcceptorComponent extends Component {
      * @param {Array<ItemAcceptorSlotConfig>} slots
      */
     setSlots(slots) {
-        /** @type {Array<HyperlinkAcceptorSlot>} */
+        /** @type {Array<ItemAcceptorSlot>} */
         this.slots = [];
         for (let i = 0; i < slots.length; ++i) {
             const slot = slots[i];
