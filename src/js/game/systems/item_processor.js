@@ -67,7 +67,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             this.handlers[key] = this.handlers[key].bind(this);
         }
     }
-
     update() {
         for (let i = 0; i < this.allEntities.length; ++i) {
             const entity = this.allEntities[i];
@@ -418,11 +417,18 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             payload.entity.components.HyperlinkAcceptor,
             "To be a hyperlink exit, the building needs to have a hyperlink acceptor"
         );
+        const ejectorComp = payload.entity.components.ItemEjector;
+        let slot = 0;
+        if(ejectorComp.lastUsedSlot == slot)
+        {
+            slot = 1;
+        }
+        ejectorComp.lastUsedSlot == slot;
         for (let i = 0; i < payload.items.length; ++i) {
             payload.outItems.push({
                 item: payload.items[i].item,
-                requiredSlot: i,
-            });
+                requiredSlot: slot,
+            });//ONLY ONE ITEM IN THIS - WE NEED TWO
         }
         return true;
     }
