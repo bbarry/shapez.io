@@ -421,13 +421,16 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             payload.entity.components.HyperlinkAcceptor,
             "To be a hyperlink exit, the building needs to have a hyperlink acceptor"
         );
-
-        for (let i = 0; i < payload.items.length; ++i) {
-            payload.outItems.push({
-                item: payload.items[i].item,
-                requiredSlot: i,
-            });
-        }
+        payload.outItems.push({
+            item: payload.items[0].item,
+            requiredSlot: 0,
+            doNotTrack: true,
+        });
+        payload.outItems.push({
+            item: payload.items[1].item,
+            requiredSlot: 1,
+            doNotTrack: true,
+        });
         return true;
     }
 
@@ -440,7 +443,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         const processorComp = payload.entity.components.ItemProcessor;
 
         const nextSlot = processorComp.nextOutputSlot++ % availableSlots;
-
+        
         for (let i = 0; i < payload.items.length; ++i) {
             payload.outItems.push({
                 item: payload.items[i].item,
