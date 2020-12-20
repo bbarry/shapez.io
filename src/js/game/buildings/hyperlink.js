@@ -71,7 +71,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
     }
     
     getSilhouetteColor() {
-        return "#555759";
+        return "#9e91ec";
     }
 
     /**

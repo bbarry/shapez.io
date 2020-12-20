@@ -492,7 +492,6 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
 
         if (hyperlinkAcceptorComp) {
             hyperlinkAcceptorSlots = hyperlinkAcceptorComp.slots.slice();
-            console.log("alright");
         }
 
         if (beltComp) {
