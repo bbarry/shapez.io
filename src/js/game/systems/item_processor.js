@@ -421,11 +421,11 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         );
         const ejectorComp = payload.entity.components.ItemEjector;
         let slot = 0;
-        if(this.isFirstSlot)
+        if(ejectorComp.isFirstSlot)
         {
             slot = 1;
         }
-        this.isFirstSlot = !this.isFirstSlot;
+        ejectorComp.isFirstSlot = !ejectorComp.isFirstSlot;
         for (let i = 0; i < payload.items.length; ++i) {
             payload.outItems.push({
                 item: payload.items[i].item,
