@@ -15,7 +15,7 @@ import { typeItemSingleton } from "../item_resolver";
  *    cachedDestSlot?: import("./hyperlink_acceptor").ItemAcceptorLocatedSlot,
  *    cachedBeltPath?: BeltPath,
  *    cachedTargetEntity?: Entity
- * }} ItemEjectorSlot
+ * }} HyperlinkEjectorSlot
  */
  
 export class HyperlinkEjectorComponent extends Component {
@@ -70,7 +70,7 @@ export class HyperlinkEjectorComponent extends Component {
 
     /**
      * Returns where this slot ejects to
-     * @param {ItemEjectorSlot} slot
+     * @param {HyperlinkEjectorSlot} slot
      * @returns {Vector}
      */
     getSlotTargetLocalTile(slot) {

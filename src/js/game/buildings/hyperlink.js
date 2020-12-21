@@ -10,7 +10,7 @@ import { GameRoot } from "../root";
 import { enumHubGoalRewards } from "../tutorial_goals";
 import { T } from "../../translations";
 import { formatItemsPerSecond, generateMatrixRotations } from "../../core/utils";
-import { BeltUnderlaysComponent } from "../components/belt_underlays";
+import { BeltUnderlaysComponent, enumClippedBeltUnderlayType } from "../components/belt_underlays";
 
 /** @enum {string} */
 export const enumHyperlinkVariants = {
@@ -140,11 +140,6 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 entity.components.HyperlinkEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.top },
                 ]);
-
-                
-                entity.components.BeltUnderlays.underlays = [
-                    { pos: new Vector(0, 0), direction: enumDirection.top },
-                ];
                 break;
             }
             case enumHyperlinkVariants.hyperlinkEntrance: {
@@ -175,8 +170,8 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 entity.components.ItemProcessor.inputsPerCharge = 2;
 
                 entity.components.BeltUnderlays.underlays = [
-                    { pos: new Vector(0, 1), direction: enumDirection.left },
-                    { pos: new Vector(0, 1), direction: enumDirection.right },
+                    { pos: new Vector(0, 1), direction: enumDirection.left, cachedType: enumClippedBeltUnderlayType.bottomOnly },
+                    { pos: new Vector(0, 1), direction: enumDirection.right, cachedType: enumClippedBeltUnderlayType.bottomOnly },
                 ];
                 break;
             }
@@ -203,8 +198,8 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 
                 
                 entity.components.BeltUnderlays.underlays = [
-                    { pos: new Vector(0, 0), direction: enumDirection.left },
-                    { pos: new Vector(0, 0), direction: enumDirection.right },
+                    { pos: new Vector(0, 0), direction: enumDirection.left, cachedType: enumClippedBeltUnderlayType.bottomOnly },
+                    { pos: new Vector(0, 0), direction: enumDirection.right, cachedType: enumClippedBeltUnderlayType.bottomOnly },
                 ];
                 break;
             }
