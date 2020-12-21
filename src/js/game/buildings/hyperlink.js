@@ -42,20 +42,9 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 assertAlways(false, "Unknown hyperlink variant: " + variant);
         }
     }
-    getRotateAutomaticallyWhilePlacing() {
-        return true;
-    }
 
-    getPlacementSound(variant) {
-        switch(variant){
-            case defaultBuildingVariant:{
-                return SOUNDS.placeBelt;
-            }
-            default:{
-                return SOUNDS.placeBuilding;
-            }
-
-        }
+    getPlacementSound() {
+        return SOUNDS.placeBelt;
     }
 
     getStayInPlacementMode() {
