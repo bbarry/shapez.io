@@ -494,7 +494,6 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
             // No active building
             return;
         }
-
         // Get path to place
         const path = this.computeDirectionLockPath();
 
@@ -513,7 +512,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
         });
 
         if (anythingPlaced) {
-            this.root.soundProxy.playUi(metaBuilding.getPlacementSound());
+            this.root.soundProxy.playUi(metaBuilding.getPlacementSound(this.currentVariant));
         }
     }
 
@@ -655,7 +654,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
             // Place initial building, but only if direction lock is not active
             if (!this.isDirectionLockActive) {
                 if (this.tryPlaceCurrentBuildingAt(this.lastDragTile)) {
-                    this.root.soundProxy.playUi(metaBuilding.getPlacementSound());
+                    this.root.soundProxy.playUi(metaBuilding.getPlacementSound(this.currentVariant));
                 }
             }
             return STOP_PROPAGATION;
@@ -769,7 +768,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
                 }
 
                 if (anythingPlaced) {
-                    this.root.soundProxy.playUi(metaBuilding.getPlacementSound());
+                    this.root.soundProxy.playUi(metaBuilding.getPlacementSound(this.currentVariant));
                 }
                 if (anythingDeleted) {
                     this.root.soundProxy.playUi(SOUNDS.destroyBuilding);

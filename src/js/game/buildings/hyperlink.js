@@ -46,8 +46,16 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
         return true;
     }
 
-    getPlacementSound() {
-        return SOUNDS.placeBelt;
+    getPlacementSound(variant) {
+        switch(variant){
+            case defaultBuildingVariant:{
+                return SOUNDS.placeBelt;
+            }
+            default:{
+                return SOUNDS.placeBuilding;
+            }
+
+        }
     }
 
     getStayInPlacementMode() {
