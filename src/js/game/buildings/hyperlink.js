@@ -42,7 +42,9 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 assertAlways(false, "Unknown hyperlink variant: " + variant);
         }
     }
-
+    getRotateAutomaticallyWhilePlacing() {
+        return true;
+    }
 
     getPlacementSound() {
         return SOUNDS.placeBelt;

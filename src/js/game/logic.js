@@ -129,7 +129,8 @@ export class GameLogic {
                 const contents = this.root.map.getLayerContentXY(x, y, entity.layer);
                 if (contents) {
                     assertAlways(
-                        contents.components.StaticMapEntity.getMetaBuilding().getIsReplaceable(),
+                        contents.components.StaticMapEntity.getMetaBuilding().getIsReplaceable() 
+                        || (contents.components.HyperlinkAcceptor && contents.components.HyperlinkEjector),
                         "Tried to replace non-repleaceable entity"
                     );
                     if (!this.tryDeleteBuilding(contents)) {
