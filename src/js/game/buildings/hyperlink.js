@@ -107,7 +107,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
             })
         );
 
-        //entity.addComponent(new BeltUnderlaysComponent({ underlays: [] }));
+        entity.addComponent(new BeltUnderlaysComponent({ underlays: [] }));
     }
 
     /**
@@ -169,6 +169,10 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 ]);
                 entity.components.ItemProcessor.inputsPerCharge = 2;
 
+                entity.components.BeltUnderlays.underlays = [
+                    { pos: new Vector(0, 1), direction: enumDirection.left },
+                    { pos: new Vector(0, 1), direction: enumDirection.right },
+                ];
                 break;
             }
             case enumHyperlinkVariants.hyperlinkExit: {
