@@ -468,6 +468,7 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
 
         const goodArrowSprite = Loader.getSprite("sprites/misc/slot_good_arrow.png");
         const badArrowSprite = Loader.getSprite("sprites/misc/slot_bad_arrow.png");
+        const goodHyperlinkArrowSprite = Loader.getSprite("sprites/misc/hyperlink_good_arrow.png");
 
         // Just ignore the following code please ... thanks!
 
@@ -614,7 +615,7 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
                 }
 
                 const alpha = isConnected || isBlocked ? 1.0 : 0.3;
-                const sprite = isBlocked ? badArrowSprite : goodArrowSprite;
+                const sprite = isBlocked ? badArrowSprite : goodHyperlinkArrowSprite;
 
                 parameters.context.globalAlpha = alpha;
                 drawRotatedSprite({
@@ -726,7 +727,7 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
             }
 
             const alpha = isConnected || isBlocked ? 1.0 : 0.3;
-            const sprite = isBlocked ? badArrowSprite : goodArrowSprite;
+            const sprite = isBlocked ? badArrowSprite : goodHyperlinkArrowSprite;
 
             parameters.context.globalAlpha = alpha;
             drawRotatedSprite({
