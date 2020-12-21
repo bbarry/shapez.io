@@ -426,11 +426,17 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             slot = 1;
         }
         this.isFirstSlot = !this.isFirstSlot;
+        if(slot == ejectorComp.lastUsedSlot)
+        {
+            if(slot == 1){slot = 0;}
+            else{slot == 1}
+            this.isFirstSlot = slot == 0;
+        }
         for (let i = 0; i < payload.items.length; ++i) {
             payload.outItems.push({
                 item: payload.items[i].item,
                 requiredSlot: slot,
-            });//ONLY ONE ITEM IN THIS - WE NEED TWO
+            });
         }
         return true;
     }
