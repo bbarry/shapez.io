@@ -101,7 +101,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                 if (requiredSlot !== null && requiredSlot !== undefined) 
                                 {
                                  // We have a slot override, check if that is free
-                                    if (ejectorComp.canEjectOnSlot(requiredSlot) && requiredSlot !== ejectorComp.lastUsedSlot) 
+                                    if (ejectorComp.canEjectOnSlot(requiredSlot)) 
                                     {
                                         slot = requiredSlot;
                                         ejectorComp.lastUsedSlot = slot;
@@ -426,12 +426,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             slot = 1;
         }
         this.isFirstSlot = !this.isFirstSlot;
-        if(slot == ejectorComp.lastUsedSlot)
-        {
-            if(slot == 1){slot = 0;}
-            else{slot == 1}
-            this.isFirstSlot = slot == 0;
-        }
         for (let i = 0; i < payload.items.length; ++i) {
             payload.outItems.push({
                 item: payload.items[i].item,
