@@ -143,7 +143,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
 
                 
                 entity.components.BeltUnderlays.underlays = [
-                    { pos: new Vector(0, 0), direction: enumDirection.up },
+                    { pos: new Vector(0, 0), direction: enumDirection.top },
                 ];
                 break;
             }
