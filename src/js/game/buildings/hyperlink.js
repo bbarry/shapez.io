@@ -140,6 +140,11 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 entity.components.HyperlinkEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.top },
                 ]);
+
+                
+                entity.components.BeltUnderlays.underlays = [
+                    { pos: new Vector(0, 0), direction: enumDirection.up },
+                ];
                 break;
             }
             case enumHyperlinkVariants.hyperlinkEntrance: {
