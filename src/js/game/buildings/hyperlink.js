@@ -170,8 +170,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 entity.components.ItemProcessor.inputsPerCharge = 2;
 
                 entity.components.BeltUnderlays.underlays = [
-                    { pos: new Vector(0, 1), direction: enumDirection.left, cachedType: enumClippedBeltUnderlayType.bottomOnly },
-                    { pos: new Vector(0, 1), direction: enumDirection.right, cachedType: enumClippedBeltUnderlayType.bottomOnly },
+                    { pos: new Vector(0, 1), direction: enumDirection.left },
                 ];
                 break;
             }
@@ -198,8 +197,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 
                 
                 entity.components.BeltUnderlays.underlays = [
-                    { pos: new Vector(0, 0), direction: enumDirection.left, cachedType: enumClippedBeltUnderlayType.bottomOnly },
-                    { pos: new Vector(0, 0), direction: enumDirection.right, cachedType: enumClippedBeltUnderlayType.bottomOnly },
+                    { pos: new Vector(0, 0), direction: enumDirection.left },
                 ];
                 break;
             }
