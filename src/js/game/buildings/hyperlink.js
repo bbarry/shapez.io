@@ -196,6 +196,11 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 ]);
                 entity.components.ItemProcessor.type = enumItemProcessorTypes.hyperlinkExit;
                 
+                
+                entity.components.BeltUnderlays.underlays = [
+                    { pos: new Vector(0, 0), direction: enumDirection.left },
+                    { pos: new Vector(0, 0), direction: enumDirection.right },
+                ];
                 break;
             }
             default:
