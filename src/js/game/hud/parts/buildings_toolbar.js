@@ -23,6 +23,7 @@ export class HUDBuildingsToolbar extends HUDBaseToolbar {
         super(root, {
             primaryBuildings: [
                 MetaBeltBuilding,
+                MetaHyperlinkBuilding,
                 MetaBalancerBuilding,
                 MetaUndergroundBeltBuilding,
                 MetaMinerBuilding,
@@ -32,7 +33,6 @@ export class HUDBuildingsToolbar extends HUDBaseToolbar {
                 MetaMixerBuilding,
                 MetaPainterBuilding,
                 MetaTrashBuilding,
-                MetaHyperlinkBuilding,
                 ...(queryParamOptions.sandboxMode || G_IS_DEV ? [MetaItemProducerBuilding] : []),
             ],
             secondaryBuildings: [
