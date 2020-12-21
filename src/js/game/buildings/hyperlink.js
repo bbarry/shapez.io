@@ -20,9 +20,9 @@ export const enumHyperlinkVariants = {
 };
 
 const overlayMatrices = {
-    [defaultBuildingVariant]: generateMatrixRotations([1, 0, 1, 1, 0, 1, 1, 0, 1]),
-    [enumHyperlinkVariants.hyperlinkEntrance]: null,
-    [enumHyperlinkVariants.hyperlinkExit]: null,
+    [defaultBuildingVariant]: generateMatrixRotations([0, 1, 0, 0, 1, 0, 0, 1, 0]),
+    [enumHyperlinkVariants.hyperlinkEntrance]: generateMatrixRotations([0, 1, 0, 0, 1, 1, 1, 1, 0]),
+    [enumHyperlinkVariants.hyperlinkExit]: generateMatrixRotations([0, 1, 1, 1, 1, 0, 0, 1, 0]),
 };
 
 export class MetaHyperlinkBuilding extends MetaBuilding {
@@ -81,7 +81,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
         let available = [defaultBuildingVariant, enumHyperlinkVariants.hyperlinkEntrance, enumHyperlinkVariants.hyperlinkExit];
         //if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_splitter)) {
         //    available.push(enumBalancerVariants.splitterTriple);
-        //    //available.push(enumBalancerVariants.splitter, enumBalancerVariants.splitterInverse);
+        //    available.push(enumBalancerVariants.splitter, enumBalancerVariants.splitterInverse);
         //}
 
         return available;
