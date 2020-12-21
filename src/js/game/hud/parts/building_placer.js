@@ -174,7 +174,7 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
     rerenderVariants() {
         removeAllChildren(this.variantsElement);
         this.rerenderInfoDialog();
-
+        this.root.soundProxy
         const metaBuilding = this.currentMetaBuilding.get();
 
         // First, clear up all click detectors

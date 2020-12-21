@@ -1,4 +1,5 @@
 import { enumDirection, Vector } from "../../core/vector";
+import { SOUNDS } from "../../platform/sound";
 import { ItemAcceptorComponent } from "../components/item_acceptor";
 import { ItemEjectorComponent } from "../components/item_ejector";
 import { HyperlinkAcceptorComponent } from "../components/hyperlink_acceptor";
@@ -40,6 +41,15 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
             default:
                 assertAlways(false, "Unknown hyperlink variant: " + variant);
         }
+    }
+
+
+    getPlacementSound() {
+        return SOUNDS.placeBelt;
+    }
+
+    getStayInPlacementMode() {
+        return true;
     }
 
     /**
@@ -170,8 +180,8 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 entity.components.ItemProcessor.inputsPerCharge = 2;
 
                 entity.components.BeltUnderlays.underlays = [
-                    { pos: new Vector(0, 1), direction: enumDirection.left , cachedType: enumClippedBeltUnderlayType.bottomOnly},
-                    { pos: new Vector(0, 1), direction: enumDirection.right , cachedType: enumClippedBeltUnderlayType.bottomOnly},
+                    { pos: new Vector(0, 1), direction: enumDirection.left},
+                    { pos: new Vector(0, 1), direction: enumDirection.right},
                 ];
                 break;
             }
@@ -199,6 +209,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 
                 entity.components.BeltUnderlays.underlays = [
                     { pos: new Vector(0, 0), direction: enumDirection.left },
+                    { pos: new Vector(0, 0), direction: enumDirection.right },
                 ];
                 break;
             }
