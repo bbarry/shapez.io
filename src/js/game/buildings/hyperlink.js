@@ -44,6 +44,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
     }
 
     getPlacementSound(variant) {
+        console.log(variant);
         switch(variant){
             case defaultBuildingVariant:
                 return SOUNDS.placeBelt;
