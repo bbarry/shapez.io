@@ -113,7 +113,6 @@ export class HyperlinkEjectorSystem extends GameSystemWithFilter {
     }
 
     update() {
-        this.staleAreaDetector.update();
 
         // Precompute effective belt speed
         let progressGrowth = 4 * this.root.dynamicTickrate.deltaSeconds;
