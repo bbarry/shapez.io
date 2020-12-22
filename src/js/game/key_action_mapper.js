@@ -46,6 +46,7 @@ export const KEYMAPPINGS = {
     buildings: {
         // Primary Toolbar
         belt: { keyCode: key("1") },
+        hyperlink: { keyCode: key("F1") },
         balancer: { keyCode: key("2") },
         underground_belt: { keyCode: key("3") },
         miner: { keyCode: key("4") },
@@ -55,7 +56,6 @@ export const KEYMAPPINGS = {
         mixer: { keyCode: key("8") },
         painter: { keyCode: key("9") },
         trash: { keyCode: key("0") },
-        hyperlink: { keyCode: key("N") },
 
         // Sandbox
         item_producer: { keyCode: key("L") },
