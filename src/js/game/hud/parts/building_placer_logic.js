@@ -122,7 +122,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
         this.root.hud.signals.buildingsSelectedForCopy.add(this.abortPlacement, this);
         this.root.hud.signals.pasteBlueprintRequested.add(this.abortPlacement, this);
         this.root.signals.storyGoalCompleted.add(() => this.signals.variantChanged.dispatch());
-        this.root.signals.storyGoalCompleted.add(() => this.currentMetaBuilding.set(null));
+        this.root.signals.storyGoalCompleted.add(() => this.onLevelComplete, this);
         this.root.signals.upgradePurchased.add(() => this.signals.variantChanged.dispatch());
         this.root.signals.editModeChanged.add(this.onEditModeChanged, this);
 
@@ -131,7 +131,14 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
         this.root.camera.movePreHandler.add(this.onMouseMove, this);
         this.root.camera.upPostHandler.add(this.onMouseUp, this);
     }
-
+    /**
+     * Called when a level is completed
+     */
+    onLevelComplete(){
+        if(!HubGoals.isFreePlay()){
+            this.currentMetaBuilding.set(null);
+        }
+    }
     /**
      * Called when the edit mode got changed
      * @param {Layer} layer
@@ -256,8 +263,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
      */
     update() {
         // Abort placement if a dialog was shown in the meantime
-        if (this.root.hud.hasBlockingOverlayOpen() && !HubGoals.isFreePlay()) {
-            console.log("abort")
+        if (this.root.hud.hasBlockingOverlayOpen()) {
             this.abortPlacement();
             return;
         }
