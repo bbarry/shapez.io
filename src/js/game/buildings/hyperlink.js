@@ -51,6 +51,12 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 return SOUNDS.placeBuilding;
         }
     }
+
+    getRotateAutomaticallyWhilePlacing()
+    {
+        return true;
+    }
+    
     getStayInPlacementMode(variant) {
         switch(variant){
             case defaultBuildingVariant:
