@@ -512,7 +512,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
         });
 
         if (anythingPlaced) {
-            this.root.soundProxy.playUi(metaBuilding.getPlacementSound());
+            this.root.soundProxy.playUi(metaBuilding.getPlacementSound(this.preferredVariants[metaBuilding.getId()]));
         }
     }
 
@@ -654,7 +654,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
             // Place initial building, but only if direction lock is not active
             if (!this.isDirectionLockActive) {
                 if (this.tryPlaceCurrentBuildingAt(this.lastDragTile)) {
-                    this.root.soundProxy.playUi(metaBuilding.getPlacementSound());
+                    this.root.soundProxy.playUi(metaBuilding.getPlacementSound(this.preferredVariants[metaBuilding.getId()]));
                 }
             }
             return STOP_PROPAGATION;
@@ -768,7 +768,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
                 }
 
                 if (anythingPlaced) {
-                    this.root.soundProxy.playUi(metaBuilding.getPlacementSound());
+                    this.root.soundProxy.playUi(metaBuilding.getPlacementSound(this.preferredVariants[metaBuilding.getId()]));
                 }
                 if (anythingDeleted) {
                     this.root.soundProxy.playUi(SOUNDS.destroyBuilding);
