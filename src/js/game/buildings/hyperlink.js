@@ -22,8 +22,8 @@ export const enumHyperlinkVariants = {
 
 const overlayMatrices = {
     [defaultBuildingVariant]: generateMatrixRotations([0, 1, 0, 0, 1, 0, 0, 1, 0]),
-    [enumHyperlinkVariants.hyperlinkEntrance]: generateMatrixRotations([0, 1, 0, 1, 1, 1, 1, 1, 1]),
-    [enumHyperlinkVariants.hyperlinkExit]: generateMatrixRotations([1, 1, 1, 1, 1, 1, 0, 1, 0]),
+    [enumHyperlinkVariants.hyperlinkEntrance]: null,
+    [enumHyperlinkVariants.hyperlinkExit]: null,
 };
 
 export class MetaHyperlinkBuilding extends MetaBuilding {
