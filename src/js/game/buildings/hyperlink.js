@@ -44,17 +44,23 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
     }
 
     getPlacementSound(variant) {
-        console.log(variant);
         switch(variant){
             case defaultBuildingVariant:
+            case undefined:
                 return SOUNDS.placeBelt;
             default:
                 return SOUNDS.placeBuilding;
         }
     }
 
-    getStayInPlacementMode() {
-        return true;
+    getStayInPlacementMode(variant) {
+        switch(variant){
+            case defaultBuildingVariant:
+            case undefined:
+                return true;
+            default:
+                return false;
+        }
     }
 
     /**

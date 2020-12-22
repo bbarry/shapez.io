@@ -49,8 +49,9 @@ export class MetaBuilding {
 
     /**
      * Whether to stay in placement mode after having placed a building
+     * @param {string} variant
      */
-    getStayInPlacementMode() {
+    getStayInPlacementMode(variant) {
         return false;
     }
 
@@ -116,9 +117,10 @@ export class MetaBuilding {
 
     /**
      * Returns the placement sound
+     * @param {string} variant
      * @returns {string}
      */
-    getPlacementSound() {
+    getPlacementSound(variant) {
         return SOUNDS.placeBuilding;
     }
 

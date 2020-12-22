@@ -440,7 +440,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
 
             // Check if we should stop placement
             if (
-                !metaBuilding.getStayInPlacementMode() &&
+                !metaBuilding.getStayInPlacementMode(this.preferredVariants[metaBuilding.getId()]) &&
                 !this.root.keyMapper.getBinding(KEYMAPPINGS.placementModifiers.placeMultiple).pressed &&
                 !this.root.app.settings.getAllSettings().alwaysMultiplace
             ) {
