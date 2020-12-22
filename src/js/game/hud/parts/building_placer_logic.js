@@ -14,11 +14,7 @@ import { MetaMinerBuilding, enumMinerVariants } from "../../buildings/miner";
 import { enumHubGoalRewards } from "../../tutorial_goals";
 import { getBuildingDataFromCode, getCodeFromBuildingData } from "../../building_codes";
 import { MetaHubBuilding } from "../../buildings/hub";
-<<<<<<< HEAD
-import {HubGoals} from "../../hub_goals";
-=======
 import { safeModulo } from "../../../core/utils";
->>>>>>> master
 
 /**
  * Contains all logic for the building placer - this doesn't include the rendering
@@ -126,7 +122,6 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
         this.root.hud.signals.buildingsSelectedForCopy.add(this.abortPlacement, this);
         this.root.hud.signals.pasteBlueprintRequested.add(this.abortPlacement, this);
         this.root.signals.storyGoalCompleted.add(() => this.signals.variantChanged.dispatch());
-        this.root.signals.storyGoalCompleted.add(() => this.onLevelComplete, this);
         this.root.signals.upgradePurchased.add(() => this.signals.variantChanged.dispatch());
         this.root.signals.editModeChanged.add(this.onEditModeChanged, this);
 
@@ -134,14 +129,6 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
         this.root.camera.downPreHandler.add(this.onMouseDown, this);
         this.root.camera.movePreHandler.add(this.onMouseMove, this);
         this.root.camera.upPostHandler.add(this.onMouseUp, this);
-    }
-    /**
-     * Called when a level is completed
-     */
-    onLevelComplete(){
-        if(!HubGoals.isFreePlay()){
-            this.currentMetaBuilding.set(null);
-        }
     }
     /**
      * Called when the edit mode got changed
