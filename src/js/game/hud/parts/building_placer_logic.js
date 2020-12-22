@@ -14,7 +14,7 @@ import { MetaMinerBuilding, enumMinerVariants } from "../../buildings/miner";
 import { enumHubGoalRewards } from "../../tutorial_goals";
 import { getBuildingDataFromCode, getCodeFromBuildingData } from "../../building_codes";
 import { MetaHubBuilding } from "../../buildings/hub";
-import {HubGoals} from "../../../hub_goals";
+import {HubGoals} from "../../hub_goals";
 
 /**
  * Contains all logic for the building placer - this doesn't include the rendering
