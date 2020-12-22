@@ -79,8 +79,9 @@ export class MetaBuilding {
 
     /**
      * Returns whether this building can get replaced
+     * @param {string} variant
      */
-    getIsReplaceable() {
+    getIsReplaceable(variant) {
         return false;
     }
 

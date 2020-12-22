@@ -84,10 +84,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
      * @returns {Array<[string, string]>}
      */
     getAdditionalStatistics(root, variant) {
-        let speedMultiplier = 1;
-
-        const speed =
-            (root.hubGoals.getProcessorBaseSpeed(enumItemProcessorTypes.hyperlink) / 2) * speedMultiplier;
+        const speed = (root.hubGoals.getProcessorBaseSpeed(enumItemProcessorTypes.hyperlink) / 2);
         return [[T.ingame.buildingPlacement.infoTexts.speed, formatItemsPerSecond(speed)]];
     }
     
@@ -99,13 +96,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
      * @param {GameRoot} root
      */
     getAvailableVariants(root) {
-        let available = [defaultBuildingVariant, enumHyperlinkVariants.hyperlinkEntrance, enumHyperlinkVariants.hyperlinkExit];
-        //if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_splitter)) {
-        //    available.push(enumBalancerVariants.splitterTriple);
-        //    available.push(enumBalancerVariants.splitter, enumBalancerVariants.splitterInverse);
-        //}
-
-        return available;
+        return [defaultBuildingVariant, enumHyperlinkVariants.hyperlinkEntrance, enumHyperlinkVariants.hyperlinkExit];
     }
 
     /**

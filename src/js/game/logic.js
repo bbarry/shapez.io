@@ -70,7 +70,9 @@ export class GameLogic {
                 const otherEntity = this.root.map.getLayerContentXY(x, y, entity.layer);
                 if (otherEntity) {
                     const metaClass = otherEntity.components.StaticMapEntity.getMetaBuilding();
-                    if (!metaClass.getIsReplaceable()) {
+                    const isHyperlink = 
+                        otherEntity.components.HyperlinkEjector && otherEntity.components.HyperlinkAcceptor;
+                    if (!metaClass.getIsReplaceable() && !isHyperlink) {
                         // This one is a direct blocker
                         return false;
                     }

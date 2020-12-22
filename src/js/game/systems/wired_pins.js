@@ -58,8 +58,9 @@ export class WiredPinsSystem extends GameSystemWithFilter {
                         if (!pinComponent) {
                             continue;
                         }
-
-                        if (staticComp.getMetaBuilding().getIsReplaceable()) {
+                        const isHyperlink = 
+                            otherEntity.components.HyperlinkEjector && otherEntity.components.HyperlinkAcceptor;
+                        if (staticComp.getMetaBuilding().getIsReplaceable() || isHyperlink) {
                             // Don't mind here, even if there would be a collision we
                             // could replace it
                             continue;
