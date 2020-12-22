@@ -257,6 +257,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
     update() {
         // Abort placement if a dialog was shown in the meantime
         if (this.root.hud.hasBlockingOverlayOpen() && !HubGoals.isFreePlay()) {
+            console.log("abort")
             this.abortPlacement();
             return;
         }
