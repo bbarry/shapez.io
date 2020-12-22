@@ -19,7 +19,6 @@ export const enumHyperlinkVariants = {
     hyperlinkExit: "hyperlink-exit",
     //do stuff in all this code with this
 };
-
 const overlayMatrices = {
     [defaultBuildingVariant]: generateMatrixRotations([0, 1, 0, 0, 1, 0, 0, 1, 0]),
     [enumHyperlinkVariants.hyperlinkEntrance]: null,

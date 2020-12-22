@@ -2,7 +2,6 @@ import { globalConfig } from "../../core/config";
 import { DrawParameters } from "../../core/draw_parameters";
 import { createLogger } from "../../core/logging";
 import { Rectangle } from "../../core/rectangle";
-import { StaleAreaDetector } from "../../core/stale_area_detector";
 import { enumDirection, enumDirectionToVector } from "../../core/vector";
 import { BaseItem } from "../base_item";
 import { BeltComponent } from "../components/belt";
@@ -18,16 +17,6 @@ export class HyperlinkEjectorSystem extends GameSystemWithFilter {
     constructor(root) {
         super(root, [HyperlinkEjectorComponent]);
 
-        this.staleAreaDetector = new StaleAreaDetector({
-            root: this.root,
-            name: "hyperlink-ejector",
-            recomputeMethod: this.recomputeArea.bind(this),
-        });
-
-        this.staleAreaDetector.recomputeOnComponentsChanged(
-            [HyperlinkEjectorComponent, HyperlinkAcceptorComponent, BeltComponent],
-            1
-        );
 
         this.root.signals.postLoadHook.add(this.recomputeCacheFull, this);
     }
