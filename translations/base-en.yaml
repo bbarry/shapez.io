@@ -535,7 +535,7 @@ buildings:
             description: Transports two belts of items at superfast speed, hold and drag to place multiple.
 
         hyperlink-entrance:
-            name: Hyperlink Entrance
+            name: Hyperlink Entry
             description: Inputs two belts of items onto a hyperlink.
         hyperlink-exit:
             name: Hyperlink Exit
