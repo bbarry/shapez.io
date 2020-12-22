@@ -107,7 +107,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
      * @param {GameRoot} root
      */
     getIsUnlocked(root) {
-        return root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_balancer);
+        return true;
     }
 
     /**
