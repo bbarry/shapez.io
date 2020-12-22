@@ -532,14 +532,14 @@ buildings:
     hyperlink:
         default:
             name: &hyperlink hyperlink
-            description: this is a placeholder
+            description: Transports two belts of items at superfast speed.
 
         hyperlink-entrance:
             name: Hyperlink Entrance
-            description: this is a placeholder
+            description: Inputs two belts of items onto a hyperlink.
         hyperlink-exit:
             name: Hyperlink Exit
-            description: this is a placeholder
+            description: Recieves items that are being transpoted along a hyperlink and outputs them onto two belts.
 
     belt:
         default:
