@@ -14,6 +14,7 @@ import { MetaMinerBuilding, enumMinerVariants } from "../../buildings/miner";
 import { enumHubGoalRewards } from "../../tutorial_goals";
 import { getBuildingDataFromCode, getCodeFromBuildingData } from "../../building_codes";
 import { MetaHubBuilding } from "../../buildings/hub";
+import {HubGoals} from "../../../";
 
 /**
  * Contains all logic for the building placer - this doesn't include the rendering
@@ -255,7 +256,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
      */
     update() {
         // Abort placement if a dialog was shown in the meantime
-        if (this.root.hud.hasBlockingOverlayOpen()) {
+        if (this.root.hud.hasBlockingOverlayOpen() && !HubGoals.isFreePlay()) {
             this.abortPlacement();
             return;
         }
