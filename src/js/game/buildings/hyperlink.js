@@ -51,7 +51,10 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 return SOUNDS.placeBuilding;
         }
     }
-
+    getHasDirectionLockAvailable()
+    {
+        return true;
+    }
     getStayInPlacementMode(variant) {
         switch(variant){
             case defaultBuildingVariant:
