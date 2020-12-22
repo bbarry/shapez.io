@@ -50,6 +50,7 @@ export class HUDKeybindingOverlay extends BaseHUDPart {
             placer &&
             placer.currentMetaBuilding.get() &&
             placer.currentMetaBuilding.get().getHasDirectionLockAvailable()
+            
         );
     }
 
