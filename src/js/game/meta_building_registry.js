@@ -35,6 +35,7 @@ import { defaultBuildingVariant } from "./meta_building";
 const logger = createLogger("building_registry");
 
 export function initMetaBuildingRegistry() {
+    gMetaBuildingRegistry.register(MetaHyperlinkBuilding); 
     gMetaBuildingRegistry.register(MetaBalancerBuilding);
     gMetaBuildingRegistry.register(MetaMinerBuilding);
     gMetaBuildingRegistry.register(MetaCutterBuilding);
@@ -47,7 +48,6 @@ export function initMetaBuildingRegistry() {
     gMetaBuildingRegistry.register(MetaBeltBuilding);
     gMetaBuildingRegistry.register(MetaUndergroundBeltBuilding);
     gMetaBuildingRegistry.register(MetaHubBuilding);
-    gMetaBuildingRegistry.register(MetaHyperlinkBuilding);
     gMetaBuildingRegistry.register(MetaWireBuilding);
     gMetaBuildingRegistry.register(MetaConstantSignalBuilding);
     gMetaBuildingRegistry.register(MetaLogicGateBuilding);
