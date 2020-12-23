@@ -78,7 +78,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
     }
 
     getSprite(rotationVariant, variant) {
-        if(variant !== enumHyperlinkVariants.defaultBuildingVariant){
+        if(variant !== defaultBuildingVariant){
             return Loader.getSprite(
                 "sprites/buildings/" +
                     this.id +
@@ -104,7 +104,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
 
 
     getBlueprintSprite(rotationVariant, variant) {
-        if(variant !== enumHyperlinkVariants.defaultBuildingVariant){
+        if(variant !== defaultBuildingVariant){
             return Loader.getSprite(
                 "sprites/blueprints/" +
                     this.id +
@@ -216,16 +216,19 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                         entity.components.HyperlinkEjector.setSlots([
                             { pos: new Vector(0, 0), direction: enumDirection.top },
                         ]);
+                        break;
                     }
                     case enumDirection.left: {
                         entity.components.HyperlinkEjector.setSlots([
                             { pos: new Vector(0, 0), direction: enumDirection.left },
                         ]);
+                        break;
                     }
                     case enumDirection.right: {
                         entity.components.HyperlinkEjector.setSlots([
                             { pos: new Vector(0, 0), direction: enumDirection.right },
                         ]);
+                        break;
                     }
                     default: {
                         assertAlways(false, "Invalid hyperlink rotation variant");
@@ -267,7 +270,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 ]);
                 entity.components.ItemProcessor.inputsPerCharge = 2;
                 if(!entity.components.BeltUnderlays){
-                    entity.addComponent(new BeltUnderlaysComponent({slots: [],}))
+                    entity.addComponent(new BeltUnderlaysComponent({ underlays: [] }));
                 }
                 entity.components.BeltUnderlays.underlays = [
                     { pos: new Vector(0, 1), direction: enumDirection.left},
@@ -297,7 +300,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 entity.components.ItemProcessor.type = enumItemProcessorTypes.hyperlinkExit;
                 
                 if(!entity.components.BeltUnderlays){
-                    entity.addComponent(new BeltUnderlaysComponent({slots: [],}))
+                    entity.addComponent(new BeltUnderlaysComponent({ underlays: [] }));
                 }
                 entity.components.BeltUnderlays.underlays = [
                     { pos: new Vector(0, 0), direction: enumDirection.left },
@@ -321,7 +324,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
      * @return {{ rotation: number, rotationVariant: number, connectedEntities?: Array<Entity> }}
      */
     computeOptimalDirectionAndRotationVariantAtTile({ root, tile, rotation, variant, layer }) {
-        if(variant !== enumHyperlinkVariants.defaultBuildingVariant){
+        if(variant !== defaultBuildingVariant){
             return {
                 rotation: 0,
                 rotationVariant: 0,
@@ -332,7 +335,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
         const bottomDirection = enumAngleToDirection[(rotation + 180) % 360];
         const leftDirection = enumAngleToDirection[(rotation + 270) % 360];
 
-        const { ejectors, acceptors } = root.logic.getEjectorsAndAcceptorsAtTile(tile, isTrueItem);
+        const { ejectors, acceptors } = root.logic.getEjectorsAndAcceptorsAtTile(tile, true);
 
         let hasBottomEjector = false;
         let hasRightEjector = false;
