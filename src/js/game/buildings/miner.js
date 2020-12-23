@@ -14,7 +14,7 @@ export const enumMinerVariants = { chainable: "chainable", deep: "deep" };
 const overlayMatrix = {
     [defaultBuildingVariant]: generateMatrixRotations([1, 1, 1, 1, 0, 1, 1, 1, 1]),
     [enumMinerVariants.chainable]: generateMatrixRotations([0, 1, 0, 1, 1, 1, 1, 1, 1]),
-    [enumMinerVariants.deep]: generateMatrixRotations([0, 1, 0, 1, 0, 1, 1, 1, 1]),
+    [enumMinerVariants.deep]: generateMatrixRotations([1, 1, 1, 0, 1, 0, 1, 1, 1]),
 };
 
 export class MetaMinerBuilding extends MetaBuilding {
