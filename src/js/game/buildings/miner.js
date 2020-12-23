@@ -34,7 +34,7 @@ export class MetaMinerBuilding extends MetaBuilding {
     getAdditionalStatistics(root, variant) {
         let speedMultiplier = 1;
         if(variant == enumMinerVariants.deep){
-            speedMultiplier = 1.6667;
+            speedMultiplier = 2;
         }
         const speed = root.hubGoals.getMinerBaseSpeed() * speedMultiplier;
         return [[T.ingame.buildingPlacement.infoTexts.speed, formatItemsPerSecond(speed)]];
