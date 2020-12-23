@@ -205,7 +205,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 if(!entity.components.HyperlinkAcceptor){
                     entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}))
                 }
-                
+                entity.components.HyperlinkAcceptor.direction = arrayHyperlinkVariantToRotation[rotationVariant];
                 entity.components.HyperlinkAcceptor.setSlots([{
                     pos: new Vector(0, 0), directions: [enumDirection.bottom], },
                 ]);
@@ -282,19 +282,17 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
             case enumHyperlinkVariants.hyperlinkExit: {
                 if(entity.components.ItemAcceptor){entity.removeComponent(ItemAcceptorComponent);}
                 if(entity.components.HyperlinkEjector){entity.removeComponent(HyperlinkEjectorComponent);}
-                if(!entity.components.ItemEjector)
-                {
+                if(!entity.components.ItemEjector){
                     entity.addComponent(new ItemEjectorComponent({slots: [],}))
                 }
                 entity.components.ItemEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.right },
                     { pos: new Vector(0, 0), direction: enumDirection.left },
                 ]);
-                if(!entity.components.HyperlinkAcceptor)
-                {
+                if(!entity.components.HyperlinkAcceptor){
                     entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}))
-                    
                 }
+                entity.components.HyperlinkAcceptor.direction = arrayHyperlinkVariantToRotation[rotationVariant];
                 entity.components.HyperlinkAcceptor.setSlots([
                     { pos: new Vector(0, 1), directions: [enumDirection.bottom], },
                 ]);

@@ -7,7 +7,7 @@ import { AtlasSprite } from "../../core/sprites";
 import { fastArrayDeleteValue } from "../../core/utils";
 import { enumDirection, enumDirectionToVector, enumInvertedDirections, Vector } from "../../core/vector";
 import { BeltPath } from "../belt_path";
-import { arrayBeltVariantToRotation, MetaBeltBuilding } from "../buildings/belt";
+import { arrayHyperlinkVariantToRotation, MetaHyperlinkBuilding } from "../buildings/hyperlink";
 import { getCodeFromBuildingData } from "../building_codes";
 import { HyperlinkAcceptorComponent } from "../components/hyperlink_acceptor";
 import { Entity } from "../entity";
@@ -76,7 +76,7 @@ export class HyperlinkSystem extends GameSystemWithFilter {
                     });
 
                     // Compute delta to see if anything changed
-                    const newDirection = arrayBeltVariantToRotation[rotationVariant];
+                    const newDirection = arrayHyperlinkVariantToRotation[rotationVariant];
 
                     if (targetStaticComp.rotation !== rotation || newDirection !== targetHyperlinkComp.direction) {
 
