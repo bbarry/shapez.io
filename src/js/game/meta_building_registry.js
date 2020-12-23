@@ -79,6 +79,7 @@ export function initMetaBuildingRegistry() {
     // Miner
     registerBuildingVariant(7, MetaMinerBuilding);
     registerBuildingVariant(8, MetaMinerBuilding, enumMinerVariants.chainable);
+    registerBuildingVariant(67, MetaMinerBuilding, enumMinerVariants.deep);
 
     // Cutter
     registerBuildingVariant(9, MetaCutterBuilding);

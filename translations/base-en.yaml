@@ -555,6 +555,10 @@ buildings:
         chainable:
             name: Extractor (Chain)
             description: Place over a shape or color to extract it. Can be chained.
+        
+        deep:
+            name: Extractor (Deep)
+            description: Place over a shape or color to extract it. Extracts more than a normal extractor.
 
     # Internal name for the Tunnel
     underground_belt:

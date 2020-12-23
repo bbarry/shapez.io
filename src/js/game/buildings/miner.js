@@ -9,11 +9,12 @@ import { T } from "../../translations";
 import { formatItemsPerSecond, generateMatrixRotations } from "../../core/utils";
 
 /** @enum {string} */
-export const enumMinerVariants = { chainable: "chainable" };
+export const enumMinerVariants = { chainable: "chainable", deep: "deep" };
 
 const overlayMatrix = {
     [defaultBuildingVariant]: generateMatrixRotations([1, 1, 1, 1, 0, 1, 1, 1, 1]),
     [enumMinerVariants.chainable]: generateMatrixRotations([0, 1, 0, 1, 1, 1, 1, 1, 1]),
+    [enumMinerVariants.deep]: generateMatrixRotations([0, 1, 0, 1, 0, 1, 1, 1, 1]),
 };
 
 export class MetaMinerBuilding extends MetaBuilding {
@@ -31,7 +32,11 @@ export class MetaMinerBuilding extends MetaBuilding {
      * @returns {Array<[string, string]>}
      */
     getAdditionalStatistics(root, variant) {
-        const speed = root.hubGoals.getMinerBaseSpeed();
+        let speedMultiplier = 1;
+        if(variant = enumMinerVariants.deep){
+            speedMultiplier = 2.5;
+        }
+        const speed = root.hubGoals.getMinerBaseSpeed() * speedMultiplier;
         return [[T.ingame.buildingPlacement.infoTexts.speed, formatItemsPerSecond(speed)]];
     }
 
@@ -40,7 +45,11 @@ export class MetaMinerBuilding extends MetaBuilding {
      * @param {GameRoot} root
      */
     getAvailableVariants(root) {
+        
         if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_miner_chainable)) {
+            if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_virtual_processing)) {
+                return [enumMinerVariants.deep], [enumMinerVariants.chainable];
+            }
             return [enumMinerVariants.chainable];
         }
         return super.getAvailableVariants(root);

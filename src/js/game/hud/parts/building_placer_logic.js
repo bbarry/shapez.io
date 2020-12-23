@@ -15,6 +15,7 @@ import { enumHubGoalRewards } from "../../tutorial_goals";
 import { getBuildingDataFromCode, getCodeFromBuildingData } from "../../building_codes";
 import { MetaHubBuilding } from "../../buildings/hub";
 import { safeModulo } from "../../../core/utils";
+import { MinerComponent } from "../../components/miner";
 
 /**
  * Contains all logic for the building placer - this doesn't include the rendering
@@ -661,6 +662,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
                     this.root.soundProxy.playUi(metaBuilding.getPlacementSound(this.currentVariant.get()));
                 }
             }
+            
             return STOP_PROPAGATION;
         }
 
