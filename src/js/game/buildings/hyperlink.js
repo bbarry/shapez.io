@@ -1,4 +1,4 @@
-import { Loader } from "../core/loader";
+import { Loader } from "../../core/loader";
 import { enumAngleToDirection, enumDirection, Vector } from "../../core/vector";
 import { SOUNDS } from "../../platform/sound";
 import { ItemAcceptorComponent } from "../components/item_acceptor";
