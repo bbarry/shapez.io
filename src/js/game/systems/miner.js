@@ -31,14 +31,19 @@ export class MinerSystem extends GameSystemWithFilter {
     }
 
     update() {
-        let miningSpeed = this.root.hubGoals.getMinerBaseSpeed();
+        const minerBaseSpeed = this.root.hubGoals.getMinerBaseSpeed();
+        let miningSpeedMultiplier = 1;
         if (G_IS_DEV && globalConfig.debug.instantMiners) {
-            miningSpeed *= 100;
+            miningSpeedMultiplier = 100;
         }
 
         for (let i = 0; i < this.allEntities.length; ++i) {
             const entity = this.allEntities[i];
             const minerComp = entity.components.Miner;
+            let miningSpeed = minerBaseSpeed * miningSpeedMultiplier;
+            if(minerComp.deep){
+                miningSpeed *= 2.5;
+            }
 
             // Reset everything on recompute
             if (this.needsRecompute) {

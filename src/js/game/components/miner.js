@@ -19,10 +19,11 @@ export class MinerComponent extends Component {
         };
     }
 
-    constructor({ chainable = false }) {
+    constructor({ chainable = false, deep = false }) {
         super();
         this.lastMiningTime = 0;
         this.chainable = chainable;
+        this.deep = deep;
 
         /**
          * Stores items from other miners which were chained to this

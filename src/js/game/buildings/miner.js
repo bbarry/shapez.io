@@ -85,5 +85,6 @@ export class MetaMinerBuilding extends MetaBuilding {
      */
     updateVariants(entity, rotationVariant, variant) {
         entity.components.Miner.chainable = variant === enumMinerVariants.chainable;
+        entity.components.Miner.deep = variant === enumMinerVariants.deep;
     }
 }
