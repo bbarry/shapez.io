@@ -45,10 +45,9 @@ export class MetaMinerBuilding extends MetaBuilding {
      * @param {GameRoot} root
      */
     getAvailableVariants(root) {
-        
         if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_miner_chainable)) {
             if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_virtual_processing)) {
-                return [enumMinerVariants.deep], [enumMinerVariants.chainable];
+                return [enumMinerVariants.deep, enumMinerVariants.chainable];
             }
             return [enumMinerVariants.chainable];
         }

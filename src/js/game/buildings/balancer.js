@@ -74,15 +74,10 @@ export class MetaBalancerBuilding extends MetaBuilding {
      * @returns {Array<[string, string]>}
      */
     getAdditionalStatistics(root, variant) {
-        let speedMultiplier = 2;
+        let speedMultiplier = 1;
         switch (variant) {
-            case enumBalancerVariants.merger:
-            case enumBalancerVariants.mergerInverse:
-            case enumBalancerVariants.splitter:
-            case enumBalancerVariants.splitterInverse:
-            case enumBalancerVariants.splitterTriple:
-            case enumBalancerVariants.mergerTriple:
-                speedMultiplier = 1;
+            case enumBalancerVariants.defaultBuildingVariant:
+                speedMultiplier = 2;
         }
 
         const speed =
