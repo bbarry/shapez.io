@@ -141,7 +141,7 @@ export class MetaBeltBuilding extends MetaBuilding {
         const bottomDirection = enumAngleToDirection[(rotation + 180) % 360];
         const leftDirection = enumAngleToDirection[(rotation + 270) % 360];
 
-        const { ejectors, acceptors } = root.logic.getEjectorsAndAcceptorsAtTile(tile);
+        const { ejectors, acceptors } = root.logic.getEjectorsAndAcceptorsAtTile(tile, false);
 
         let hasBottomEjector = false;
         let hasRightEjector = false;

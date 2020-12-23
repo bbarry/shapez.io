@@ -350,9 +350,10 @@ export class GameLogic {
     /**
      * Returns the acceptors and ejectors which affect the current tile
      * @param {Vector} tile
+     * @param {boolean} isHyperlink
      * @returns {AcceptorsAndEjectorsAffectingTile}
      */
-    getEjectorsAndAcceptorsAtTile(tile) {
+    getEjectorsAndAcceptorsAtTile(tile, isHyperlink) {
         /** @type {EjectorsAffectingTile} */
         let ejectors = [];
         /** @type {AcceptorsAffectingTile} */
@@ -371,8 +372,14 @@ export class GameLogic {
                     let acceptorSlots = [];
 
                     const staticComp = entity.components.StaticMapEntity;
-                    const itemEjector = entity.components.ItemEjector;
-                    const itemAcceptor = entity.components.ItemAcceptor;
+                    let itemEjector = entity.components.ItemEjector;
+                    if(isHyperlink){
+                        itemEjector = entity.components.HyperlinkEjector;
+                    }
+                    let itemAcceptor = entity.components.ItemAcceptor;
+                    if(isHyperlink){
+                        itemAcceptor = entity.components.HyperlinkAcceptor;
+                    }
                     const beltComp = entity.components.Belt;
 
                     if (itemEjector) {
@@ -383,7 +390,7 @@ export class GameLogic {
                         acceptorSlots = itemAcceptor.slots.slice();
                     }
 
-                    if (beltComp) {
+                    if (beltComp && !isHyperlink) {
                         const fakeEjectorSlot = beltComp.getFakeEjectorSlot();
                         const fakeAcceptorSlot = beltComp.getFakeAcceptorSlot();
                         ejectorSlots.push(fakeEjectorSlot);
