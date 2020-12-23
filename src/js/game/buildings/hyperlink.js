@@ -185,7 +185,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 processorType: enumItemProcessorTypes.hyperlink,
             })
         );
-
+        entity.addComponent(new HyperlinkComponent({}));
         entity.addComponent(new BeltUnderlaysComponent({ underlays: [] }));
     }
 
@@ -196,6 +196,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
      * @param {string} variant
      */
     updateVariants(entity, rotationVariant, variant) {
+        entity.components.Hyperlink.direction = arrayHyperlinkVariantToRotation[rotationVariant];
         switch (variant) {
             case defaultBuildingVariant: {
                 if(entity.components.BeltUnderlays){entity.removeComponent(BeltUnderlaysComponent);}
@@ -205,7 +206,6 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 if(!entity.components.HyperlinkAcceptor){
                     entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}))
                 }
-                entity.components.HyperlinkAcceptor.direction = arrayHyperlinkVariantToRotation[rotationVariant];
                 entity.components.HyperlinkAcceptor.setSlots([{
                     pos: new Vector(0, 0), directions: [enumDirection.bottom], },
                 ]);
@@ -292,7 +292,6 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 if(!entity.components.HyperlinkAcceptor){
                     entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}))
                 }
-                entity.components.HyperlinkAcceptor.direction = arrayHyperlinkVariantToRotation[rotationVariant];
                 entity.components.HyperlinkAcceptor.setSlots([
                     { pos: new Vector(0, 1), directions: [enumDirection.bottom], },
                 ]);

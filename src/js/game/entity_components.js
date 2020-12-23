@@ -37,6 +37,9 @@ export class EntityComponentStorage {
         /** @type {BeltComponent} */
         this.Belt;
 
+        /** @type {HyperlinkComponent} */
+        this.Hyperlink;
+
         /** @type {HyperlinkEjectorComponent} */
         this.HyperlinkEjector;
 

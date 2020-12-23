@@ -33,8 +33,8 @@ export class HyperlinkAcceptorComponent extends Component {
      * @param {object} param0
      * @param {Array<ItemAcceptorSlotConfig>} param0.slots The slots from which we accept items
      */
-    constructor({ slots = [] , direction = enumDirection.top }) {
-        super("hyperlink");
+    constructor({ slots = []}) {
+        super();
 
         /**
          * Fixes belt animations
@@ -48,7 +48,6 @@ export class HyperlinkAcceptorComponent extends Component {
         this.itemConsumptionAnimations = [];
 
         this.setSlots(slots);
-        this.direction = direction;
     }
 
     /**

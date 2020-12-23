@@ -56,7 +56,7 @@ export class HyperlinkSystem extends GameSystemWithFilter {
                 for (let i = 0; i < targetEntities.length; ++i) {
                     const targetEntity = targetEntities[i];
 
-                    const targetHyperlinkComp = targetEntity.components.HyperlinkAcceptor;
+                    const targetHyperlinkComp = targetEntity.components.Hyperlink;
                     const targetStaticComp = targetEntity.components.StaticMapEntity;
 
                     if (!targetHyperlinkComp) {
