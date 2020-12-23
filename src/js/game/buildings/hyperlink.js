@@ -201,15 +201,16 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 if(entity.components.BeltUnderlays){entity.removeComponent(BeltUnderlaysComponent);}
                 if(entity.components.ItemAcceptor){entity.removeComponent(ItemAcceptorComponent);}
                 if(entity.components.ItemEjector){entity.removeComponent(ItemEjectorComponent);}
+                if(entity.components.HyperlinkEjector){entity.removeComponent(HyperlinkEjectorComponent);}
                 if(!entity.components.HyperlinkAcceptor){
                     entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}))
                 }
-                if(!entity.components.HyperlinkEjector){
-                    entity.addComponent(new HyperlinkEjectorComponent({slots: [],}))
-                }
+                
                 entity.components.HyperlinkAcceptor.setSlots([{
                     pos: new Vector(0, 0), directions: [enumDirection.bottom], },
                 ]);
+                
+                entity.addComponent(new HyperlinkEjectorComponent({slots: [],}))
 
                 switch (arrayHyperlinkVariantToRotation[rotationVariant]) {
                     case enumDirection.top: {

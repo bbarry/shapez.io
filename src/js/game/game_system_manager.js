@@ -11,6 +11,7 @@ import { ItemProcessorSystem } from "./systems/item_processor";
 import { UndergroundBeltSystem } from "./systems/underground_belt";
 import { HubSystem } from "./systems/hub";
 import { StaticMapEntitySystem } from "./systems/static_map_entity";
+import { HyperlinkSystem } from "./systems/hyperlink";
 import { HyperlinkAcceptorSystem } from "./systems/hyperlink_acceptor";
 import { HyperlinkEjectorSystem } from "./systems/hyperlink_ejector";
 import { ItemAcceptorSystem } from "./systems/item_acceptor";
@@ -63,6 +64,9 @@ export class GameSystemManager {
             /** @type {StaticMapEntitySystem} */
             staticMapEntities: null,
             
+            /** @type {HyperlinkSystem} */
+            hyperlink: null,
+
             /** @type {HyperlinkAcceptorSystem} */
             hyperlinkAcceptor: null,
             
@@ -133,6 +137,8 @@ export class GameSystemManager {
         add("hyperlinkAcceptor", HyperlinkAcceptorSystem);
 
         add("belt", BeltSystem);
+
+        add("hyperlink", HyperlinkSystem);
 
         add("undergroundBelt", UndergroundBeltSystem);
 
