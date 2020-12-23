@@ -3,6 +3,7 @@ import { enumAngleToDirection, enumDirection, Vector } from "../../core/vector";
 import { SOUNDS } from "../../platform/sound";
 import { ItemAcceptorComponent } from "../components/item_acceptor";
 import { ItemEjectorComponent } from "../components/item_ejector";
+import { HyperlinkComponent } from "../components/hyperlink";
 import { HyperlinkAcceptorComponent } from "../components/hyperlink_acceptor";
 import { HyperlinkEjectorComponent } from "../components/hyperlink_ejector";
 import { enumItemProcessorTypes, ItemProcessorComponent } from "../components/item_processor";
