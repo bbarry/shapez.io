@@ -95,12 +95,12 @@ export class MetaBalancerBuilding extends MetaBuilding {
     getAvailableVariants(root) {
         let available = [defaultBuildingVariant];
         if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_merger)) {
-            available.push(enumBalancerVariants.merger, enumBalancerVariants.mergerInverse);
+            //available.push(enumBalancerVariants.merger, enumBalancerVariants.mergerInverse);
             available.push(enumBalancerVariants.mergerTriple);
         }
 
         if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_splitter)) {
-            available.push(enumBalancerVariants.splitter, enumBalancerVariants.splitterInverse);
+            //available.push(enumBalancerVariants.splitter, enumBalancerVariants.splitterInverse);
             available.push(enumBalancerVariants.splitterTriple);
         }
 
