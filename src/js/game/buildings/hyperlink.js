@@ -1,4 +1,4 @@
-import { enumDirection, Vector } from "../../core/vector";
+import { enumAngleToDirection, enumDirection, Vector } from "../../core/vector";
 import { SOUNDS } from "../../platform/sound";
 import { ItemAcceptorComponent } from "../components/item_acceptor";
 import { ItemEjectorComponent } from "../components/item_ejector";
@@ -12,13 +12,23 @@ import { enumHubGoalRewards } from "../tutorial_goals";
 import { T } from "../../translations";
 import { formatItemsPerSecond, generateMatrixRotations } from "../../core/utils";
 import { BeltUnderlaysComponent, enumClippedBeltUnderlayType } from "../components/belt_underlays";
+import { isTrueItem } from "../items/boolean_item";
 
 /** @enum {string} */
 export const enumHyperlinkVariants = {
-    hyperlinkEntrance: "hyperlink-entrance",
-    hyperlinkExit: "hyperlink-exit",
+    hyperlinkEntrance: "hyperlink_entrance",
+    hyperlinkExit: "hyperlink_exit",
     //do stuff in all this code with this
 };
+
+export const arrayHyperlinkVariantToRotation = [enumDirection.top, enumDirection.left, enumDirection.right];
+
+export const hyperlinkOverlayMatrices = {
+    [enumDirection.top]: generateMatrixRotations([0, 1, 0, 0, 1, 0, 0, 1, 0]),
+    [enumDirection.left]: generateMatrixRotations([0, 0, 0, 1, 1, 0, 0, 1, 0]),
+    [enumDirection.right]: generateMatrixRotations([0, 0, 0, 0, 1, 1, 0, 1, 0]),
+};
+
 const overlayMatrices = {
     [defaultBuildingVariant]: generateMatrixRotations([0, 1, 0, 0, 1, 0, 0, 1, 0]),
     [enumHyperlinkVariants.hyperlinkEntrance]: null,
@@ -52,8 +62,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
         }
     }
 
-    getRotateAutomaticallyWhilePlacing()
-    {
+    getRotateAutomaticallyWhilePlacing(){
         return true;
     }
     
@@ -64,6 +73,57 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 return true;
             default:
                 return false;
+        }
+    }
+
+    getSprite(rotationVariant, variant) {
+        if(variant !== enumHyperlinkVariants.defaultBuildingVariant){
+            return Loader.getSprite(
+                "sprites/buildings/" +
+                    this.id +
+                    (variant === defaultBuildingVariant ? "" : "-" + variant) +
+                    ".png"
+            );
+        }
+        switch (arrayHyperlinkVariantToRotation[rotationVariant]) {
+            case enumDirection.top: {
+                return Loader.getSprite("sprites/buildings/hyperlink.png");
+            }
+            case enumDirection.left: {
+                return Loader.getSprite("sprites/buildings/hyperlink_left.png");
+            }
+            case enumDirection.right: {
+                return Loader.getSprite("sprites/buildings/hyperlink_right.png");
+            }
+            default: {
+                assertAlways(false, "Invalid hyperlink rotation variant");
+            }
+        }
+    }
+
+
+    getBlueprintSprite(rotationVariant, variant) {
+        if(variant !== enumHyperlinkVariants.defaultBuildingVariant){
+            return Loader.getSprite(
+                "sprites/blueprints/" +
+                    this.id +
+                    (variant === defaultBuildingVariant ? "" : "-" + variant) +
+                    ".png"
+            );
+        }
+        switch (arrayHyperlinkVariantToRotation[rotationVariant]) {
+            case enumDirection.top: {
+                return Loader.getSprite("sprites/blueprints/hyperlink.png");
+            }
+            case enumDirection.left: {
+                return Loader.getSprite("sprites/blueprints/hyperlink_left.png");
+            }
+            case enumDirection.right: {
+                return Loader.getSprite("sprites/blueprints/hyperlink_right.png");
+            }
+            default: {
+                assertAlways(false, "Invalid belt rotation variant");
+            }
         }
     }
 
@@ -110,6 +170,8 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
         return true;
     }
 
+    
+
     /**
      * Creates the entity at the given location
      * @param {Entity} entity
@@ -135,24 +197,43 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
     updateVariants(entity, rotationVariant, variant) {
         switch (variant) {
             case defaultBuildingVariant: {
-                
+                if(entity.components.BeltUnderlays){entity.removeComponent(BeltUnderlaysComponent);}
                 if(entity.components.ItemAcceptor){entity.removeComponent(ItemAcceptorComponent);}
                 if(entity.components.ItemEjector){entity.removeComponent(ItemEjectorComponent);}
-                if(!entity.components.HyperlinkAcceptor)
-                {
+                if(!entity.components.HyperlinkAcceptor){
                     entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}))
                 }
-                entity.components.HyperlinkAcceptor.setSlots([
-                    {
-                        pos: new Vector(0, 0),
-                        directions: [enumDirection.bottom],
-                    },
-                ]);
-                
-                if(!entity.components.HyperlinkEjector)
-                {
+                if(!entity.components.HyperlinkEjector){
                     entity.addComponent(new HyperlinkEjectorComponent({slots: [],}))
                 }
+                entity.components.HyperlinkAcceptor.setSlots([{
+                    pos: new Vector(0, 0), directions: [enumDirection.bottom], },
+                ]);
+
+                switch (arrayHyperlinkVariantToRotation[rotationVariant]) {
+                    case enumDirection.top: {
+                        entity.components.HyperlinkEjector.setSlots([
+                            { pos: new Vector(0, 0), direction: enumDirection.top },
+                        ]);
+                    }
+                    case enumDirection.left: {
+                        entity.components.HyperlinkEjector.setSlots([
+                            { pos: new Vector(0, 0), direction: enumDirection.left },
+                        ]);
+                    }
+                    case enumDirection.right: {
+                        entity.components.HyperlinkEjector.setSlots([
+                            { pos: new Vector(0, 0), direction: enumDirection.right },
+                        ]);
+                    }
+                    default: {
+                        assertAlways(false, "Invalid hyperlink rotation variant");
+                    }
+                }
+                
+                entity.components.HyperlinkAcceptor.setSlots([{
+                        pos: new Vector(0, 0), directions: [enumDirection.bottom], },
+                ]);
                 entity.components.HyperlinkEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.top },
                 ]);
@@ -184,7 +265,9 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                     { pos: new Vector(0, 0), direction: enumDirection.top },
                 ]);
                 entity.components.ItemProcessor.inputsPerCharge = 2;
-
+                if(!entity.components.BeltUnderlays){
+                    entity.addComponent(new BeltUnderlaysComponent({slots: [],}))
+                }
                 entity.components.BeltUnderlays.underlays = [
                     { pos: new Vector(0, 1), direction: enumDirection.left},
                     { pos: new Vector(0, 1), direction: enumDirection.right},
@@ -212,7 +295,9 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 ]);
                 entity.components.ItemProcessor.type = enumItemProcessorTypes.hyperlinkExit;
                 
-                
+                if(!entity.components.BeltUnderlays){
+                    entity.addComponent(new BeltUnderlaysComponent({slots: [],}))
+                }
                 entity.components.BeltUnderlays.underlays = [
                     { pos: new Vector(0, 0), direction: enumDirection.left },
                     { pos: new Vector(0, 0), direction: enumDirection.right },
@@ -222,5 +307,113 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
             default:
                 assertAlways(false, "Unknown hyperlink variant: " + variant);
         }
+    }
+
+    /**
+     * Should compute the optimal rotation variant on the given tile
+     * @param {object} param0
+     * @param {GameRoot} param0.root
+     * @param {Vector} param0.tile
+     * @param {number} param0.rotation
+     * @param {string} param0.variant
+     * @param {Layer} param0.layer
+     * @return {{ rotation: number, rotationVariant: number, connectedEntities?: Array<Entity> }}
+     */
+    computeOptimalDirectionAndRotationVariantAtTile({ root, tile, rotation, variant, layer }) {
+        if(variant !== enumHyperlinkVariants.defaultBuildingVariant){
+            return {
+                rotation: 0,
+                rotationVariant: 0,
+            };
+        }
+        const topDirection = enumAngleToDirection[rotation];
+        const rightDirection = enumAngleToDirection[(rotation + 90) % 360];
+        const bottomDirection = enumAngleToDirection[(rotation + 180) % 360];
+        const leftDirection = enumAngleToDirection[(rotation + 270) % 360];
+
+        const { ejectors, acceptors } = root.logic.getEjectorsAndAcceptorsAtTile(tile, isTrueItem);
+
+        let hasBottomEjector = false;
+        let hasRightEjector = false;
+        let hasLeftEjector = false;
+
+        let hasTopAcceptor = false;
+        let hasLeftAcceptor = false;
+        let hasRightAcceptor = false;
+
+        // Check all ejectors
+        for (let i = 0; i < ejectors.length; ++i) {
+            const ejector = ejectors[i];
+
+            if (ejector.toDirection === topDirection) {
+                hasBottomEjector = true;
+            } else if (ejector.toDirection === leftDirection) {
+                hasRightEjector = true;
+            } else if (ejector.toDirection === rightDirection) {
+                hasLeftEjector = true;
+            }
+        }
+
+        // Check all acceptors
+        for (let i = 0; i < acceptors.length; ++i) {
+            const acceptor = acceptors[i];
+            if (acceptor.fromDirection === bottomDirection) {
+                hasTopAcceptor = true;
+            } else if (acceptor.fromDirection === rightDirection) {
+                hasLeftAcceptor = true;
+            } else if (acceptor.fromDirection === leftDirection) {
+                hasRightAcceptor = true;
+            }
+        }
+
+        // Soo .. if there is any ejector below us we always prioritize
+        // this ejector
+        if (!hasBottomEjector) {
+            // When something ejects to us from the left and nothing from the right,
+            // do a curve from the left to the top
+
+            if (hasRightEjector && !hasLeftEjector) {
+                return {
+                    rotation: (rotation + 270) % 360,
+                    rotationVariant: 2,
+                };
+            }
+
+            // When something ejects to us from the right and nothing from the left,
+            // do a curve from the right to the top
+            if (hasLeftEjector && !hasRightEjector) {
+                return {
+                    rotation: (rotation + 90) % 360,
+                    rotationVariant: 1,
+                };
+            }
+        }
+
+        // When there is a top acceptor, ignore sides
+        // NOTICE: This makes the belt prefer side turns *way* too much!
+        if (!hasTopAcceptor) {
+            // When there is an acceptor to the right but no acceptor to the left,
+            // do a turn to the right
+            if (hasRightAcceptor && !hasLeftAcceptor) {
+                return {
+                    rotation,
+                    rotationVariant: 2,
+                };
+            }
+
+            // When there is an acceptor to the left but no acceptor to the right,
+            // do a turn to the left
+            if (hasLeftAcceptor && !hasRightAcceptor) {
+                return {
+                    rotation,
+                    rotationVariant: 1,
+                };
+            }
+        }
+
+        return {
+            rotation,
+            rotationVariant: 0,
+        };
     }
 }

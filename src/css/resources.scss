@@ -29,8 +29,8 @@ $buildingsAndVariants: belt, hyperlink, balancer, underground_belt, underground_
     background-image: uiResource("res/ui/building_tutorials/balancer-merger-triple.png") !important;
 }
 
-[data-icon="building_tutorials/hyperlink-hyperlink-exit.png"],
-[data-icon="building_tutorials/hyperlink-hyperlink-entrance.png"] {
+[data-icon="building_tutorials/hyperlink-hyperlink_exit.png"],
+[data-icon="building_tutorials/hyperlink-hyperlink_entrance.png"] {
     /* @load-async */
     background-image: uiResource("res/ui/building_tutorials/hyperlink.png") !important;
 }

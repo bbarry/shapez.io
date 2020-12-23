@@ -79,7 +79,7 @@ export function initMetaBuildingRegistry() {
     // Miner
     registerBuildingVariant(7, MetaMinerBuilding);
     registerBuildingVariant(8, MetaMinerBuilding, enumMinerVariants.chainable);
-    registerBuildingVariant(67, MetaMinerBuilding, enumMinerVariants.deep);
+    registerBuildingVariant(69, MetaMinerBuilding, enumMinerVariants.deep);
 
     // Cutter
     registerBuildingVariant(9, MetaCutterBuilding);
@@ -118,9 +118,11 @@ export function initMetaBuildingRegistry() {
     registerBuildingVariant(26, MetaHubBuilding);
 
     // Hyperlink
-    registerBuildingVariant(64, MetaHyperlinkBuilding);
-    registerBuildingVariant(65, MetaHyperlinkBuilding, enumHyperlinkVariants.hyperlinkEntrance);
-    registerBuildingVariant(66, MetaHyperlinkBuilding, enumHyperlinkVariants.hyperlinkExit);
+    registerBuildingVariant(64, MetaHyperlinkBuilding, defaultBuildingVariant, 0);
+    registerBuildingVariant(65, MetaHyperlinkBuilding, defaultBuildingVariant, 1);
+    registerBuildingVariant(66, MetaHyperlinkBuilding, defaultBuildingVariant, 2);
+    registerBuildingVariant(67, MetaHyperlinkBuilding, enumHyperlinkVariants.hyperlinkEntrance);
+    registerBuildingVariant(68, MetaHyperlinkBuilding, enumHyperlinkVariants.hyperlinkExit);
 
     // Wire
     registerBuildingVariant(27, MetaWireBuilding, defaultBuildingVariant, 0);
