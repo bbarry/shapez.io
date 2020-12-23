@@ -14,7 +14,7 @@ export const enumMinerVariants = { chainable: "chainable", deep: "deep" };
 const overlayMatrix = {
     [defaultBuildingVariant]: generateMatrixRotations([1, 1, 1, 1, 0, 1, 1, 1, 1]),
     [enumMinerVariants.chainable]: generateMatrixRotations([0, 1, 0, 1, 1, 1, 1, 1, 1]),
-    [enumMinerVariants.deep]: generateMatrixRotations([0, 1, 0, 1, 1, 1, 1, 1, 1]),
+    [enumMinerVariants.deep]: generateMatrixRotations([1, 1, 1, 1, 0, 1, 1, 1, 1]),
 };
 
 export class MetaMinerBuilding extends MetaBuilding {
@@ -84,8 +84,7 @@ export class MetaMinerBuilding extends MetaBuilding {
      * @param {string} variant
      */
     updateVariants(entity, rotationVariant, variant) {
-        entity.components.Miner.chainable = variant === enumMinerVariants.chainable || 
-            variant === enumMinerVariants.deep;
+        entity.components.Miner.chainable = variant === enumMinerVariants.chainable;
         entity.components.Miner.deep = variant === enumMinerVariants.deep;
     }
 }
