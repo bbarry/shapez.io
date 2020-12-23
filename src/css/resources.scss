@@ -20,6 +20,14 @@ $buildingsAndVariants: belt, hyperlink, hyperlink-hyperlink-exit, hyperlink-hype
         background-image: uiResource("res/ui/building_tutorials/#{$building}.png") !important;
     }
 }
+[data-icon="building_tutorials/balancer-splitter-triple.png"] {
+    /* @load-async */
+    background-image: uiResource("res/ui/building_tutorials/balancer-splitter-triple.png") !important;
+}
+[data-icon="building_tutorials/balancer-merger-triple.png"] {
+    /* @load-async */
+    background-image: uiResource("res/ui/building_tutorials/balancer-merger-triple.png") !important;
+}
 
 [data-icon="building_tutorials/balancer-merger.png"],
 [data-icon="building_tutorials/balancer-merger-inverse.png"] {
