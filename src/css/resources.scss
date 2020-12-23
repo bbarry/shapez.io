@@ -9,7 +9,7 @@ $buildings: belt, hyperlink, cutter, miner, mixer, painter, rotater, balancer, s
     }
 }
 
-$buildingsAndVariants: belt, hyperlink, hyperlink-hyperlink-exit, hyperlink-hyperlink-entrance, balancer, underground_belt, underground_belt-tier2, miner, miner-chainable,
+$buildingsAndVariants: belt, hyperlink, balancer, underground_belt, underground_belt-tier2, miner, miner-chainable,
     cutter, cutter-quad, rotater, rotater-ccw, stacker, mixer, painter-double, painter-quad, trash, storage,
     reader, rotater-rotate180, display, constant_signal, wire, wire_tunnel, logic_gate-or, logic_gate-not,
     logic_gate-xor, analyzer, virtual_processor-rotater, virtual_processor-unstacker, item_producer,
@@ -27,6 +27,12 @@ $buildingsAndVariants: belt, hyperlink, hyperlink-hyperlink-exit, hyperlink-hype
 [data-icon="building_tutorials/balancer-merger-triple.png"] {
     /* @load-async */
     background-image: uiResource("res/ui/building_tutorials/balancer-merger-triple.png") !important;
+}
+
+[data-icon="building_tutorials/hyperlink-hyperlink-exit.png"],
+[data-icon="building_tutorials/hyperlink-hyperlink-entrance.png"] {
+    /* @load-async */
+    background-image: uiResource("res/ui/building_tutorials/hyperlink.png") !important;
 }
 
 [data-icon="building_tutorials/balancer-merger.png"],
