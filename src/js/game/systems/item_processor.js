@@ -371,9 +371,9 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
 
         // Queue Charge
         let baseSpeed = this.root.hubGoals.getProcessorBaseSpeed(processorComp.type);
-        if(entity.components.HyperlinkAcceptor)
+        if(entity.components.HyperlinkAcceptor || entity.components.HyperlinkEjector)
         {
-            baseSpeed *= 2;
+            baseSpeed *= 4;
         }
         const originalTime = 1 / baseSpeed;
 
