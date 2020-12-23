@@ -33,7 +33,7 @@ export class MetaMinerBuilding extends MetaBuilding {
      */
     getAdditionalStatistics(root, variant) {
         let speedMultiplier = 1;
-        if(variant = enumMinerVariants.deep){
+        if(variant == enumMinerVariants.deep){
             speedMultiplier = 2.5;
         }
         const speed = root.hubGoals.getMinerBaseSpeed() * speedMultiplier;
@@ -47,7 +47,7 @@ export class MetaMinerBuilding extends MetaBuilding {
     getAvailableVariants(root) {
         if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_miner_chainable)) {
             if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_virtual_processing)) {
-                return [enumMinerVariants.deep, enumMinerVariants.chainable];
+                return [enumMinerVariants.chainable, enumMinerVariants.deep];
             }
             return [enumMinerVariants.chainable];
         }
