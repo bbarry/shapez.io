@@ -347,16 +347,8 @@ export class GameLogic {
 
     g(tile, edge) {}
 
-    /**
-     * Returns the acceptors and ejectors which affect the current tile
-     * @param {Vector} tile
-     * @param {boolean} isHyperlink
-     * @returns {AcceptorsAndEjectorsAffectingTile}
-     */
     getEjectorsAndAcceptorsAtTile(tile, isHyperlink) {
-        /** @type {EjectorsAffectingTile} */
         let ejectors = [];
-        /** @type {AcceptorsAffectingTile} */
         let acceptors = [];
 
         // Well .. please ignore this code! :D
