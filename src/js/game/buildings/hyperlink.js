@@ -219,7 +219,9 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 if(entity.components.BeltUnderlays){entity.removeComponent(BeltUnderlaysComponent);}
                 if(entity.components.ItemAcceptor){entity.removeComponent(ItemAcceptorComponent);}
                 if(entity.components.ItemEjector){entity.removeComponent(ItemEjectorComponent);}
-                if(!entity.components.HyperlinkEjector){entity.addComponent(new HyperlinkEjectorComponent({slots: [],}));}
+                if(!entity.components.HyperlinkEjector){
+                    entity.addComponent(new HyperlinkEjectorComponent({slots: [],}));
+                }
                 if(!entity.components.HyperlinkAcceptor){
                     entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}));
                 }
