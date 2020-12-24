@@ -128,9 +128,10 @@ export class HyperlinkEjectorSystem extends GameSystemWithFilter {
 
         // Precompute effective belt speed
         let progressGrowth = 4 * this.root.dynamicTickrate.deltaSeconds;
+        
+        progressGrowth = 1;
 
         if (G_IS_DEV && globalConfig.debug.instantBelts) {
-            progressGrowth = 1;
         }
 
         // Go over all cache entries
@@ -154,9 +155,9 @@ export class HyperlinkEjectorSystem extends GameSystemWithFilter {
                             this.root.hubGoals.getBeltBaseSpeed() *
                             globalConfig.itemSpacingOnBelts
                 );
-            
+                sourceSlot.progress = 1.0;
                 if (G_IS_DEV && globalConfig.debug.disableEjectorProcessing) {
-                    sourceSlot.progress = 1.0;
+                    
                 }
             
                 // Check if we are still in the process of ejecting, can't proceed then
