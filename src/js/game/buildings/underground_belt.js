@@ -193,6 +193,13 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
 
             const contents = root.map.getTileContent(tile, "regular");
             if (contents) {
+                
+                if(contents.components.HyperlinkAcceptor || contents.components.HyperlinkEjector){
+                    return {
+                        rotation,
+                        rotationVariant: 0,
+                    };
+                }
                 const undergroundComp = contents.components.UndergroundBelt;
                 if (undergroundComp && undergroundComp.tier === tier) {
                     const staticComp = contents.components.StaticMapEntity;
