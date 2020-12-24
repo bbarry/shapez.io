@@ -31,11 +31,6 @@ export const hyperlinkOverlayMatrices = {
     [enumDirection.right]: generateMatrixRotations([0, 0, 0, 0, 1, 1, 0, 1, 0]),
 };
 
-const overlayMatrices = {
-    [defaultBuildingVariant]: generateMatrixRotations([0, 1, 0, 0, 1, 0, 0, 1, 0]),
-    [enumHyperlinkVariants.hyperlinkEntrance]: null,
-    [enumHyperlinkVariants.hyperlinkExit]: null,
-};
 
 export class MetaHyperlinkBuilding extends MetaBuilding {
     constructor() {
@@ -156,7 +151,10 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
      * @returns {Array<number>|null}
      */
     getSpecialOverlayRenderMatrix(rotation, rotationVariant, variant, entity) {
-        const matrix = overlayMatrices[variant];
+        let matrix = null;
+        if(variant == defaultBuildingVariant){
+            matrix = hyperlinkOverlayMatrices[rotationVariant];
+        }
         if (matrix) {
             return matrix[rotation];
         }
