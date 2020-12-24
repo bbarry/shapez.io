@@ -49,8 +49,8 @@ export class HUDKeybindingOverlay extends BaseHUDPart {
             !this.mapOverviewActive &&
             placer &&
             placer.currentMetaBuilding.get() &&
-            placer.currentMetaBuilding.get().getHasDirectionLockAvailable()
-            
+            placer.currentMetaBuilding.get().getHasDirectionLockAvailable(
+                placer.currentVariant.get())
         );
     }
 
