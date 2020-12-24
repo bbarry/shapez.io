@@ -79,7 +79,9 @@ export class UndergroundBeltSystem extends GameSystemWithFilter {
                 if (!contents) {
                     continue;
                 }
-
+                if(contents.components.HyperlinkAcceptor || contents.components.HyperlinkEjector){
+                    return;
+                }
                 const contentsUndergroundComp = contents.components.UndergroundBelt;
                 const contentsStaticComp = contents.components.StaticMapEntity;
                 if (

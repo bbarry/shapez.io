@@ -351,7 +351,7 @@ export class GameLogic {
         let ejectors = [];
         let acceptors = [];
 
-        // Well .. please ignore this code! :D
+        // Well .. please ignore this code! :D nope.
         for (let dx = -1; dx <= 1; ++dx) {
             for (let dy = -1; dy <= 1; ++dy) {
                 if (Math.abs(dx) + Math.abs(dy) !== 1) {
