@@ -67,6 +67,14 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
     getRotateAutomaticallyWhilePlacing(){
         return true;
     }
+
+    getHasDirectionLockAvailable(variant) {
+        if(variant == defaultBuildingVariant)
+        {
+            return true;
+        }
+        return false;
+    }
     
     getStayInPlacementMode(variant) {
         switch(variant){
