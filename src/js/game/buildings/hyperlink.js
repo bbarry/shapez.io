@@ -64,16 +64,24 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
         }
     }
 
-    getRotateAutomaticallyWhilePlacing(){
-        return true;
+    getRotateAutomaticallyWhilePlacing(variant){
+        switch(variant){
+            case defaultBuildingVariant:
+            case undefined:
+                return true;
+            default:
+                return false;
+        }
     }
 
     getHasDirectionLockAvailable(variant) {
-        if(variant == defaultBuildingVariant)
-        {
-            return true;
+        switch(variant){
+            case defaultBuildingVariant:
+            case undefined:
+                return true;
+            default:
+                return false;
         }
-        return false;
     }
     
     getStayInPlacementMode(variant) {
