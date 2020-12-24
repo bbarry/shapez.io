@@ -154,8 +154,6 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
         let matrix = null;
         if(variant == defaultBuildingVariant){
             matrix = hyperlinkOverlayMatrices[rotationVariant];
-        }
-        if (matrix) {
             return matrix[rotation];
         }
         return null;
