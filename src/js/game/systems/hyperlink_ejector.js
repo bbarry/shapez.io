@@ -158,6 +158,7 @@ export class HyperlinkEjectorSystem extends GameSystemWithFilter {
                 if (G_IS_DEV && globalConfig.debug.disableEjectorProcessing) {
                     sourceSlot.progress = 1.0;
                 }
+                
             
                 // Check if we are still in the process of ejecting, can't proceed then
                 if (sourceSlot.progress < 1.0) {
