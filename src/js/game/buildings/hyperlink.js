@@ -205,7 +205,6 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 processorType: enumItemProcessorTypes.hyperlink,
             })
         );
-        entity.addComponent(new HyperlinkComponent({}));
         entity.addComponent(new BeltUnderlaysComponent({ underlays: [] }));
     }
 
@@ -224,8 +223,13 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 if(entity.components.ItemEjector){entity.removeComponent(ItemEjectorComponent);}
                 if(!entity.components.HyperlinkEjector){entity.addComponent(new HyperlinkEjectorComponent({slots: [],}));}
                 if(!entity.components.HyperlinkAcceptor){
-                    entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}))
+                    entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}));
                 }
+
+                if(!entity.components.Hyperlink){
+                    entity.addComponent(new HyperlinkComponent({}));
+                }
+
                 entity.components.HyperlinkAcceptor.setSlots([{
                     pos: new Vector(0, 0), directions: [enumDirection.bottom], },
                 ]);
@@ -257,6 +261,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 break;
             }
             case enumHyperlinkVariants.hyperlinkEntrance: {
+                if(entity.components.Hyperlink){entity.removeComponent(HyperlinkComponent);}
                 if(entity.components.HyperlinkAcceptor){entity.removeComponent(HyperlinkAcceptorComponent);}
                 if(entity.components.ItemEjector){entity.removeComponent(ItemEjectorComponent);}
                 if(!entity.components.ItemAcceptor)
@@ -292,6 +297,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 break;
             }
             case enumHyperlinkVariants.hyperlinkExit: {
+                if(entity.components.Hyperlink){entity.removeComponent(HyperlinkComponent);}
                 if(entity.components.ItemAcceptor){entity.removeComponent(ItemAcceptorComponent);}
                 if(entity.components.HyperlinkEjector){entity.removeComponent(HyperlinkEjectorComponent);}
                 if(!entity.components.ItemEjector){
