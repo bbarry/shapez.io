@@ -1,18 +1,9 @@
-import { globalConfig } from "../../core/config";
-import { DrawParameters } from "../../core/draw_parameters";
 import { gMetaBuildingRegistry } from "../../core/global_registries";
-import { Loader } from "../../core/loader";
-import { createLogger } from "../../core/logging";
-import { AtlasSprite } from "../../core/sprites";
-import { fastArrayDeleteValue } from "../../core/utils";
-import { enumDirection, enumDirectionToVector, enumInvertedDirections, Vector } from "../../core/vector";
-import { BeltPath } from "../belt_path";
+import { Vector } from "../../core/vector";
 import { arrayHyperlinkVariantToRotation, MetaHyperlinkBuilding } from "../buildings/hyperlink";
 import { getCodeFromBuildingData } from "../building_codes";
 import { HyperlinkComponent } from "../components/hyperlink";
-import { Entity } from "../entity";
 import { GameSystemWithFilter } from "../game_system_with_filter";
-import { MapChunkView } from "../map_chunk_view";
 import { defaultBuildingVariant } from "../meta_building";
 
 /**
