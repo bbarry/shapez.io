@@ -235,13 +235,6 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                         assertAlways(false, "Invalid hyperlink rotation variant");
                     }
                 }
-                
-                entity.components.HyperlinkAcceptor.setSlots([{
-                        pos: new Vector(0, 0), directions: [enumDirection.bottom], },
-                ]);
-                entity.components.HyperlinkEjector.setSlots([
-                    { pos: new Vector(0, 0), direction: enumDirection.top },
-                ]);
                 break;
             }
             case enumHyperlinkVariants.hyperlinkEntrance: {
