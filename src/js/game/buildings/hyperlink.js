@@ -153,8 +153,8 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
     getSpecialOverlayRenderMatrix(rotation, rotationVariant, variant, entity) {
         let matrix = null;
         if(variant == defaultBuildingVariant){
-            matrix = hyperlinkOverlayMatrices[rotationVariant];
-            return matrix[rotation];
+            matrix = hyperlinkOverlayMatrices[entity.components.Hyperlink.direction][rotation];
+            return matrix;
         }
         return null;
     }
