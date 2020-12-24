@@ -102,6 +102,9 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
             }
         }
     }
+    getIsRotateable() {
+        return true;
+    }
 
 
     getBlueprintSprite(rotationVariant, variant) {
