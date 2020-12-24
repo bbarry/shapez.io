@@ -284,7 +284,6 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 entity.components.HyperlinkEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.top },
                 ]);
-                entity.components.ItemProcessor.inputsPerCharge = 2;
                 if(!entity.components.BeltUnderlays){
                     entity.addComponent(new BeltUnderlaysComponent({ underlays: [] }));
                 }
