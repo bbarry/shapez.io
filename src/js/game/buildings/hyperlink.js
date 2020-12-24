@@ -203,7 +203,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 if(entity.components.BeltUnderlays){entity.removeComponent(BeltUnderlaysComponent);}
                 if(entity.components.ItemAcceptor){entity.removeComponent(ItemAcceptorComponent);}
                 if(entity.components.ItemEjector){entity.removeComponent(ItemEjectorComponent);}
-                if(entity.components.HyperlinkEjector){entity.removeComponent(HyperlinkEjectorComponent);}
+                if(!entity.components.HyperlinkEjector){entity.addComponent(new HyperlinkEjectorComponent({slots: [],}));}
                 if(!entity.components.HyperlinkAcceptor){
                     entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}))
                 }
@@ -211,7 +211,6 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                     pos: new Vector(0, 0), directions: [enumDirection.bottom], },
                 ]);
                 
-                entity.addComponent(new HyperlinkEjectorComponent({slots: [],}))
 
                 switch (arrayHyperlinkVariantToRotation[rotationVariant]) {
                     case enumDirection.top: {
