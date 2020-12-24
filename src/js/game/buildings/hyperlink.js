@@ -36,6 +36,9 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
     constructor() {
         super("hyperlink");
     }
+    getIsRotateable() {
+        return true;
+    }
 
     getDimensions(variant) {
         switch (variant) {
@@ -112,9 +115,6 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 assertAlways(false, "Invalid hyperlink rotation variant");
             }
         }
-    }
-    getIsRotateable() {
-        return true;
     }
 
 
