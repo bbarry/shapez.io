@@ -9,7 +9,7 @@ import { enumDirection, enumDirectionToVector, enumInvertedDirections, Vector } 
 import { BeltPath } from "../belt_path";
 import { arrayHyperlinkVariantToRotation, MetaHyperlinkBuilding } from "../buildings/hyperlink";
 import { getCodeFromBuildingData } from "../building_codes";
-import { HyperlinkAcceptorComponent } from "../components/hyperlink_acceptor";
+import { HyperlinkComponent } from "../components/hyperlink";
 import { Entity } from "../entity";
 import { GameSystemWithFilter } from "../game_system_with_filter";
 import { MapChunkView } from "../map_chunk_view";
@@ -20,7 +20,7 @@ import { defaultBuildingVariant } from "../meta_building";
  */
 export class HyperlinkSystem extends GameSystemWithFilter {
     constructor(root) {
-        super(root, [HyperlinkAcceptorComponent]);
+        super(root, [HyperlinkComponent]);
 
         this.root.signals.entityDestroyed.add(this.updateSurroundingHyperlinkPlacement, this);
 
