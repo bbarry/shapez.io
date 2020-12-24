@@ -310,7 +310,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 entity.components.HyperlinkAcceptor.setSlots([
                     { pos: new Vector(0, 1), directions: [enumDirection.bottom], },
                 ]);
-                entity.components.ItemProcessor.type = enumItemProcessorTypes.hyperlinkExit;
+                entity.components.ItemProcessor.type = enumItemProcessorTypes.balancer;
                 
                 if(!entity.components.BeltUnderlays){
                     entity.addComponent(new BeltUnderlaysComponent({ underlays: [] }));
