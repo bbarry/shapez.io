@@ -127,7 +127,7 @@ export class HyperlinkEjectorSystem extends GameSystemWithFilter {
         this.staleAreaDetector.update();
 
         // Precompute effective belt speed
-        let progressGrowth = 8 * this.root.dynamicTickrate.deltaSeconds;
+        let progressGrowth = 6 * this.root.dynamicTickrate.deltaSeconds;
         
 
         if (G_IS_DEV && globalConfig.debug.instantBelts) {
@@ -153,7 +153,7 @@ export class HyperlinkEjectorSystem extends GameSystemWithFilter {
                     sourceSlot.progress +
                         progressGrowth *
                             this.root.hubGoals.getBeltBaseSpeed() *
-                            globalConfig.itemSpacingOnBelts * 2
+                            globalConfig.itemSpacingOnBelts * 1.5
                 );
                 if (G_IS_DEV && globalConfig.debug.disableEjectorProcessing) {
                     sourceSlot.progress = 1.0;
