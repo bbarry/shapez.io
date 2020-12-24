@@ -124,7 +124,7 @@ export class BeltSystem extends GameSystemWithFilter {
             return;
         }
 
-        const metaHyperlink = gMetaBuildingRegistry.findById("hyperlink");
+        const metaBelt = gMetaBuildingRegistry.findByClass(MetaBeltBuilding);
         // Compute affected area
         const originalRect = staticComp.getTileSpaceBounds();
         const affectedArea = originalRect.expandedInAllDirections(1);
@@ -154,7 +154,7 @@ export class BeltSystem extends GameSystemWithFilter {
                     const {
                         rotation,
                         rotationVariant,
-                    } = metaHyperlink.computeOptimalDirectionAndRotationVariantAtTile({
+                    } = metaBelt.computeOptimalDirectionAndRotationVariantAtTile({
                         root: this.root,
                         tile: new Vector(x, y),
                         rotation: targetStaticComp.originalRotation,
@@ -173,11 +173,11 @@ export class BeltSystem extends GameSystemWithFilter {
 
                         // Change stuff
                         targetStaticComp.rotation = rotation;
-                        metaHyperlink.updateVariants(targetEntity, rotationVariant, defaultBuildingVariant);
+                        metaBelt.updateVariants(targetEntity, rotationVariant, defaultBuildingVariant);
 
                         // Update code as well
                         targetStaticComp.code = getCodeFromBuildingData(
-                            metaHyperlink,
+                            metaBelt,
                             defaultBuildingVariant,
                             rotationVariant
                         );
