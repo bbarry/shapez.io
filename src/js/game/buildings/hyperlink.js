@@ -340,7 +340,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
     computeOptimalDirectionAndRotationVariantAtTile({ root, tile, rotation, variant, layer }) {
         if(variant !== defaultBuildingVariant){
             return {
-                rotation: 0,
+                rotation,
                 rotationVariant: 0,
             };
         }
