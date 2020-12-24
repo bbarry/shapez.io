@@ -79,9 +79,6 @@ export class UndergroundBeltSystem extends GameSystemWithFilter {
                 if (!contents) {
                     continue;
                 }
-                if(contents.components.HyperlinkAcceptor || contents.components.HyperlinkEjector){
-                    return;
-                }
                 const contentsUndergroundComp = contents.components.UndergroundBelt;
                 const contentsStaticComp = contents.components.StaticMapEntity;
                 if (
@@ -262,6 +259,9 @@ export class UndergroundBeltSystem extends GameSystemWithFilter {
             if (!potentialReceiver) {
                 // Empty tile
                 continue;
+            }
+            if(potentialReceiver.components.HyperlinkAcceptor || potentialReceiver.components.HyperlinkEjector){
+                return { entity: null, distance: 0 };
             }
             const receiverUndergroundComp = potentialReceiver.components.UndergroundBelt;
             if (!receiverUndergroundComp || receiverUndergroundComp.tier !== undergroundComp.tier) {
