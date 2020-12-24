@@ -213,7 +213,6 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
      * @param {string} variant
      */
     updateVariants(entity, rotationVariant, variant) {
-        entity.components.Hyperlink.direction = arrayHyperlinkVariantToRotation[rotationVariant];
         switch (variant) {
             case defaultBuildingVariant: {
                 if(entity.components.BeltUnderlays){entity.removeComponent(BeltUnderlaysComponent);}
@@ -229,6 +228,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 if(!entity.components.Hyperlink){
                     entity.addComponent(new HyperlinkComponent({}));
                 }
+                entity.components.Hyperlink.direction = arrayHyperlinkVariantToRotation[rotationVariant];
 
                 entity.components.HyperlinkAcceptor.setSlots([{
                     pos: new Vector(0, 0), directions: [enumDirection.bottom], },
