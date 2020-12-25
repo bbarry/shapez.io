@@ -506,7 +506,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         assert(inputItem instanceof ShapeItem, "Input for cut is not a shape");
         const pinsComp = payload.entity.components.WiredPins;
         let corners = [0, 1, 2, 3];
-        for (let i = 0; i < 4; ++i) {
+        for (let i = 0; i < 5; ++i) {
             const network = pinsComp.slots[i].linkedNetwork;
             const networkValue = network && network.hasValue() ? network.currentValue : null;
             if(networkValue && isTruthyItem(networkValue)){
