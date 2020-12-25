@@ -135,7 +135,7 @@ export class MetaCutterBuilding extends MetaBuilding {
             }
             case enumCutterVariants.laser: {
                 if(!entity.components.WiredPins){
-                    entity.addComponent(WiredPinsComponent({ slots: [] }));
+                    entity.addComponent(new WiredPinsComponent({ slots: [] }));
                 }
                 entity.components.WiredPins.setSlots([
                     {
