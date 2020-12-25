@@ -49,6 +49,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             [enumItemProcessorTypes.balancer]: this.process_BALANCER,
             [enumItemProcessorTypes.cutter]: this.process_CUTTER,
             [enumItemProcessorTypes.cutterQuad]: this.process_CUTTER_QUAD,
+            [enumItemProcessorTypes.cutterLaser]: this.process_CUTTER_LASER,
             [enumItemProcessorTypes.rotater]: this.process_ROTATER,
             [enumItemProcessorTypes.rotaterCCW]: this.process_ROTATER_CCW,
             [enumItemProcessorTypes.rotater180]: this.process_ROTATER_180,
@@ -247,6 +248,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                     return false;
                 }
                 return true;
+
             }
 
             // By default, everything is accepted
@@ -476,6 +478,8 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         }
     }
 
+    
+
     /**
      * @param {ProcessorImplementationPayload} payload
      */
@@ -485,6 +489,32 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         const inputDefinition = inputItem.definition;
 
         const cutDefinitions = this.root.shapeDefinitionMgr.shapeActionCutQuad(inputDefinition);
+
+        for (let i = 0; i < cutDefinitions.length; ++i) {
+            const definition = cutDefinitions[i];
+            if (!definition.isEntirelyEmpty()) {
+                payload.outItems.push({
+                    item: this.root.shapeDefinitionMgr.getShapeItemFromDefinition(definition),
+                    requiredSlot: i,
+                });
+            }
+        }
+    }
+
+    process_CUTTER_LASER(payload) {
+        const inputItem = /** @type {ShapeItem} */ (payload.items[0].item);
+        assert(inputItem instanceof ShapeItem, "Input for cut is not a shape");
+        const pinsComp = payload.entity.components.WiredPins;
+        let corners = [1, 2, 3, 4];
+        for (let i = 0; i < 4; ++i) {
+            const network = pinsComp.slots[i].linkedNetwork;
+            const networkValue = network && network.hasValue() ? network.currentValue : null;
+            if(isTruthyItem(networkValue)){
+                corners.splice(i,1);
+            }
+        }
+        const inputDefinition = inputItem.definition;
+        const cutDefinitions = this.root.shapeDefinitionMgr.shapeActionCutLaser(inputDefinition, corners);
 
         for (let i = 0; i < cutDefinitions.length; ++i) {
             const definition = cutDefinitions[i];

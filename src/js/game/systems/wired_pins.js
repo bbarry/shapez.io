@@ -28,7 +28,7 @@ export class WiredPinsSystem extends GameSystemWithFilter {
         this.root.signals.prePlacementCheck.add(this.prePlacementCheck, this);
         this.root.signals.freeEntityAreaBeforeBuild.add(this.freeEntityAreaBeforeBuild, this);
     }
-
+    
     /**
      * Performs pre-placement checks
      * @param {Entity} entity

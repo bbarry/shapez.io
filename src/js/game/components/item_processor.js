@@ -9,6 +9,7 @@ export const enumItemProcessorTypes = {
     balancer: "balancer",
     cutter: "cutter",
     cutterQuad: "cutterQuad",
+    cutterLaser: "cutterLaser",
     rotater: "rotater",
     rotaterCCW: "rotaterCCW",
     rotater180: "rotater180",
