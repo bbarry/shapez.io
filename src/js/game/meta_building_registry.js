@@ -84,7 +84,7 @@ export function initMetaBuildingRegistry() {
     // Cutter
     registerBuildingVariant(9, MetaCutterBuilding);
     registerBuildingVariant(10, MetaCutterBuilding, enumCutterVariants.quad);
-    registerBuildingVariant(69, MetaCutterBuilding, enumCutterVariants.laser);
+    registerBuildingVariant(70, MetaCutterBuilding, enumCutterVariants.laser);
 
     // Rotater
     registerBuildingVariant(11, MetaRotaterBuilding);
