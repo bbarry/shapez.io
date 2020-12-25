@@ -82,7 +82,9 @@ export class MetaCutterBuilding extends MetaBuilding {
         );
         entity.addComponent(new ItemEjectorComponent({}));
         entity.addComponent(
-            new ItemAcceptorComponent({slots: [],})
+            new ItemAcceptorComponent({
+                slots: [], // set later
+            })
         );
     }
 
@@ -98,7 +100,11 @@ export class MetaCutterBuilding extends MetaBuilding {
                 if(entity.components.WiredPins){entity.removeComponent(WiredPinsComponent);}
 
                 entity.components.ItemAcceptor.setSlots([
-                    { pos: new Vector(0, 0), direction: enumDirection.bottom, filter: "shape" },
+                    {
+                        pos: new Vector(0, 0),
+                        directions: [enumDirection.bottom],
+                        filter: "shape"
+                    },
                 ]);
 
                 entity.components.ItemEjector.setSlots([
@@ -110,9 +116,12 @@ export class MetaCutterBuilding extends MetaBuilding {
             }
             case enumCutterVariants.quad: {
                 if(entity.components.WiredPins){entity.removeComponent(WiredPinsComponent);}
-                
                 entity.components.ItemAcceptor.setSlots([
-                    { pos: new Vector(0, 0), direction: enumDirection.bottom, filter: "shape" },
+                    {
+                        pos: new Vector(0, 0),
+                        directions: [enumDirection.bottom],
+                        filter: "shape"
+                    },
                 ]);
 
                 entity.components.ItemEjector.setSlots([
@@ -151,7 +160,11 @@ export class MetaCutterBuilding extends MetaBuilding {
                     },
                 ])
                 entity.components.ItemAcceptor.setSlots([
-                    { pos: new Vector(0, 0), direction: enumDirection.left, filter: "shape" },
+                    {
+                        pos: new Vector(0, 0),
+                        directions: [enumDirection.left],
+                        filter: "shape"
+                    },
                 ]);
                 entity.components.ItemEjector.setSlots([
                     { pos: new Vector(1, 0), direction: enumDirection.right },
