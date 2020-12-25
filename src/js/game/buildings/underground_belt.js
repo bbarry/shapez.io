@@ -194,7 +194,7 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
             const contents = root.map.getTileContent(tile, "regular");
             if (contents) {
                 
-                if(contents.components.HyperlinkAcceptor || contents.components.HyperlinkEjector){
+                if(contents.components.Hyperlink){
                     return {
                         rotation,
                         rotationVariant: 0,

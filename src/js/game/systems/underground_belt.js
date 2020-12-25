@@ -260,7 +260,7 @@ export class UndergroundBeltSystem extends GameSystemWithFilter {
                 // Empty tile
                 continue;
             }
-            if(potentialReceiver.components.HyperlinkAcceptor || potentialReceiver.components.HyperlinkEjector){
+            if(potentialReceiver.components.Hyperlink){
                 return { entity: null, distance: 0 };
             }
             const receiverUndergroundComp = potentialReceiver.components.UndergroundBelt;
