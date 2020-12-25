@@ -514,16 +514,12 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             }
         }
         const inputDefinition = inputItem.definition;
-        const cutDefinitions = this.root.shapeDefinitionMgr.shapeActionCutLaser(inputDefinition, corners);
-
-        for (let i = 0; i < cutDefinitions.length; ++i) {
-            const definition = cutDefinitions[i];
-            if (!definition.isEntirelyEmpty()) {
-                payload.outItems.push({
-                    item: this.root.shapeDefinitionMgr.getShapeItemFromDefinition(definition),
-                    requiredSlot: i,
-                });
-            }
+        const definiton = this.root.shapeDefinitionMgr.shapeActionCutLaser(inputDefinition, corners);
+        if (!definiton.isEntirelyEmpty()) {
+            payload.outItems.push({
+                item: this.root.shapeDefinitionMgr.getShapeItemFromDefinition(definiton),
+                requiredSlot: 0,
+            });
         }
     }
 
