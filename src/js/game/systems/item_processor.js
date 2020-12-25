@@ -509,7 +509,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         for (let i = 0; i < 4; ++i) {
             const network = pinsComp.slots[i].linkedNetwork;
             const networkValue = network && network.hasValue() ? network.currentValue : null;
-            if(isTruthyItem(networkValue)){
+            if(networkValue && isTruthyItem(networkValue)){
                 corners.splice(i,1);
             }
         }
