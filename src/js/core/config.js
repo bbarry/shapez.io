@@ -71,7 +71,7 @@ export const globalConfig = {
     buildingSpeeds: {
         cutter: 1 / 4,
         cutterQuad: 1 / 4,
-        cutterLaser: 1 / 4,
+        cutterLaser: 1 / 3,
         rotater: 1 / 1,
         rotaterCCW: 1 / 1,
         rotater180: 1 / 1,
