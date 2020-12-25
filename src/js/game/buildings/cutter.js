@@ -3,7 +3,7 @@ import { enumDirection, Vector } from "../../core/vector";
 import { T } from "../../translations";
 import { ItemAcceptorComponent } from "../components/item_acceptor";
 import { ItemEjectorComponent } from "../components/item_ejector";
-import { WiredPinsComponent } from "../components/wired_pins";
+import { enumPinSlotType, WiredPinsComponent } from "../components/wired_pins";
 import { enumItemProcessorTypes, ItemProcessorComponent } from "../components/item_processor";
 import { Entity } from "../entity";
 import { defaultBuildingVariant, MetaBuilding } from "../meta_building";
