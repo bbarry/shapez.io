@@ -11,7 +11,7 @@ import { GameRoot } from "../root";
 import { enumHubGoalRewards } from "../tutorial_goals";
 
 /** @enum {string} */
-export const enumCutterVariants = { quad: "quad", laser: "laser" };
+export const enumCutterVariants = { quad: "quad", laser: "laser", };
 
 export class MetaCutterBuilding extends MetaBuilding {
     constructor() {
