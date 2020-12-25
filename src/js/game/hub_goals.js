@@ -526,6 +526,7 @@ export class HubGoals extends BasicSerializableObject {
 
             case enumItemProcessorTypes.cutter:
             case enumItemProcessorTypes.cutterQuad:
+            case enumItemProcessorTypes.cutterLaser:
             case enumItemProcessorTypes.rotater:
             case enumItemProcessorTypes.rotaterCCW:
             case enumItemProcessorTypes.rotater180:
