@@ -214,7 +214,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             }
 
             // Check if we have an empty queue and can start a new charge
-            if (processorComp.ongoingCharges.length < MAX_QUEUED_CHARGES + (isDoublePainter ? 1 : 0)) {
+            if (processorComp.ongoingCharges.length < MAX_QUEUED_CHARGES) {
                 if (this.canProcess(entity)) {
                     this.startNewCharge(entity);
                 }
