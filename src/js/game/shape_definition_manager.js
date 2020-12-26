@@ -106,17 +106,17 @@ export class ShapeDefinitionManager extends BasicSerializableObject {
     /**
      * Generates a definition for cutting with the laser cutter
      * @param {ShapeDefinition} definition
-     * @param {Array} corners
-     * @returns {ShapeDefinition}
+     * @param {Array} wantedCorners
+     * @returns {[ShapeDefinition, ShapeDefinition]}
      */
-    shapeActionCutLaser(definition, corners) {
+    shapeActionCutLaser(definition, wantedCorners, unwantedCorners) {
         //const key = "cut-laser/" + definition.getHash();
         //if (this.operationCache[key]) {
         //    return /** @type {[ShapeDefinition, ShapeDefinition]} */ (this.operationCache[key]);
         //}
-        const returnShape = definition.cloneFilteredByQuadrants(corners);
-
-        return returnShape;
+        const wantedShape = definition.cloneFilteredByQuadrants(wantedCorners);
+        const remainder = definition.cloneFilteredByQuadrants(unwantedCorners);
+        return [wantedShape, remainder];
     }
 
     /**

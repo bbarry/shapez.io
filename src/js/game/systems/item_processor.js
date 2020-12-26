@@ -508,21 +508,26 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         assert(inputItem instanceof ShapeItem, "Input for cut is not a shape");
         const pinsComp = payload.entity.components.WiredPins;
         let wantedCorners = [0, 1, 2, 3];
+        let unwantedCorners = [];
         for (let i = 0; i < 4; ++i) {
             const network = pinsComp.slots[i].linkedNetwork;
             const networkValue = network && network.hasValue() ? network.currentValue : null;
             if(networkValue && isTruthyItem(networkValue)){
-                wantedCorners.splice(i - 4 + wantedCorners.length,1);
+                unwantedCorners.push(wantedCorners.splice(i - 4 + wantedCorners.length,1));
             }
         }
         const inputDefinition = inputItem.definition;
-        const definiton = this.root.shapeDefinitionMgr.shapeActionCutLaser(inputDefinition, wantedCorners);
-        if (!definiton.isEntirelyEmpty()) {
-            payload.outItems.push({
-                item: this.root.shapeDefinitionMgr.getShapeItemFromDefinition(definiton),
-                requiredSlot: 0,
-            });
+        const allDefinitons = this.root.shapeDefinitionMgr.shapeActionCutLaser(inputDefinition, wantedCorners, unwantedCorners);
+        for(let i = 0; i < allDefinitons.length; ++i)
+        {
+            if (!allDefinitons[i].isEntirelyEmpty()) {
+                payload.outItems.push({
+                    item: this.root.shapeDefinitionMgr.getShapeItemFromDefinition(allDefinitons[i]),
+                    requiredSlot: i,
+                });
+            }
         }
+        
     }
 
     /**
