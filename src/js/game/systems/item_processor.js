@@ -76,6 +76,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             const processorComp = entity.components.ItemProcessor;
             const ejectorComp = entity.components.ItemEjector;
             const hyperlinkEjectorComp = entity.components.HyperlinkEjector;
+            const isDoublePainter = entity.components.ItemProcessor.type == enumItemProcessorTypes.painterDouble;
 
             const currentCharge = processorComp.ongoingCharges[0];
             if (currentCharge) {
@@ -206,7 +207,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
 
                     // If the charge was entirely emptied to the outputs, start the next charge
                     if (itemsToEject.length === 0 || 
-                        entity.components.ItemProcessor.type == enumItemProcessorTypes.painterDouble && itemsToEject.length <= 1) 
+                        isDoublePainter && itemsToEject.length <= 1) 
                     {
                         processorComp.ongoingCharges.shift();
                     }
@@ -214,7 +215,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             }
 
             // Check if we have an empty queue and can start a new charge
-            if (processorComp.ongoingCharges.length < MAX_QUEUED_CHARGES) {
+            if (processorComp.ongoingCharges.length < MAX_QUEUED_CHARGES + (isDoublePainter ? 1 : 0)) {
                 if (this.canProcess(entity)) {
                     this.startNewCharge(entity);
                 }
