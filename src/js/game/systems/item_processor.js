@@ -514,8 +514,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             const networkValue = network && network.hasValue() ? network.currentValue : null;
             if(networkValue && isTruthyItem(networkValue)){
                 wantedCorners.splice(i - 4 + wantedCorners.length,1);
-                unwantedCorners.push([i]);
-                console.log(unwantedCorners.length);
+                unwantedCorners.push(i);
             }
         }
         const inputDefinition = inputItem.definition;
