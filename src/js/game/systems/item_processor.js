@@ -94,7 +94,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                         // Go over all items and try to eject them
                         for (let j = 0; j < itemsToEject.length; ++j) {
                                 const { item, requiredSlot, preferredSlot } = itemsToEject[j];
-
+                                //
                                 assert(ejectorComp, "To eject items, the building needs to have an ejector");
 
                                 let slot = null;
@@ -205,7 +205,9 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                     
 
                     // If the charge was entirely emptied to the outputs, start the next charge
-                    if (itemsToEject.length === 0) {
+                    if (itemsToEject.length === 0 || 
+                        entity.components.ItemProcessor.type == enumItemProcessorTypes.painterDouble && itemsToEject.length <= 1) 
+                    {
                         processorComp.ongoingCharges.shift();
                     }
                 }
