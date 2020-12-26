@@ -137,7 +137,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                 }
                                 if (slot !== null) {
                                     // Alright, we can actually eject
-                                    if (!ejectorComp.tryEject(slot, item)) {
+                                    if (!ejectorComp.tryEject(slot, item, isDoublePainter && itemsToEject.length > 1)) {
                                         assert(false, "Failed to eject");
                                     } else {
                                         itemsToEject.splice(j, 1);

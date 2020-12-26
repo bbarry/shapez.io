@@ -114,17 +114,6 @@ export class ItemEjectorComponent extends Component {
         }
         return null;
     }
-    /*/**
-     * Returns all the free slots on this ejector or null if there is none
-     * @returns {array?}
-     
-    getAllSlots() {
-        if (this.slots.length > 1 && this.canEjectOnSlot(0) && this.canEjectOnSlot(1)){
-            return this.slots;
-        }
-        console.log(this.slots.length);
-        return null;
-    }*/
     /**
      * Returns the first free slot on this ejector or null if there is none
      * @returns {number?}
@@ -186,14 +175,15 @@ export class ItemEjectorComponent extends Component {
      * Tries to eject a given item
      * @param {number} slotIndex
      * @param {BaseItem} item
+     * @param {boolean} isInstant
      * @returns {boolean}
      */
-    tryEject(slotIndex, item) {
+    tryEject(slotIndex, item, isInstant) {
         if (!this.canEjectOnSlot(slotIndex)) {
             return false;
         }
         this.slots[slotIndex].item = item;
-        this.slots[slotIndex].progress = 0;
+        this.slots[slotIndex].progress = isInstant ? 1 : 0;
         return true;
     }
 
