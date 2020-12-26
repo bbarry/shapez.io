@@ -206,8 +206,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                     
 
                     // If the charge was entirely emptied to the outputs, start the next charge
-                    if (itemsToEject.length === 0 || 
-                        isDoublePainter && itemsToEject.length <= 1) 
+                    if (itemsToEject.length === 0) 
                     {
                         processorComp.ongoingCharges.shift();
                     }
