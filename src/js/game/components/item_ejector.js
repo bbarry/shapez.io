@@ -183,7 +183,7 @@ export class ItemEjectorComponent extends Component {
             return false;
         }
         this.slots[slotIndex].item = item;
-        this.slots[slotIndex].progress = isInstant ? 0.7 : 0;
+        this.slots[slotIndex].progress = isInstant ? 0.8 : 0;
         return true;
     }
 
