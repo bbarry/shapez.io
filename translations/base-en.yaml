@@ -1121,6 +1121,11 @@ settings:
             description: >-
                 Controls the size of the shapes on the map overview (when zooming out).
 
+        advancedTransportMod:
+            title: Advanced Transport Mod
+            description: >-
+                Adds new buildings which are other ways to transport items.
+
 keybindings:
     title: Keybindings
     hint: >-
