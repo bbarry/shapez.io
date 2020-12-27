@@ -275,6 +275,10 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                         pos: new Vector(0, 1),
                         directions: [enumDirection.right],
                     },
+                    {
+                        pos: new Vector(0, 1),
+                        directions: [enumDirection.bottom],
+                    },
                 ]);
                 
                 if(!entity.components.HyperlinkEjector)
@@ -303,6 +307,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 entity.components.ItemEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.right },
                     { pos: new Vector(0, 0), direction: enumDirection.left },
+                    { pos: new Vector(0, 0), direction: enumDirection.top },
                 ]);
                 if(!entity.components.HyperlinkAcceptor){
                     entity.addComponent(new HyperlinkAcceptorComponent({slots: [],}))
