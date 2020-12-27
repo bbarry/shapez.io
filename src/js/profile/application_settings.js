@@ -20,6 +20,7 @@ export const enumCategories = {
     userInterface: "userInterface",
     performance: "performance",
     advanced: "advanced",
+    mods: "mods",
 };
 
 export const uiScales = [
