@@ -19,7 +19,8 @@ import { MetaItemProducerBuilding } from "../../buildings/item_producer";
 import { queryParamOptions } from "../../../core/query_parameters";
 
 export class HUDBuildingsToolbar extends HUDBaseToolbar {
-    constructor(root) { 
+    constructor(root) {
+        const advancedTransportMod = root.app.settings.getAllSettings().advancedTransportMod;
         super(root, {
             primaryBuildings: [
                 MetaBeltBuilding,
@@ -35,7 +36,7 @@ export class HUDBuildingsToolbar extends HUDBaseToolbar {
                 ...(queryParamOptions.sandboxMode || G_IS_DEV ? [MetaItemProducerBuilding] : []),
             ],
             secondaryBuildings: [
-                MetaHyperlinkBuilding,
+                ...(advancedTransportMod ? [MetaHyperlinkBuilding] : []),
                 MetaStorageBuilding,
                 MetaReaderBuilding,
                 MetaLeverBuilding,

@@ -286,6 +286,8 @@ export const allApplicationSettings = [
     new BoolSetting("disableTileGrid", enumCategories.performance, (app, value) => {}),
     new BoolSetting("lowQualityTextures", enumCategories.performance, (app, value) => {}),
     new BoolSetting("simplifiedBelts", enumCategories.performance, (app, value) => {}),
+    
+    new BoolSetting("advancedTransportMod", enumCategories.mods, (app, value) => {}),
 ];
 
 export function getApplicationSettingById(id) {
@@ -332,6 +334,9 @@ class SettingsStorage {
          * @type {Object.<string, number>}
          */
         this.keybindingOverrides = {};
+
+        
+        this.advancedTransportMod = false;
     }
 }
 
