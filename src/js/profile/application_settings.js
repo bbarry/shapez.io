@@ -299,6 +299,8 @@ class SettingsStorage {
         this.uiScale = "regular";
         this.fullscreen = G_IS_STANDALONE;
 
+        this.advancedTransportMod = false;
+
         this.soundVolume = 1.0;
         this.musicVolume = 1.0;
 
@@ -336,7 +338,6 @@ class SettingsStorage {
         this.keybindingOverrides = {};
 
         
-        this.advancedTransportMod = false;
     }
 }
 
@@ -687,6 +688,12 @@ export class ApplicationSettings extends ReadWriteProxy {
             data.settings.offerHints = true;
 
             data.version = 30;
+        }
+
+        if (data.version < 31) {
+            data.settings.advancedTransportMod = false;
+
+            data.version = 31;
         }
 
         return ExplainedResult.good();
