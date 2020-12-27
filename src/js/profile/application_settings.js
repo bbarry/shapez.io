@@ -543,7 +543,7 @@ export class ApplicationSettings extends ReadWriteProxy {
     }
 
     getCurrentVersion() {
-        return 30;
+        return 31;
     }
 
     /** @param {{settings: SettingsStorage, version: number}} data */
