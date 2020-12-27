@@ -927,6 +927,7 @@ settings:
         userInterface: User Interface
         advanced: Advanced
         performance: Performance
+        mods: Mods
 
     versionBadges:
         dev: Development
