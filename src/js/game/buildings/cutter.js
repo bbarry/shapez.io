@@ -168,7 +168,7 @@ export class MetaCutterBuilding extends MetaBuilding {
                 ]);
                 entity.components.ItemEjector.setSlots([
                     { pos: new Vector(1, 0), direction: enumDirection.right },
-                    { pos: new Vector(0, 0), direction: enumDirection.bottom },
+                    { pos: new Vector(1, 0), direction: enumDirection.bottom },
                 ]);
                 entity.components.ItemProcessor.type = enumItemProcessorTypes.cutterLaser;
                 break;
