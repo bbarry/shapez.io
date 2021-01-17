@@ -12,7 +12,7 @@ import {
     Vector,
 } from "../../core/vector";
 import { BeltComponent } from "../components/belt";
-import { BeltUnderlaysComponent, enumClippedBeltUnderlayType } from "../components/belt_underlays";
+import { BeltUnderlaysComponent, enumRequiredBeltUnderlayType, enumClippedBeltUnderlayType } from "../components/belt_underlays";
 import { ItemAcceptorComponent } from "../components/item_acceptor";
 import { ItemEjectorComponent } from "../components/item_ejector";
 import { Entity } from "../entity";
@@ -177,6 +177,17 @@ export class BeltUnderlaysSystem extends GameSystemWithFilter {
      * @returns {enumClippedBeltUnderlayType} The type of the underlay
      */
     computeBeltUnderlayType(entity, underlayTile) {
+        switch (underlayTile.requiredType)
+        {
+            case enumRequiredBeltUnderlayType.alwaysFull:
+                return enumClippedBeltUnderlayType.full;
+            case enumRequiredBeltUnderlayType.alwaysBottom:
+                return enumClippedBeltUnderlayType.bottomOnly;
+            case enumRequiredBeltUnderlayType.alwaysTop:
+                return enumClippedBeltUnderlayType.topOnly;
+            default:
+                break;
+        }
         if (underlayTile.cachedType) {
             return underlayTile.cachedType;
         }
@@ -184,8 +195,6 @@ export class BeltUnderlaysSystem extends GameSystemWithFilter {
         const staticComp = entity.components.StaticMapEntity;
 
         const transformedPos = staticComp.localTileToWorld(underlayTile.pos);
-        const destX = transformedPos.x * globalConfig.tileSize;
-        const destY = transformedPos.y * globalConfig.tileSize;
 
         // Extract direction and angle
         const worldDirection = staticComp.localDirectionToWorld(underlayTile.direction);
@@ -205,11 +214,11 @@ export class BeltUnderlaysSystem extends GameSystemWithFilter {
 
         let flag = enumClippedBeltUnderlayType.none;
 
-        if (connectedTop && connectedBottom) {
+        if (connectedTop && connectedBottom && !underlayTile.requiredType) {
             flag = enumClippedBeltUnderlayType.full;
-        } else if (connectedTop) {
+        } else if (connectedTop && underlayTile.requiredType != enumRequiredBeltUnderlayType.bottomOnly) {
             flag = enumClippedBeltUnderlayType.topOnly;
-        } else if (connectedBottom) {
+        } else if (connectedBottom && underlayTile.requiredType != enumRequiredBeltUnderlayType.topOnly) {
             flag = enumClippedBeltUnderlayType.bottomOnly;
         }
 

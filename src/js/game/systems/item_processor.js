@@ -10,6 +10,7 @@ import { GameSystemWithFilter } from "../game_system_with_filter";
 import { BOOL_TRUE_SINGLETON, isTruthyItem } from "../items/boolean_item";
 import { ColorItem, COLOR_ITEM_SINGLETONS } from "../items/color_item";
 import { ShapeItem } from "../items/shape_item";
+import { enumMergedShape } from "../shape_definition";
 /**
  * We need to allow queuing charges, otherwise the throughput will stall
  */
@@ -45,7 +46,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
          */
         this.handlers = {
             [enumItemProcessorTypes.hyperlink]: this.process_HYPERLINK,
-            [enumItemProcessorTypes.hyperlinkExit]: this.process_HYPERLINK_EXIT,
             [enumItemProcessorTypes.balancer]: this.process_BALANCER,
             [enumItemProcessorTypes.cutter]: this.process_CUTTER,
             [enumItemProcessorTypes.cutterQuad]: this.process_CUTTER_QUAD,
@@ -54,6 +54,8 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             [enumItemProcessorTypes.rotaterCCW]: this.process_ROTATER_CCW,
             [enumItemProcessorTypes.rotater180]: this.process_ROTATER_180,
             [enumItemProcessorTypes.stacker]: this.process_STACKER,
+            [enumItemProcessorTypes.smartStacker]: this.process_SMART_STACKER,
+            [enumItemProcessorTypes.shapeMerger]: this.process_SHAPE_MERGER,
             [enumItemProcessorTypes.trash]: this.process_TRASH,
             [enumItemProcessorTypes.mixer]: this.process_MIXER,
             [enumItemProcessorTypes.painter]: this.process_PAINTER,
@@ -67,133 +69,107 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         for (const key in this.handlers) {
             this.handlers[key] = this.handlers[key].bind(this);
         }
-        this.isFirstSlot = true;
     }
     update() {
         for (let i = 0; i < this.allEntities.length; ++i) {
             const entity = this.allEntities[i];
-
             const processorComp = entity.components.ItemProcessor;
-            const ejectorComp = entity.components.ItemEjector;
-            const hyperlinkEjectorComp = entity.components.HyperlinkEjector;
-            const isDoublePainter = entity.components.ItemProcessor.type == enumItemProcessorTypes.painterDouble;
+            let ejectorComp = entity.components.HyperlinkEjector;
+            if(!ejectorComp) {
+                ejectorComp = entity.components.ItemEjector;
+            }
 
-            const currentCharge = processorComp.ongoingCharges[0];
-            if (currentCharge) {
+            for (let chargeIndex = 0; ; chargeIndex++) {
+                // Check if we have an open queue spot and can start a new charge
+                if (this.canProcess(entity)) {
+                    if(!processorComp.makeCharges && processorComp.inputSlots[0]) {
+                        for(let i = 0; i < processorComp.inputSlots.length; ++i) {
+                            const slot = processorComp.inputSlots[i].sourceSlot;
+                            const item = processorComp.inputSlots[i].item;
+                            const isOnMap = this.root.camera.getIsMapOverlayActive();
+                            const isOffWindow = this.root.app.unloaded || !this.root.app.pageVisible;
+                            if(ejectorComp.canEjectOnSlot(slot) && (this.isAcceptorSlotFree(entity, slot) || isOnMap || isOffWindow))
+                            {
+                                if(ejectorComp.tryEject(slot, item)) {
+                                    processorComp.inputSlots.splice(i, 1);
+                                }
+                            }
+                        }
+                    }
+                    else if (processorComp.ongoingCharges.length < MAX_QUEUED_CHARGES) {
+                        this.startNewCharge(entity);
+                    }
+                }
+                
+
+                if (chargeIndex >= 1 || processorComp.ongoingCharges.length == 0) {
+                    break;
+                }
+
+                const currentCharge = processorComp.ongoingCharges[chargeIndex];
+
                 // Process next charge
                 if (currentCharge.remainingTime > 0.0) {
-                    currentCharge.remainingTime -= this.root.dynamicTickrate.deltaSeconds;
+                    const deltaTime = this.root.dynamicTickrate.deltaSeconds + processorComp.bonusTime;
+                    currentCharge.remainingTime -= deltaTime;
+                    processorComp.bonusTime = 0;
+                    if (currentCharge.remainingTime > 0.0) {
+                        // This charge is not finished, so don't process the next one
+                        break;
+                    }
                     if (currentCharge.remainingTime < 0.0) {
                         // Add bonus time, this is the time we spent too much
                         processorComp.bonusTime += -currentCharge.remainingTime;
                     }
                 }
                 // Check if it finished
-                if (currentCharge.remainingTime <= 0.0) {
+                if (chargeIndex === 0 && currentCharge.remainingTime <= 0.0) {
                     const itemsToEject = currentCharge.items;
-                    if (!hyperlinkEjectorComp) {
-                        // Go over all items and try to eject them
-                        for (let j = 0; j < itemsToEject.length; ++j) {
-                                const { item, requiredSlot, preferredSlot } = itemsToEject[j];
-                                //
-                                assert(ejectorComp, "To eject items, the building needs to have an ejector");
-
-                                let slot = null;
-                            
-                                if (requiredSlot !== null && requiredSlot !== undefined) 
-                                {
-                                 // We have a slot override, check if that is free
-                                    if (ejectorComp.canEjectOnSlot(requiredSlot)) 
-                                    {
-                                        slot = requiredSlot;
-                                        ejectorComp.lastUsedSlot = slot;
-                                    }
-                                    } else if (preferredSlot !== null && preferredSlot !== undefined) {
-                                        // We have a slot preference, try using it but otherwise use a free slot
-                                
-                                        if (ejectorComp.canEjectOnSlot(preferredSlot) && preferredSlot !== ejectorComp.lastUsedSlot)
-                                        {
-                                            slot = preferredSlot;
-                                            ejectorComp.lastUsedSlot = slot;
-                                        }
-                                        else 
-                                        {
-                                        if (entity.components.ItemEjector.slots[2]) 
-                                        {
-                                        slot = ejectorComp.getNextFreeSlotForTriple(preferredSlot, ejectorComp.lastUsedSlot);
-                                            if (slot !== null)
-                                            {
-                                                ejectorComp.lastUsedSlot = slot;
-                                            }
-                                        }
-                                        else
-                                        {
-                                        slot = ejectorComp.getFirstFreeSlot();
-                                        }
-                                        }
-                                } else {
-                                // We can eject on any slot
-                                slot = ejectorComp.getFirstFreeSlot();
-                                }
-                                if (slot !== null) {
-                                    // Alright, we can actually eject
-                                    if (!ejectorComp.tryEject(slot, item, isDoublePainter)) {
-                                        assert(false, "Failed to eject");
-                                    } else {
-                                        itemsToEject.splice(j, 1);
-                                        j -= 1;
-                                    }
-                                }
-                            }
-                        
-                    } else {
                         // Go over all items and try to eject them
                         for (let j = 0; j < itemsToEject.length; ++j) {
                             const { item, requiredSlot, preferredSlot } = itemsToEject[j];
-                            
-                            assert(hyperlinkEjectorComp, "To eject items, the building needs to have an ejector");
+                            //
+                            assert(ejectorComp, "To eject items, the building needs to have an ejector");
 
                             let slot = null;
                             
                             if (requiredSlot !== null && requiredSlot !== undefined) 
                             {
                                 // We have a slot override, check if that is free
-                                if (hyperlinkEjectorComp.canEjectOnSlot(requiredSlot)) 
+                                if (ejectorComp.canEjectOnSlot(requiredSlot)) 
                                 {
                                     slot = requiredSlot;
                                 }
-                            } 
-                            else if (preferredSlot !== null && preferredSlot !== undefined) 
-                            {
+                            } else if (preferredSlot !== null && preferredSlot !== undefined) {
                                 // We have a slot preference, try using it but otherwise use a free slot
-                                
-                                if (hyperlinkEjectorComp.canEjectOnSlot(preferredSlot) && preferredSlot !== hyperlinkEjectorComp.lastUsedSlot)
+
+                                if (ejectorComp.canEjectOnSlot(preferredSlot) && preferredSlot !== ejectorComp.lastUsedSlot)
                                 {
                                     slot = preferredSlot;
-                                    hyperlinkEjectorComp.lastUsedSlot = slot;
+                                    ejectorComp.lastUsedSlot = slot;
                                 }
                                 else 
                                 {
-                                    if (entity.components.HyperlinkEjector.slots[2]) 
+                                    if (entity.components.ItemEjector && entity.components.ItemEjector.slots[2]) 
                                     {
-                                    slot = hyperlinkEjectorComp.getNextFreeSlotForTriple(preferredSlot, hyperlinkEjectorComp.lastUsedSlot);
+                                        slot = ejectorComp.getNextFreeSlotForTriple(preferredSlot, ejectorComp.lastUsedSlot);
                                         if (slot !== null)
                                         {
-                                            hyperlinkEjectorComp.lastUsedSlot = slot;
+                                            ejectorComp.lastUsedSlot = slot;
                                         }
                                     }
                                     else
                                     {
-                                    slot = hyperlinkEjectorComp.getFirstFreeSlot();
+                                        slot = ejectorComp.getFirstFreeSlot();
                                     }
                                 }
                             } else {
                                 // We can eject on any slot
-                                slot = hyperlinkEjectorComp.getFirstFreeSlot();
+                                slot = ejectorComp.getFirstFreeSlot();
                             }
                             if (slot !== null) {
                                 // Alright, we can actually eject
-                                if (!hyperlinkEjectorComp.tryEject(slot, item)) {
+                                if (!ejectorComp.tryEject(slot, item)) {
                                     assert(false, "Failed to eject");
                                 } else {
                                     itemsToEject.splice(j, 1);
@@ -202,26 +178,38 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                             }
                         }
                         
-                    }
                     
-
+                    
                     // If the charge was entirely emptied to the outputs, start the next charge
-                    if (itemsToEject.length === 0) 
-                    {
+                    if (itemsToEject.length === 0){
                         processorComp.ongoingCharges.shift();
+                        chargeIndex--;
                     }
-                }
-            }
-
-            // Check if we have an empty queue and can start a new charge
-            if (processorComp.ongoingCharges.length < MAX_QUEUED_CHARGES) {
-                if (this.canProcess(entity)) {
-                    this.startNewCharge(entity);
                 }
             }
         }
     }
-
+    /**
+     * Returns true if a acceptor slot is not accepting an item
+     * @param {Entity} entity
+     * @param {number} slotIndex The slot index
+     * @returns {boolean}
+     */
+    isAcceptorSlotFree(entity, slotIndex) {
+        assert(
+            entity.components.ItemAcceptor,
+            "To accept items, the building needs to have an Item Acceptor"
+        );
+        const acceptorComp = entity.components.ItemAcceptor;
+        for(let i = 0; i < acceptorComp.itemConsumptionAnimations.length; ++i)
+        {
+            const isSlot = acceptorComp.itemConsumptionAnimations[i].slotIndex == slotIndex;
+            if (isSlot) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * Returns true if the entity should accept the given item on the given slot.
@@ -237,6 +225,8 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         const pinsComp = entity.components.WiredPins;
 
         switch (itemProcessorComp.processingRequirement) {
+            
+            
             case enumItemProcessorRequirements.painterQuad: {
                 if (slotIndex === 0) {
                     // Always accept the shape
@@ -253,8 +243,23 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
 
             }
 
+            case enumItemProcessorRequirements.shapeMerger: {
+                // @ts-ignore
+                if(!(item.definition.layers.length == 1)) {
+                    return false;
+                }
+                // @ts-ignore
+                const layer = item.definition.layers[0];
+                for(let quad = 0; quad < 4; ++quad) {
+                    if(enumMergedShape[layer[quad].subShape]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
             // By default, everything is accepted
             default:
+            case enumItemProcessorRequirements.smartStacker: 
                 return true;
         }
     }
@@ -269,8 +274,27 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         switch (processorComp.processingRequirement) {
             // DEFAULT
             // By default, we can start processing once all inputs are there
-            case null: {
+            case null:
+            case enumItemProcessorRequirements.shapeMerger: {
                 return processorComp.inputSlots.length >= processorComp.inputsPerCharge;
+            }
+
+            case enumItemProcessorRequirements.smartStacker: {
+                const hasEnoughInputs = processorComp.inputSlots.length >= processorComp.inputsPerCharge;
+
+                /** @type {Object.<number, { item: BaseItem, sourceSlot: number }>} */
+                const itemsBySlot = {};
+                for (let i = 0; i < processorComp.inputSlots.length; ++i) {
+                    itemsBySlot[processorComp.inputSlots[i].sourceSlot] = processorComp.inputSlots[i];
+                }
+
+                if (!itemsBySlot[0]) {
+                    return false;
+                }
+                if(!hasEnoughInputs) {
+                    return false;
+                }
+                return true;
             }
 
             // QUAD PAINTER
@@ -340,7 +364,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
      */
     startNewCharge(entity) {
         const processorComp = entity.components.ItemProcessor;
-
         // First, take items
         const items = processorComp.inputSlots;
         processorComp.inputSlots = [];
@@ -365,29 +388,18 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             itemsBySlot,
             outItems,
         });
-
+        
         // Track produced items
         for (let i = 0; i < outItems.length; ++i) {
             if (!outItems[i].doNotTrack) {
                 this.root.signals.itemProduced.dispatch(outItems[i].item);
             }
         }
-
         // Queue Charge
         let baseSpeed = this.root.hubGoals.getProcessorBaseSpeed(processorComp.type);
-        if(entity.components.HyperlinkAcceptor || entity.components.HyperlinkEjector)
-        {
-            baseSpeed *= 4;
-        }
-        const originalTime = 1 / baseSpeed;
-
-        const bonusTimeToApply = Math.min(originalTime, processorComp.bonusTime);
-        const timeToProcess = originalTime - bonusTimeToApply;
-
-        processorComp.bonusTime -= bonusTimeToApply;
         processorComp.ongoingCharges.push({
             items: outItems,
-            remainingTime: timeToProcess,
+            remainingTime: 1 / baseSpeed,
         });
     }
 
@@ -396,48 +408,36 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
      */
     process_HYPERLINK(payload) {
         assert(
-            payload.entity.components.HyperlinkEjector,
-            "To be a hyperlink, the building needs to have a hyperlink ejector"
+            payload.entity.components.HyperlinkEjector || payload.entity.components.HyperlinkAcceptor,
+            "To be a hyperlink, the building needs to have a hyperlink part"
         );
         const availableSlots = payload.entity.components.HyperlinkEjector.slots.length;
         
         const processorComp = payload.entity.components.ItemProcessor;
 
         const nextSlot = processorComp.nextOutputSlot++ % availableSlots;
-
-        for (let i = 0; i < payload.items.length; ++i) {
-            payload.outItems.push({
-                item: payload.items[i].item,
-                preferredSlot: (nextSlot + i) % availableSlots,
-                doNotTrack: true,
-            });
+        if(payload.entity.components.ItemEjector){
+            for (let i = 0; i < payload.items.length; ++i) {
+                payload.outItems.push({
+                    item: payload.items[i].item,
+                    requiredSlot: (nextSlot + i) % availableSlots,
+                    doNotTrack: true,
+                });
+            }
         }
+        else{
+            for (let i = 0; i < payload.items.length; ++i) {
+                payload.outItems.push({
+                    item: payload.items[i].item,
+                    preferredSlot: (nextSlot + i) % availableSlots,
+                    doNotTrack: true,
+                });
+            }
+        }
+        
         return true;
     }
 
-    /**
-     * @param {ProcessorImplementationPayload} payload
-     */
-    process_HYPERLINK_EXIT(payload) {
-        assert(
-            payload.entity.components.HyperlinkAcceptor,
-            "To be a hyperlink exit, the building needs to have a hyperlink acceptor"
-        );
-        const ejectorComp = payload.entity.components.ItemEjector;
-        let slot = 0;
-        if(ejectorComp.isFirstSlot)
-        {
-            slot = 1;
-        }
-        ejectorComp.isFirstSlot = !ejectorComp.isFirstSlot;
-        for (let i = 0; i < payload.items.length; ++i) {
-            payload.outItems.push({
-                item: payload.items[i].item,
-                requiredSlot: slot,
-            });
-        }
-        return true;
-    }
 
     process_BALANCER(payload) {
         assert(
@@ -589,6 +589,48 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         );
         payload.outItems.push({
             item: this.root.shapeDefinitionMgr.getShapeItemFromDefinition(stackedDefinition),
+        });
+    }
+
+    /**
+     * @param {ProcessorImplementationPayload} payload
+     */
+    process_SMART_STACKER(payload) {
+        const mainItem = /** @type {ShapeItem} */ (payload.itemsBySlot[0]);
+        const item1 = /** @type {ShapeItem} */ (payload.itemsBySlot[1]);
+        const item2 = /** @type {ShapeItem} */ (payload.itemsBySlot[2]);
+        const item3 = /** @type {ShapeItem} */ (payload.itemsBySlot[3]);
+
+        assert(mainItem, "Must have a base item to stack with.");
+        assert(item1 || item2 || item3, "Must have something to stack with.");
+
+        const stackedDefinition = this.root.shapeDefinitionMgr.shapeActionSmartStack(
+            mainItem.definition,
+            item1? item1.definition : null,
+            item2? item2.definition : null,
+            item3? item3.definition : null,
+        );
+        payload.outItems.push({
+            item: this.root.shapeDefinitionMgr.getShapeItemFromDefinition(stackedDefinition),
+        });
+    }
+
+    /**
+     * @param {ProcessorImplementationPayload} payload
+     */
+    process_SHAPE_MERGER(payload) {
+        const item1 = /** @type {ShapeItem} */ (payload.itemsBySlot[0]);
+        const item2 = /** @type {ShapeItem} */ (payload.itemsBySlot[1]);
+
+        assert(item1 instanceof ShapeItem, "Input for item 1 is not a shape");
+        assert(item2 instanceof ShapeItem, "Input for item 2 is not a shape");
+
+        const combinedDefinition = this.root.shapeDefinitionMgr.shapeActionMerge(
+            item1.definition,
+            item2.definition
+        );
+        payload.outItems.push({
+            item: this.root.shapeDefinitionMgr.getShapeItemFromDefinition(combinedDefinition),
         });
     }
 

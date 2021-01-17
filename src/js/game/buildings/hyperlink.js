@@ -13,7 +13,7 @@ import { GameRoot } from "../root";
 import { enumHubGoalRewards } from "../tutorial_goals";
 import { T } from "../../translations";
 import { formatItemsPerSecond, generateMatrixRotations } from "../../core/utils";
-import { BeltUnderlaysComponent, enumClippedBeltUnderlayType } from "../components/belt_underlays";
+import { BeltUnderlaysComponent, enumRequiredBeltUnderlayType } from "../components/belt_underlays";
 import { isTrueItem } from "../items/boolean_item";
 
 /** @enum {string} */
@@ -292,8 +292,9 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                     entity.addComponent(new BeltUnderlaysComponent({ underlays: [] }));
                 }
                 entity.components.BeltUnderlays.underlays = [
-                    { pos: new Vector(0, 1), direction: enumDirection.left},
-                    { pos: new Vector(0, 1), direction: enumDirection.right},
+                    { pos: new Vector(0, 1), direction: enumDirection.left, requiredType: enumRequiredBeltUnderlayType.bottomOnly},
+                    { pos: new Vector(0, 1), direction: enumDirection.right, requiredType: enumRequiredBeltUnderlayType.bottomOnly},
+                    { pos: new Vector(0, 1), direction: enumDirection.top, requiredType: enumRequiredBeltUnderlayType.bottomOnly},
                 ];
                 break;
             }
@@ -302,7 +303,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                 if(entity.components.ItemAcceptor){entity.removeComponent(ItemAcceptorComponent);}
                 if(entity.components.HyperlinkEjector){entity.removeComponent(HyperlinkEjectorComponent);}
                 if(!entity.components.ItemEjector){
-                    entity.addComponent(new ItemEjectorComponent({slots: [],}))
+                    entity.addComponent(new ItemEjectorComponent({slots: [], renderFloatingItems: false}))
                 }
                 entity.components.ItemEjector.setSlots([
                     { pos: new Vector(0, 0), direction: enumDirection.right },
@@ -321,8 +322,9 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
                     entity.addComponent(new BeltUnderlaysComponent({ underlays: [] }));
                 }
                 entity.components.BeltUnderlays.underlays = [
-                    { pos: new Vector(0, 0), direction: enumDirection.left },
-                    { pos: new Vector(0, 0), direction: enumDirection.right },
+                    { pos: new Vector(0, 0), direction: enumDirection.left, requiredType: enumRequiredBeltUnderlayType.topOnly },
+                    { pos: new Vector(0, 0), direction: enumDirection.right, requiredType: enumRequiredBeltUnderlayType.topOnly },
+                    { pos: new Vector(0, 0), direction: enumDirection.top, requiredType: enumRequiredBeltUnderlayType.topOnly},
                 ];
                 break;
             }

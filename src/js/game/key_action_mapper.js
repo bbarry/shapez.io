@@ -46,7 +46,7 @@ export const KEYMAPPINGS = {
     buildings: {
         // Primary Toolbar
         belt: { keyCode: key("1") },
-        hyperlink: { keyCode: key("H") },
+        belt_crossing: { keyCode: key("-") },
         balancer: { keyCode: key("2") },
         underground_belt: { keyCode: key("3") },
         miner: { keyCode: key("4") },
@@ -61,11 +61,13 @@ export const KEYMAPPINGS = {
         item_producer: { keyCode: key("L") },
 
         // Secondary toolbar
+        hyperlink: { keyCode: key("H") },
         storage: { keyCode: key("Y") },
         reader: { keyCode: key("U") },
         lever: { keyCode: key("I") },
         filter: { keyCode: key("O") },
         display: { keyCode: key("P") },
+        shape_combiner: { keyCode: key("M") },
 
         // Wires toolbar
         wire: { keyCode: key("1") },

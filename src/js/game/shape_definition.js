@@ -4,7 +4,7 @@ import { smoothenDpi } from "../core/dpi_manager";
 import { DrawParameters } from "../core/draw_parameters";
 import { Vector } from "../core/vector";
 import { BasicSerializableObject, types } from "../savegame/serialization";
-import { enumColors, enumColorsToHexCode, enumColorToShortcode, enumShortcodeToColor } from "./colors";
+import { enumColors, enumColorsToHexCode, enumColorToShortcode, enumShortcodeToColor, enumColorMixingResults } from "./colors";
 import { THEME } from "./theme";
 
 /**
@@ -35,11 +35,65 @@ export const enumSubShape = {
 };
 
 /** @enum {string} */
+export const enumMergedShape = {
+    circlestar: "circlestar",
+    rectcircle: "rectcircle",
+    starrect: "starrect",
+    circlewindmill: "circlewindmill",
+    rectwindmill: "rectwindmill",
+    starwindmill: "starwindmill",
+};
+
+
+const s = enumSubShape;
+const m = enumMergedShape;
+/** @enum {Object.<string, string>} */
+const enumShapeMergingResults = {
+    [s.rect]: {
+        [s.rect]: s.rect,
+
+        [s.circle]: m.rectcircle,
+        [s.star]: m.starrect,
+        [s.windmill]: m.rectwindmill,
+    },
+
+    [s.circle]: {
+        [s.circle]: s.circle,
+
+        [s.rect]: m.rectcircle,
+        [s.star]: m.circlestar,
+        [s.windmill]: m.circlewindmill,
+    },
+
+    [s.star]: {
+        [s.star]: s.star,
+
+        [s.circle]: m.circlestar,
+        [s.rect]: m.starrect,
+        [s.windmill]: m.starwindmill,
+    },
+
+    [s.windmill]: {
+        [s.windmill]: s.windmill,
+
+        [s.circle]: m.circlewindmill,
+        [s.star]: m.starwindmill,
+        [s.rect]: m.rectwindmill,
+    },
+};
+
+/** @enum {string} */
 export const enumSubShapeToShortcode = {
     [enumSubShape.rect]: "R",
     [enumSubShape.circle]: "C",
     [enumSubShape.star]: "S",
     [enumSubShape.windmill]: "W",
+    [enumMergedShape.circlestar]: "1",
+    [enumMergedShape.rectcircle]: "2",
+    [enumMergedShape.starrect]: "3",
+    [enumMergedShape.circlewindmill]: "4",
+    [enumMergedShape.rectwindmill]: "5",
+    [enumMergedShape.starwindmill]: "6",
 };
 
 /** @enum {enumSubShape} */
@@ -426,6 +480,140 @@ export class ShapeDefinition extends BasicSerializableObject {
                         break;
                     }
 
+                    case enumMergedShape.circlestar: {
+                        context.beginPath();
+                        const dims = quadrantSize * layerScale;
+
+                        let originX = insetPadding - quadrantHalfSize;
+                        let originY = -insetPadding + quadrantHalfSize - dims;
+                        const moveInwards = dims * 0.1;
+                        const starPosition = dims * 0.55;
+                        
+                        context.moveTo(originX, originY);
+                        context.arc(
+                            originX,
+                            originY + dims,
+                            dims,
+                            -Math.PI * 0.5,
+                            -Math.PI * 0.35,
+                        )
+                        context.lineTo(originX + dims, originY);
+
+                        context.lineTo(originX + dims - moveInwards, originY + starPosition);
+                        context.arc(
+                            originX,
+                            originY + dims,
+                            dims,
+                            -Math.PI * 0.13,
+                            0,
+                        )
+                        context.lineTo(originX, originY + dims);
+                        context.closePath();
+                        break;
+                    }
+
+                    case enumMergedShape.rectcircle: {
+                        context.beginPath();
+                        const dims = quadrantSize * layerScale;
+
+                        let originX = insetPadding - quadrantHalfSize;
+                        let originY = -insetPadding + quadrantHalfSize - dims;
+                        const moveInwards = dims * 0.3;
+                        const moveOutwards = dims * 0.7;
+                        
+                        context.moveTo(originX, originY);
+                        context.lineTo(originX + moveInwards, originY);
+                        context.arc(
+                            originX + moveInwards,
+                            originY + moveOutwards,
+                            moveOutwards,
+                            -Math.PI * 0.5,
+                            0,
+                        )
+                        context.lineTo(originX + dims, originY + dims);
+                        context.lineTo(originX, originY + dims);
+                        context.closePath();
+                        break;
+                    }
+
+                    case enumMergedShape.starrect: {
+                        context.beginPath();
+                        const dims = quadrantSize * layerScale;
+
+                        let originX = insetPadding - quadrantHalfSize;
+                        let originY = -insetPadding + quadrantHalfSize - dims;
+                        const moveInwards = dims * 0.1;
+                        const moveOutwards = dims * 0.9;
+                        const starStart = dims * 0.4;
+                        const starEnd = dims * 0.6;
+                        
+                        context.moveTo(originX, originY + moveInwards);
+                        context.lineTo(originX + starStart, originY + moveInwards);
+                        context.lineTo(originX + dims, originY);
+                        context.lineTo(originX + moveOutwards, originY + starEnd);
+                        context.lineTo(originX + moveOutwards, originY + dims);
+                        context.lineTo(originX, originY + dims);
+
+
+
+                        context.closePath();
+                        break;
+                    }
+
+                    case enumMergedShape.circlewindmill: {
+                        context.beginPath();
+                        const dims = quadrantSize * layerScale;
+
+                        let originX = insetPadding - quadrantHalfSize;
+                        let originY = -insetPadding + quadrantHalfSize - dims;
+                        const moveInwards = dims * 0.4;
+                        const circlePosition = dims * 0.5;
+                        context.moveTo(originX, originY + moveInwards);
+                        context.lineTo(originX + circlePosition, originY);
+                        context.arc(
+                            originX + circlePosition,
+                            originY + circlePosition,
+                            circlePosition,
+                            -Math.PI * 0.5,
+                            0,
+                        )
+                        context.lineTo(originX + dims, originY + dims);
+                        context.lineTo(originX, originY + dims);
+                        context.closePath();
+                        break;
+                    }
+
+                    case enumMergedShape.rectwindmill: {
+                        context.beginPath();
+                        const dims = quadrantSize * layerScale;
+
+                        let originX = insetPadding - quadrantHalfSize;
+                        let originY = -insetPadding + quadrantHalfSize - dims;
+                        const moveInwards = dims * 0.1;
+                        context.moveTo(originX, originY + moveInwards);
+                        context.lineTo(originX + dims, originY + moveInwards);
+                        context.lineTo(originX + dims, originY + dims);
+                        context.lineTo(originX, originY + dims);
+                        context.closePath();
+                        break;
+                    }
+
+                    case enumMergedShape.starwindmill: {
+                        context.beginPath();
+                        const dims = quadrantSize * layerScale;
+
+                        let originX = insetPadding - quadrantHalfSize;
+                        let originY = -insetPadding + quadrantHalfSize - dims;
+                        const moveInwards = dims * 0.4;
+                        const moveOutwards = dims * 0.8;
+                        context.moveTo(originX, originY + moveInwards);
+                        context.lineTo(originX + dims, originY);
+                        context.lineTo(originX + moveOutwards, originY + dims);
+                        context.lineTo(originX, originY + dims);
+                        context.closePath();
+                        break;
+                    }
+
                     default: {
                         assertAlways(false, "Unkown sub shape: " + subShape);
                     }
@@ -439,7 +627,6 @@ export class ShapeDefinition extends BasicSerializableObject {
             }
         }
     }
-
     /**
      * Returns a definition with only the given quadrants
      * @param {Array<number>} includeQuadrants
@@ -574,9 +761,90 @@ export class ShapeDefinition extends BasicSerializableObject {
         }
 
         // Limit to 4 layers at max
-        mergedLayers.splice(4);
+        mergedLayers.splice(0, mergedLayers.length - 4);
 
         return new ShapeDefinition({ layers: mergedLayers });
+    }
+
+    /**
+     * Stacks the given shape definition on top.
+     * @param {ShapeDefinition} definition1
+     * @param {ShapeDefinition} definition2
+     * @param {ShapeDefinition} definition3
+     */
+    cloneAndSmartStackWith(definition1, definition2, definition3) {
+        assert(definition1 || definition2 || definition3, "Must have something to stack with.");
+        if(definition3) {
+            if(definition2) {
+                definition2 = definition2.cloneAndStackWith(definition3);
+            } else {
+                definition2 = definition3;
+            }
+
+        }
+        if(definition2) {
+            if(definition1) {
+                definition1 = definition1.cloneAndStackWith(definition2);
+            } else {
+                definition1 = definition2;
+            }
+
+        }
+        return this.cloneAndStackWith(definition1);
+    }
+
+    /**
+     * merges with the given shape definition.
+     * @param {ShapeDefinition} definition
+     */
+    cloneAndMergeWith(definition) {
+        assert(this.layers.length == 1 && definition.layers.length == 1, "Can only merge one layer shapes");
+        const shape1 = this.layers[0];
+        const shape2 = definition.layers[0];
+
+        /** @type {ShapeLayer} */
+        let outDefinition = [null, null, null, null];
+        for (let quad = 0; quad < 4; ++quad) {
+            if(!(shape1[quad] || shape2[quad])){
+                //nothing, leave it empty
+            } else if(!(shape1[quad] && shape2[quad]) || shape1[quad].subShape == shape2[quad].subShape) {
+                // it doesn't matter which shape goes in
+                outDefinition[quad] = shape1[quad] ? shape1[quad] : shape2[quad];
+            } else {
+                const subShape1 = shape1[quad].subShape;
+                const subShape2 = shape2[quad].subShape;
+
+                let subShape = null;
+
+                subShape = enumShapeMergingResults[subShape1][subShape2];
+                
+
+                const color1 = shape1[quad].color;
+                const color2 = shape2[quad].color;
+                //ok, now find the color
+                let color = enumColors.uncolored;
+                if(!(color1 == enumColors.uncolored || color2 == enumColors.uncolored)) {
+                    //mix the colors!
+                    color = enumColorMixingResults[color1][color2];
+                }
+                else if(!(color1 == enumColors.uncolored)) {
+                    color = color1;
+                }
+                else if(!(color2 == enumColors.uncolored)) {
+                    color = color2;
+                }
+                
+                
+
+                if (subShape != null) {
+                    outDefinition[quad] = {
+                        subShape: subShape,
+                        color: color,
+                    };
+                }
+            }
+        }
+        return new ShapeDefinition({ layers: [outDefinition] });
     }
 
     /**

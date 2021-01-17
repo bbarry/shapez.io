@@ -4,6 +4,7 @@ import { GameRoot } from "./root";
 
 import { createLogger } from "../core/logging";
 import { BeltSystem } from "./systems/belt";
+import { SmartBalancerSystem } from "./systems/smart_balancer";
 import { ItemEjectorSystem } from "./systems/item_ejector";
 import { MapResourcesSystem } from "./systems/map_resources";
 import { MinerSystem } from "./systems/miner";
@@ -42,6 +43,9 @@ export class GameSystemManager {
             /* typehints:start */
             /** @type {BeltSystem} */
             belt: null,
+            
+            /** @type {SmartBalancerSystem} */
+            smartBalancer: null,
 
             /** @type {ItemEjectorSystem} */
             itemEjector: null,
@@ -135,12 +139,15 @@ export class GameSystemManager {
         add("itemAcceptor", ItemAcceptorSystem);
         
         add("hyperlinkAcceptor", HyperlinkAcceptorSystem);
+        
+        add("undergroundBelt", UndergroundBeltSystem);
 
         add("belt", BeltSystem);
+        
+        add("smartBalancer", SmartBalancerSystem);
 
         add("hyperlink", HyperlinkSystem);
 
-        add("undergroundBelt", UndergroundBeltSystem);
 
         add("miner", MinerSystem);
 

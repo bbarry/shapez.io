@@ -2,6 +2,8 @@
 import { BeltComponent } from "./components/belt";
 import { BeltUnderlaysComponent } from "./components/belt_underlays";
 import { HubComponent } from "./components/hub";
+import { HyperlinkComponent } from "./components/hyperlink";
+import { SmartBalancerComponent } from "./components/smart_balancer";
 import { HyperlinkAcceptorComponent } from "./components/hyperlink_acceptor";
 import { HyperlinkEjectorComponent } from "./components/hyperlink_ejector";
 import { ItemAcceptorComponent } from "./components/item_acceptor";
@@ -39,6 +41,9 @@ export class EntityComponentStorage {
 
         /** @type {HyperlinkComponent} */
         this.Hyperlink;
+        
+        /** @type {SmartBalancerComponent} */
+        this.SmartBalancer;
 
         /** @type {HyperlinkEjectorComponent} */
         this.HyperlinkEjector;

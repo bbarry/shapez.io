@@ -216,6 +216,7 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
             const dimensions = metaBuilding.getDimensions(variant);
             const sprite = metaBuilding.getPreviewSprite(0, variant);
             const spriteWrapper = makeDiv(element, null, ["iconWrap"]);
+            
             spriteWrapper.setAttribute("data-tile-w", dimensions.x);
             spriteWrapper.setAttribute("data-tile-h", dimensions.y);
 
@@ -308,6 +309,7 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
             rotation: this.currentBaseRotation,
             variant: this.currentVariant.get(),
             layer: metaBuilding.getLayer(),
+            entity: this.fakeEntity
         });
 
         // Check if there are connected entities

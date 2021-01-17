@@ -308,7 +308,6 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
             const entity = contents[i];
             let ejectorComp = entity.components.ItemEjector;
             if (!ejectorComp) {
-                ejectorComp = entity.components.HyperlinkEjector;
                 continue;
             }
 
@@ -378,7 +377,8 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
 
                     const maxProgress =
                         (0.5 + nextBeltPath.spacingToFirstItem - globalConfig.itemSpacingOnBelts) * 2;
-                    progress = Math.min(maxProgress, progress);
+                    progress = Math.min(progress, maxProgress);
+                    
                 }
 
                 // Skip if the item would barely be visible

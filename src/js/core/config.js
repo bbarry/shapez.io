@@ -64,7 +64,7 @@ export const globalConfig = {
 
     wiresSpeedItemsPerSecond: 6,
 
-    undergroundBeltMaxTilesByTier: [5, 9],
+    undergroundBeltMaxTilesByTier: [5, 9, 7],
 
     readerAnalyzeIntervalSeconds: 10,
 
@@ -80,6 +80,8 @@ export const globalConfig = {
         painterQuad: 1 / 2,
         mixer: 1 / 5,
         stacker: 1 / 8,
+        smartStacker: 1 / 8,
+        shapeMerger: 1 / 8,
     },
 
     // Zooming

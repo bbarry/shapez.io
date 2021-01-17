@@ -132,6 +132,7 @@ export class MetaBuilding {
         return [defaultBuildingVariant];
     }
 
+
     /**
      * Returns a preview sprite
      * @returns {AtlasSprite}

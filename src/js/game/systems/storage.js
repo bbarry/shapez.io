@@ -76,6 +76,7 @@ export class StorageSystem extends GameSystemWithFilter {
             if (this.drawnUids.has(entity.uid)) {
                 continue;
             }
+            const scale = storageComp.maximumStorage == 500 ? 0.4 : 1;
 
             this.drawnUids.add(entity.uid);
 
@@ -84,15 +85,15 @@ export class StorageSystem extends GameSystemWithFilter {
             const context = parameters.context;
             context.globalAlpha = storageComp.overlayOpacity;
             const center = staticComp.getTileSpaceBounds().getCenter().toWorldSpace();
-            storedItem.drawItemCenteredClipped(center.x, center.y, parameters, 30);
+            storedItem.drawItemCenteredClipped(center.x, center.y, parameters, 30 * scale);
 
-            this.storageOverlaySprite.drawCached(parameters, center.x - 15, center.y + 15, 30, 15);
+            this.storageOverlaySprite.drawCached(parameters, center.x - (15 * scale), center.y + (15 * scale), 30 * scale, 15 * scale);
 
             if (parameters.visibleRect.containsCircle(center.x, center.y + 25, 20)) {
-                context.font = "bold 10px GameFont";
+                context.font = scale == 0.4 ? "bold 4px GameFont" : "bold 10px GameFont";
                 context.textAlign = "center";
                 context.fillStyle = "#64666e";
-                context.fillText(formatBigNumber(storageComp.storedCount), center.x, center.y + 25.5);
+                context.fillText(formatBigNumber(storageComp.storedCount), center.x, center.y + (25.5 * scale));
                 context.textAlign = "left";
             }
             context.globalAlpha = 1;

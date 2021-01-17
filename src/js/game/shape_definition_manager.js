@@ -3,9 +3,10 @@ import { BasicSerializableObject } from "../savegame/serialization";
 import { enumColors } from "./colors";
 import { ShapeItem } from "./items/shape_item";
 import { GameRoot } from "./root";
-import { enumSubShape, ShapeDefinition } from "./shape_definition";
+import { enumSubShape, enumMergedShape, ShapeDefinition } from "./shape_definition";
 
 const logger = createLogger("shape_definition_manager");
+
 
 export class ShapeDefinitionManager extends BasicSerializableObject {
     static getId() {
@@ -209,6 +210,40 @@ export class ShapeDefinitionManager extends BasicSerializableObject {
         const stacked = lowerDefinition.cloneAndStackWith(upperDefinition);
         return /** @type {ShapeDefinition} */ (this.operationCache[key] = this.registerOrReturnHandle(
             stacked
+        ));
+    }
+
+    /**
+     * Generates a definition for stacking the upper definition onto the lower one
+     * @param {ShapeDefinition} mainDefinition
+     * @param {ShapeDefinition} definition1
+     * @param {ShapeDefinition} definition2
+     * @param {ShapeDefinition} definition3
+     * @returns {ShapeDefinition}
+     */
+    shapeActionSmartStack(mainDefinition, definition1, definition2, definition3) {
+        //const key = "stack/" + mainDefinition.getHash() + "/" + upperDefinition.getHash();
+        //if (this.operationCache[key]) {
+        //    return /** @type {ShapeDefinition} */ (this.operationCache[key]);
+        //}
+        const stacked = mainDefinition.cloneAndSmartStackWith(definition1, definition2, definition3);
+        return stacked;
+    }
+
+    /**
+     * Generates a definition for merging two shapes together
+     * @param {ShapeDefinition} definition1
+     * @param {ShapeDefinition} definition2
+     * @returns {ShapeDefinition}
+     */
+    shapeActionMerge(definition1, definition2) {
+        const key = "merge/" + definition1.getHash() + "/" + definition2.getHash();
+        if (this.operationCache[key]) {
+            return /** @type {ShapeDefinition} */ (this.operationCache[key]);
+        }
+        const merged = definition1.cloneAndMergeWith(definition2);
+        return /** @type {ShapeDefinition} */ (this.operationCache[key] = this.registerOrReturnHandle(
+            merged
         ));
     }
 

@@ -52,11 +52,14 @@ export class MetaCutterBuilding extends MetaBuilding {
      * @param {GameRoot} root
      */
     getAvailableVariants(root) {
-        if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_cutter_quad)) {
-            if(root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_virtual_processing))
-            {
+        const smartBuildingsMod = root.app.settings.getAllSettings().smartBuildingsMod;
+        if(smartBuildingsMod) {
+            if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_cutter_quad)) {
                 return [defaultBuildingVariant, enumCutterVariants.quad, enumCutterVariants.laser];
             }
+            return [defaultBuildingVariant, enumCutterVariants.laser];
+        }
+        if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_cutter_quad)) {
             return [defaultBuildingVariant, enumCutterVariants.quad];
         }
         return super.getAvailableVariants(root);

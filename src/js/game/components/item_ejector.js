@@ -47,7 +47,7 @@ export class ItemEjectorComponent extends Component {
         this.setSlots(slots);
         this.renderFloatingItems = renderFloatingItems;
         this.lastUsedSlot = null;
-        this.isFirstSlot = null;
+        this.hasSpaceToMove = false;
     }
 
     /**
@@ -98,7 +98,9 @@ export class ItemEjectorComponent extends Component {
      * @returns {boolean}
      */
     canEjectOnSlot(slotIndex) {
-        assert(slotIndex >= 0 && slotIndex < this.slots.length, "Invalid ejector slot: " + slotIndex);
+        if(slotIndex >= this.slots.length) {
+            return false;
+        }
         return !this.slots[slotIndex].item;
     }
 
@@ -175,15 +177,14 @@ export class ItemEjectorComponent extends Component {
      * Tries to eject a given item
      * @param {number} slotIndex
      * @param {BaseItem} item
-     * @param {boolean} isInstant
      * @returns {boolean}
      */
-    tryEject(slotIndex, item, isInstant) {
+    tryEject(slotIndex, item) {
         if (!this.canEjectOnSlot(slotIndex)) {
             return false;
         }
         this.slots[slotIndex].item = item;
-        this.slots[slotIndex].progress = isInstant ? 0.8 : 0;
+        this.slots[slotIndex].progress = 0;
         return true;
     }
 

@@ -47,7 +47,7 @@ export class HyperlinkEjectorComponent extends Component {
         this.setSlots(slots);
         this.renderFloatingItems = renderFloatingItems;
         this.lastUsedSlot = null;
-        this.isFirstSlot = null;
+        this.hasSpaceToMove = false;
     }
     
     /**

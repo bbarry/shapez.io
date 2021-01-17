@@ -532,14 +532,14 @@ buildings:
     hyperlink:
         default:
             name: &hyperlink hyperlink
-            description: Transports two belts of items at superfast speed, hold and drag to place multiple.
+            description: Transports up to five belts of items at superfast speed, hold and drag to place multiple.
 
         hyperlink_entrance:
             name: Hyperlink Entry
-            description: Inputs two belts of items onto a hyperlink.
+            description: Inputs three belts of items onto a hyperlink.
         hyperlink_exit:
             name: Hyperlink Exit
-            description: Recieves items from a hyperlink and outputs them onto two belts.
+            description: Recieves items from a hyperlink and outputs them onto three belts.
 
     belt:
         default:
@@ -569,6 +569,22 @@ buildings:
         tier2:
             name: Tunnel Tier II
             description: Allows you to tunnel resources under buildings and belts.
+            
+        smart:
+            name: Smart Tunnel
+            description: Allows you to tunnel resources under buildings and belts, placeholder.
+
+    
+    belt_crossing:
+        default:
+            name: &belt_crossing Belt Crossing
+            description: Crosses two belts over each other with no interaction between them.
+        corner:
+            name: Corner Crossing
+            description: Crosses two corner belts over each other with no interaction between them.
+        switcher:
+            name: Line Crossing
+            description: Crosses the items on two adjacent belts.
 
     # Balancer
     balancer:
@@ -593,11 +609,11 @@ buildings:
             description: Splits one conveyor belt into two.
             
         splitter-triple:
-            name: Splitter (compact)
+            name: Smart Splitter
             description: Splits one conveyor belt into up to three outputs.
             
         merger-triple:
-            name: Merger (compact)
+            name: Smart Merger
             description: Merges up to three conveyor belts into one.
 
     cutter:
@@ -608,7 +624,7 @@ buildings:
             name: Cutter (Quad)
             description: Cuts shapes into four parts. <strong>If you use only one part, be sure to destroy the other parts or it will clog and stall!</strong>
         laser:
-            name: Cutter (Laser)
+            name: Smart Cutter
             description: Cuts a shape, removing the corners indicated on the wires layer.
 
     rotater:
@@ -626,6 +642,14 @@ buildings:
         default:
             name: &stacker Stacker
             description: Combines its inputs, on the same layer if possible, otherwise the right input is stacked on top of the left input.
+        smart:
+            name: Smart Stacker
+            description: Combines its inputs, stacking the 3 bottom inputs onto the primary left input.
+
+    shape_combiner:
+        default:
+            name: &shape_combiner Shape Combiner
+            description: Merges two regular shapes into one combined shape.
 
     mixer:
         default:
@@ -658,6 +682,9 @@ buildings:
         default:
             name: &storage Storage
             description: Stores excess items, up to a given capacity. Prioritizes the left output and can be used as an overflow gate.
+        mini:
+            name: Storage (Mini)
+            description: Stores excess items, up to a given capacity. Prioritizes the top output and can be used as an overflow gate.
 
     wire:
         default:
@@ -1124,7 +1151,21 @@ settings:
         advancedTransportMod:
             title: Advanced Transport Mod
             description: >-
-                Adds new buildings which are other ways to transport items.
+                Adds advanced new buildings and variants for transport. <br>
+                - The hyperlink <br>
+                - The belt crossing with 3 variants <br>
+                - The small storage <br>
+                - Plus much more on its way! ...
+
+        smartBuildingsMod:
+            title: Smart Buildings Mod
+            description: >-
+                Adds advanced new smart buildings and variants. <br>
+                - The smart cutter <br>
+                - The smart splitter and merger <br>
+                - The smart stacker (coming soon) <br>
+                - The smart painter (coming soon) <br>
+                - Plus much more coming soon!
 
 keybindings:
     title: Keybindings
@@ -1168,11 +1209,13 @@ keybindings:
         # --- Do not translate the values in this section
         belt: *belt
         balancer: *balancer
+        belt_crossing: *belt_crossing
         underground_belt: *underground_belt
         miner: *miner
         cutter: *cutter
         rotater: *rotater
         stacker: *stacker
+        shape_combiner: *shape_combiner
         mixer: *mixer
         painter: *painter
         trash: *trash

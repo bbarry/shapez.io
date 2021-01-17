@@ -3,6 +3,7 @@ import { createLogger } from "../core/logging";
 import { T } from "../translations";
 import { MetaAnalyzerBuilding } from "./buildings/analyzer";
 import { enumBalancerVariants, MetaBalancerBuilding } from "./buildings/balancer";
+import { enumBeltCrossingVariants, MetaBeltCrossingBuilding } from "./buildings/belt_crossing";
 import { MetaBeltBuilding } from "./buildings/belt";
 import { MetaComparatorBuilding } from "./buildings/comparator";
 import { MetaConstantSignalBuilding } from "./buildings/constant_signal";
@@ -19,8 +20,9 @@ import { MetaMixerBuilding } from "./buildings/mixer";
 import { enumPainterVariants, MetaPainterBuilding } from "./buildings/painter";
 import { MetaReaderBuilding } from "./buildings/reader";
 import { enumRotaterVariants, MetaRotaterBuilding } from "./buildings/rotater";
-import { MetaStackerBuilding } from "./buildings/stacker";
-import { MetaStorageBuilding } from "./buildings/storage";
+import { enumStackerVariants, MetaStackerBuilding } from "./buildings/stacker";
+import { MetaShapeCombinerBuilding } from "./buildings/shape_combiner";
+import { MetaStorageBuilding, enumStorageVariants } from "./buildings/storage";
 import { enumTransistorVariants, MetaTransistorBuilding } from "./buildings/transistor";
 import { MetaTrashBuilding } from "./buildings/trash";
 import { enumUndergroundBeltVariants, MetaUndergroundBeltBuilding } from "./buildings/underground_belt";
@@ -37,10 +39,12 @@ const logger = createLogger("building_registry");
 export function initMetaBuildingRegistry() {
     gMetaBuildingRegistry.register(MetaHyperlinkBuilding); 
     gMetaBuildingRegistry.register(MetaBalancerBuilding);
+    gMetaBuildingRegistry.register(MetaBeltCrossingBuilding);
     gMetaBuildingRegistry.register(MetaMinerBuilding);
     gMetaBuildingRegistry.register(MetaCutterBuilding);
     gMetaBuildingRegistry.register(MetaRotaterBuilding);
     gMetaBuildingRegistry.register(MetaStackerBuilding);
+    gMetaBuildingRegistry.register(MetaShapeCombinerBuilding);
     gMetaBuildingRegistry.register(MetaMixerBuilding);
     gMetaBuildingRegistry.register(MetaPainterBuilding);
     gMetaBuildingRegistry.register(MetaTrashBuilding);
@@ -67,14 +71,27 @@ export function initMetaBuildingRegistry() {
     registerBuildingVariant(2, MetaBeltBuilding, defaultBuildingVariant, 1);
     registerBuildingVariant(3, MetaBeltBuilding, defaultBuildingVariant, 2);
 
+    // Belt Crossing
+    registerBuildingVariant(71, MetaBeltCrossingBuilding);
+    registerBuildingVariant(74, MetaBeltCrossingBuilding, enumBeltCrossingVariants.corner);
+    registerBuildingVariant(75, MetaBeltCrossingBuilding, enumBeltCrossingVariants.switcher);
+
     // Balancer
     registerBuildingVariant(4, MetaBalancerBuilding);
     registerBuildingVariant(5, MetaBalancerBuilding, enumBalancerVariants.merger);
     registerBuildingVariant(6, MetaBalancerBuilding, enumBalancerVariants.mergerInverse);
     registerBuildingVariant(47, MetaBalancerBuilding, enumBalancerVariants.splitter);
     registerBuildingVariant(48, MetaBalancerBuilding, enumBalancerVariants.splitterInverse);
-    registerBuildingVariant(62, MetaBalancerBuilding, enumBalancerVariants.mergerTriple);
-    registerBuildingVariant(63, MetaBalancerBuilding, enumBalancerVariants.splitterTriple);
+    registerBuildingVariant(62, MetaBalancerBuilding, enumBalancerVariants.mergerTriple, 0);
+    registerBuildingVariant(76, MetaBalancerBuilding, enumBalancerVariants.mergerTriple, 1);
+    registerBuildingVariant(77, MetaBalancerBuilding, enumBalancerVariants.mergerTriple, 2);
+    registerBuildingVariant(78, MetaBalancerBuilding, enumBalancerVariants.mergerTriple, 3);
+    registerBuildingVariant(79, MetaBalancerBuilding, enumBalancerVariants.mergerTriple, 4);
+    registerBuildingVariant(63, MetaBalancerBuilding, enumBalancerVariants.splitterTriple, 0);
+    registerBuildingVariant(80, MetaBalancerBuilding, enumBalancerVariants.splitterTriple, 1);
+    registerBuildingVariant(81, MetaBalancerBuilding, enumBalancerVariants.splitterTriple, 2);
+    registerBuildingVariant(82, MetaBalancerBuilding, enumBalancerVariants.splitterTriple, 3);
+    registerBuildingVariant(83, MetaBalancerBuilding, enumBalancerVariants.splitterTriple, 4);
 
     // Miner
     registerBuildingVariant(7, MetaMinerBuilding);
@@ -93,6 +110,10 @@ export function initMetaBuildingRegistry() {
 
     // Stacker
     registerBuildingVariant(14, MetaStackerBuilding);
+    registerBuildingVariant(84, MetaStackerBuilding, enumStackerVariants.smart);
+
+    // Shape Combiner
+    registerBuildingVariant(73, MetaShapeCombinerBuilding);
 
     // Mixer
     registerBuildingVariant(15, MetaMixerBuilding);
@@ -108,12 +129,19 @@ export function initMetaBuildingRegistry() {
 
     // Storage
     registerBuildingVariant(21, MetaStorageBuilding);
+    registerBuildingVariant(72, MetaStorageBuilding, enumStorageVariants.mini);
 
     // Underground belt
     registerBuildingVariant(22, MetaUndergroundBeltBuilding, defaultBuildingVariant, 0);
     registerBuildingVariant(23, MetaUndergroundBeltBuilding, defaultBuildingVariant, 1);
     registerBuildingVariant(24, MetaUndergroundBeltBuilding, enumUndergroundBeltVariants.tier2, 0);
     registerBuildingVariant(25, MetaUndergroundBeltBuilding, enumUndergroundBeltVariants.tier2, 1);
+    registerBuildingVariant(85, MetaUndergroundBeltBuilding, enumUndergroundBeltVariants.smart, 0);
+    registerBuildingVariant(86, MetaUndergroundBeltBuilding, enumUndergroundBeltVariants.smart, 1);
+    registerBuildingVariant(87, MetaUndergroundBeltBuilding, enumUndergroundBeltVariants.smart, 2);
+    registerBuildingVariant(88, MetaUndergroundBeltBuilding, enumUndergroundBeltVariants.smart, 3);
+    registerBuildingVariant(89, MetaUndergroundBeltBuilding, enumUndergroundBeltVariants.smart, 4);
+    registerBuildingVariant(90, MetaUndergroundBeltBuilding, enumUndergroundBeltVariants.smart, 5);
 
     // Hub
     registerBuildingVariant(26, MetaHubBuilding);

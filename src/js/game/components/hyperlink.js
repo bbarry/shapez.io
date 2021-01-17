@@ -1,6 +1,4 @@
-import { enumDirection, Vector } from "../../core/vector";
-import { types } from "../../savegame/serialization";
-import { BeltPath } from "../belt_path";
+import { enumDirection } from "../../core/vector";
 import { Component } from "../component";
 
 

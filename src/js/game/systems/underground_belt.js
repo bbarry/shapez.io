@@ -1,7 +1,10 @@
 import { globalConfig } from "../../core/config";
+import { gMetaBuildingRegistry } from "../../core/global_registries";
+import { Vector } from "../../core/vector";
 import { Loader } from "../../core/loader";
 import { createLogger } from "../../core/logging";
 import { Rectangle } from "../../core/rectangle";
+import { getCodeFromBuildingData } from "../building_codes";
 import { StaleAreaDetector } from "../../core/stale_area_detector";
 import { fastArrayDelete } from "../../core/utils";
 import {
@@ -14,6 +17,8 @@ import {
 import { enumUndergroundBeltMode, UndergroundBeltComponent } from "../components/underground_belt";
 import { Entity } from "../entity";
 import { GameSystemWithFilter } from "../game_system_with_filter";
+import { enumUndergroundBeltVariants, MetaUndergroundBeltBuilding } from "../buildings/underground_belt";
+import { BeltComponent } from "../components/belt";
 
 const logger = createLogger("tunnels");
 
@@ -44,6 +49,11 @@ export class UndergroundBeltSystem extends GameSystemWithFilter {
             [UndergroundBeltComponent],
             globalConfig.undergroundBeltMaxTilesByTier[globalConfig.undergroundBeltMaxTilesByTier.length - 1]
         );
+
+        this.root.signals.entityDestroyed.add(this.updateSmartUndergroundBeltVariant, this);
+
+        // Notice: These must come *after* the entity destroyed signals
+        this.root.signals.entityAdded.add(this.updateSmartUndergroundBeltVariant, this);
     }
 
     /**
@@ -200,6 +210,70 @@ export class UndergroundBeltSystem extends GameSystemWithFilter {
         }
     }
 
+    updateSmartUndergroundBeltVariant(entity) {
+        if (!this.root.gameInitialized) {
+            return;
+        }
+
+        const staticComp = entity.components.StaticMapEntity;
+        if (!staticComp) {
+            return;
+        }
+
+        const metaUndergroundBelt = gMetaBuildingRegistry.findByClass(MetaUndergroundBeltBuilding);
+        // Compute affected area
+        const originalRect = staticComp.getTileSpaceBounds();
+        const affectedArea = originalRect.expandedInAllDirections(1);
+
+
+        for (let x = affectedArea.x; x < affectedArea.right(); ++x) {
+            for (let y = affectedArea.y; y < affectedArea.bottom(); ++y) {
+                if (originalRect.containsPoint(x, y)) {
+                    // Make sure we don't update the original entity
+                    continue;
+                }
+
+                const targetEntities = this.root.map.getLayersContentsMultipleXY(x, y);
+                for (let i = 0; i < targetEntities.length; ++i) {
+                    const targetEntity = targetEntities[i];
+
+                    const targetUndergroundBeltComp = targetEntity.components.UndergroundBelt;
+                    const targetStaticComp = targetEntity.components.StaticMapEntity;
+
+                    if (!targetUndergroundBeltComp || !(targetUndergroundBeltComp.tier == 2)) {
+                        // Not a smart tunnel
+                        continue;
+                    }
+
+                    const {
+                        rotation,
+                        rotationVariant,
+                    } = metaUndergroundBelt.computeOptimalDirectionAndRotationVariantAtTile({
+                        root: this.root,
+                        tile: new Vector(x, y),
+                        rotation: targetStaticComp.originalRotation,
+                        variant: enumUndergroundBeltVariants.smart,
+                        layer: targetEntity.layer,
+                        entity: targetEntity
+                    });
+                    // Change stuff
+                    metaUndergroundBelt.updateVariants(targetEntity, rotationVariant, enumUndergroundBeltVariants.smart);
+
+                    // Update code as well
+                    targetStaticComp.code = getCodeFromBuildingData(
+                        metaUndergroundBelt,
+                        enumUndergroundBeltVariants.smart,
+                        rotationVariant
+                    );
+
+                    // Make sure the chunks know about the update
+                    this.root.signals.entityChanged.dispatch(targetEntity);
+                    
+                }
+            }
+        }
+    }
+
     /**
      * Recomputes the cache in the given area, invalidating all entries there
      * @param {Rectangle} area
@@ -259,9 +333,6 @@ export class UndergroundBeltSystem extends GameSystemWithFilter {
             if (!potentialReceiver) {
                 // Empty tile
                 continue;
-            }
-            if(potentialReceiver.components.Hyperlink){
-                return { entity: null, distance: 0 };
             }
             const receiverUndergroundComp = potentialReceiver.components.UndergroundBelt;
             if (!receiverUndergroundComp || receiverUndergroundComp.tier !== undergroundComp.tier) {

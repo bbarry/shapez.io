@@ -5,7 +5,6 @@ import { Component } from "../component";
 /** @enum {string} */
 export const enumItemProcessorTypes = {
     hyperlink: "hyperlink",
-    hyperlinkExit: "hyperlinkExit",
     balancer: "balancer",
     cutter: "cutter",
     cutterQuad: "cutterQuad",
@@ -14,6 +13,8 @@ export const enumItemProcessorTypes = {
     rotaterCCW: "rotaterCCW",
     rotater180: "rotater180",
     stacker: "stacker",
+    smartStacker: "smartStacker",
+    shapeMerger: "shapeMerger",
     trash: "trash",
     mixer: "mixer",
     painter: "painter",
@@ -27,6 +28,8 @@ export const enumItemProcessorTypes = {
 /** @enum {string} */
 export const enumItemProcessorRequirements = {
     painterQuad: "painterQuad",
+    shapeMerger: "shapeMerger",
+    smartStacker: "smartStacker",
 };
 
 /** @typedef {{
@@ -57,12 +60,14 @@ export class ItemProcessorComponent extends Component {
      * @param {enumItemProcessorTypes=} param0.processorType Which type of processor this is
      * @param {enumItemProcessorRequirements=} param0.processingRequirement Applied processing requirement
      * @param {number=} param0.inputsPerCharge How many items this machine needs until it can start working
+     * @param {boolean=} param0.makeCharges Whether or not to instantly output to required slots with no processing
      *
      */
     constructor({
         processorType = enumItemProcessorTypes.balancer,
         processingRequirement = null,
         inputsPerCharge = 1,
+        makeCharges = true,
     }) {
         super();
 
@@ -99,6 +104,12 @@ export class ItemProcessorComponent extends Component {
          * @type {number}
          */
         this.bonusTime = 0;
+
+        /**
+         * Whether or not to make charges
+         * @type {boolean}
+         */
+        this.makeCharges = makeCharges;
     }
 
     /**

@@ -38,7 +38,7 @@ export class BaseItem extends BasicSerializableObject {
     }
 
     /**
-     * Returns if the item equals the other itme
+     * Returns if the item equals the other item
      * @param {BaseItem} other
      * @returns {boolean}
      */

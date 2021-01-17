@@ -18,9 +18,22 @@ export const enumClippedBeltUnderlayType = {
 };
 
 /**
+ * Store which type of underlay this must be
+ * @enum {string}
+ */
+export const enumRequiredBeltUnderlayType = {
+    alwaysFull: "alwaysFull",
+    alwaysBottom: "alwaysBottom",
+    alwaysTop: "alwaysTop",
+    bottomOnly: "bottomOnly",
+    topOnly: "topOnly",
+};
+
+/**
  * @typedef {{
  *   pos: Vector,
  *   direction: enumDirection,
+ *   requiredType?: enumRequiredBeltUnderlayType,
  *   cachedType?: enumClippedBeltUnderlayType
  * }} BeltUnderlayTile
  */

@@ -22,11 +22,13 @@ import { DisplayComponent } from "./components/display";
 import { BeltReaderComponent } from "./components/belt_reader";
 import { FilterComponent } from "./components/filter";
 import { ItemProducerComponent } from "./components/item_producer";
+import { SmartBalancerComponent } from "./components/smart_balancer";
 
 export function initComponentRegistry() {
     gComponentRegistry.register(StaticMapEntityComponent);
     gComponentRegistry.register(BeltComponent);
     gComponentRegistry.register(HyperlinkComponent);
+    gComponentRegistry.register(SmartBalancerComponent);
     gComponentRegistry.register(HyperlinkEjectorComponent);
     gComponentRegistry.register(HyperlinkAcceptorComponent);
     gComponentRegistry.register(ItemEjectorComponent);

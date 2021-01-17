@@ -40,6 +40,7 @@ export class UndergroundBeltComponent extends Component {
 
         this.mode = mode;
         this.tier = tier;
+        this.rotationVariant = null;
 
         /** @type {Array<{ item: BaseItem, progress: number }>} */
         this.consumptionAnimations = [];

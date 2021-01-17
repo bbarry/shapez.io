@@ -41,7 +41,7 @@ export class ItemAcceptorSystem extends GameSystemWithFilter {
 
         for (let i = 0; i < this.allEntities.length; ++i) {
             const entity = this.allEntities[i];
-            const aceptorComp = entity.components.ItemAcceptor;
+            let aceptorComp = entity.components.ItemAcceptor;
             if(!aceptorComp)
             {
                 aceptorComp = entity.components.HyperlinkAcceptor;

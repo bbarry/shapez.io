@@ -1,4 +1,5 @@
 import { MetaBeltBuilding } from "../../buildings/belt";
+import { MetaBeltCrossingBuilding } from "../../buildings/belt_crossing";
 import { MetaCutterBuilding } from "../../buildings/cutter";
 import { MetaDisplayBuilding } from "../../buildings/display";
 import { MetaFilterBuilding } from "../../buildings/filter";
@@ -10,6 +11,7 @@ import { MetaReaderBuilding } from "../../buildings/reader";
 import { MetaRotaterBuilding } from "../../buildings/rotater";
 import { MetaBalancerBuilding } from "../../buildings/balancer";
 import { MetaStackerBuilding } from "../../buildings/stacker";
+import { MetaShapeCombinerBuilding } from "../../buildings/shape_combiner";
 import { MetaTrashBuilding } from "../../buildings/trash";
 import { MetaHyperlinkBuilding } from "../../buildings/hyperlink";
 import { MetaUndergroundBeltBuilding } from "../../buildings/underground_belt";
@@ -26,6 +28,7 @@ export class HUDBuildingsToolbar extends HUDBaseToolbar {
                 MetaBeltBuilding,
                 MetaBalancerBuilding,
                 MetaUndergroundBeltBuilding,
+                ...(advancedTransportMod ? [MetaBeltCrossingBuilding] : []),
                 MetaMinerBuilding,
                 MetaCutterBuilding,
                 MetaRotaterBuilding,

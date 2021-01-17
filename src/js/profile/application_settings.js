@@ -288,6 +288,7 @@ export const allApplicationSettings = [
     new BoolSetting("simplifiedBelts", enumCategories.performance, (app, value) => {}),
     
     new BoolSetting("advancedTransportMod", enumCategories.mods, (app, value) => {}),
+    new BoolSetting("smartBuildingsMod", enumCategories.mods, (app, value) => {}),
 ];
 
 export function getApplicationSettingById(id) {
@@ -300,6 +301,7 @@ class SettingsStorage {
         this.fullscreen = G_IS_STANDALONE;
 
         this.advancedTransportMod = false;
+        this.smartBuildingsMod = false;
 
         this.soundVolume = 1.0;
         this.musicVolume = 1.0;
@@ -543,7 +545,7 @@ export class ApplicationSettings extends ReadWriteProxy {
     }
 
     getCurrentVersion() {
-        return 31;
+        return 32;
     }
 
     /** @param {{settings: SettingsStorage, version: number}} data */
@@ -694,6 +696,12 @@ export class ApplicationSettings extends ReadWriteProxy {
             data.settings.advancedTransportMod = false;
 
             data.version = 31;
+        }
+        
+        if (data.version < 32) {
+            data.settings.smartBuildingsMod = false;
+
+            data.version = 32;
         }
 
         return ExplainedResult.good();

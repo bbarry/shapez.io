@@ -504,8 +504,7 @@ export class HubGoals extends BasicSerializableObject {
             case enumItemProcessorTypes.balancer:
                 return globalConfig.beltSpeedItemsPerSecond * this.upgradeImprovements.belt * 2;
             case enumItemProcessorTypes.hyperlink:
-            case enumItemProcessorTypes.hyperlinkExit:
-                return globalConfig.beltSpeedItemsPerSecond * this.upgradeImprovements.belt * 16;
+                return globalConfig.beltSpeedItemsPerSecond * this.upgradeImprovements.belt * 10;
             case enumItemProcessorTypes.reader:
                 return globalConfig.beltSpeedItemsPerSecond * this.upgradeImprovements.belt;
 
@@ -530,7 +529,9 @@ export class HubGoals extends BasicSerializableObject {
             case enumItemProcessorTypes.rotater:
             case enumItemProcessorTypes.rotaterCCW:
             case enumItemProcessorTypes.rotater180:
-            case enumItemProcessorTypes.stacker: {
+            case enumItemProcessorTypes.shapeMerger:
+            case enumItemProcessorTypes.stacker:
+            case enumItemProcessorTypes.smartStacker: {
                 assert(
                     globalConfig.buildingSpeeds[processorType],
                     "Processor type has no speed set in globalConfig.buildingSpeeds: " + processorType
