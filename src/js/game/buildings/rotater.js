@@ -93,7 +93,7 @@ export class MetaRotaterBuilding extends MetaBuilding {
     setupEntityComponents(entity) {
         entity.addComponent(
             new ItemProcessorComponent({
-                inputsPerCharge: 1,
+                inputsToProcess: 1,
                 processorType: enumItemProcessorTypes.rotater,
             })
         );

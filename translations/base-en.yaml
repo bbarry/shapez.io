@@ -157,7 +157,7 @@ dialogs:
         getStandalone: Get Standalone
         deleteGame: I know what I am doing
         viewUpdate: View Update
-        showUpgrades: Show Upgrades
+        showUpgrades: Show Research
         showKeybindings: Show Keybindings
 
     importSavegameError:
@@ -218,10 +218,11 @@ dialogs:
             Here are the changes since you last played:
 
     upgradesIntroduction:
-        title: Unlock Upgrades
+        title: Research Upgrades
         desc: >-
-            All shapes you produce can be used to unlock upgrades - <strong>don't destroy your old factories!</strong>
-            The upgrades tab can be found on the top right corner of the screen.
+            All shapes you produce can be used to research upgrades - <strong>don't destroy your old factories!</strong>
+            The research tab can be found on the top right corner of the screen. <br><br>
+            Deliver shapes to the hub to unlock new tiers of research.
 
     massDeleteConfirm:
         title: Confirm delete
@@ -241,7 +242,7 @@ dialogs:
     blueprintsNotUnlocked:
         title: Not unlocked yet
         desc: >-
-            Complete level 12 to unlock Blueprints!
+            Complete level 20 to unlock Bugprints!
 
     keybindingsIntroduction:
         title: Useful keybindings
@@ -297,7 +298,7 @@ ingame:
         placeBuilding: Place building
         createMarker: Create marker
         delete: Delete
-        pasteLastBlueprint: Paste last blueprint
+        pasteLastBlueprint: Paste last bugprint
         lockBeltDirection: Enable belt planner
         plannerSwitchSide: Flip planner side
         cutSelection: Cut
@@ -351,17 +352,18 @@ ingame:
     notifications:
         newUpgrade: A new upgrade is available!
         gameSaved: Your game has been saved.
-        freeplayLevelComplete: Level <level> has been completed!
+        freeplayLevelComplete: Completed Level <level>.
+        researchComplete: You can now research tier <level> upgrades!
 
     # The "Upgrades" window
     shop:
-        title: Upgrades
-        buttonUnlock: Upgrade
+        title: Research
+        buttonUnlock: Research
 
         # Gets replaced to e.g. "Tier IX"
         tier: Tier <x>
 
-        maximumLevel: MAXIMUM LEVEL (Speed x<currentMult>)
+        maximumLevel: MAX LEVEL (Speed x<currentMult>)
 
     # The "Statistics" window
     statistics:
@@ -572,7 +574,7 @@ buildings:
             
         smart:
             name: Smart Tunnel
-            description: Allows you to tunnel resources under buildings and belts, placeholder.
+            description: Allows you to tunnel resources under buildings and belts, and can also have inputs and outputs from the sides.
 
     
     belt_crossing:
@@ -619,7 +621,7 @@ buildings:
     cutter:
         default:
             name: &cutter Cutter
-            description: Cuts shapes from top to bottom and outputs both halves. <strong>If you use only one part, be sure to destroy the other part or it will clog and stall!</strong>
+            description: Cuts shapes in half from top to bottom <strong>regardless of its orientation</strong>!. <strong>If you use only one part, be sure to destroy the other part or it will clog and stall!</strong>
         quad:
             name: Cutter (Quad)
             description: Cuts shapes into four parts. <strong>If you use only one part, be sure to destroy the other parts or it will clog and stall!</strong>
@@ -649,7 +651,7 @@ buildings:
     shape_combiner:
         default:
             name: &shape_combiner Shape Combiner
-            description: Merges two regular shapes into one combined shape.
+            description: Merges two regular one layer shapes into one combined shape.
 
     mixer:
         default:
@@ -785,7 +787,7 @@ buildings:
             description: Available in sandbox mode only, outputs the given signal from the wires layer on the regular layer.
 
 storyRewards:
-    # Those are the rewards gained from completing the store
+    # Those are the rewards gained from completing the story
     reward_cutter_and_trash:
         title: Cutting Shapes
         desc: >-
@@ -839,17 +841,19 @@ storyRewards:
     reward_merger:
         title: Compact Merger
         desc: >-
-            You have unlocked a <strong>merger</strong> variant of the <strong>balancer</strong> - It accepts up to three inputs and merges them into one belt!
+            You have unlocked a <strong>merger</strong> variant of the <strong>balancer</strong> - It accepts up to three inputs and merges them into one belt! <br><br>
+            It automatically works out what it attached to it and configures itself accordingly.
 
     reward_splitter:
         title: Compact Splitter
         desc: >-
-            You have unlocked a <strong>splitter</strong> variant of the <strong>balancer</strong> - It accepts one input and splits it into up to three outputs!
+            You have unlocked a <strong>splitter</strong> variant of the <strong>balancer</strong> - It accepts one input and splits it into up to three outputs! <br><br>
+            It is S.M.A.R.T! (I haven't figured out what that stands for yet)
 
     reward_belt_reader:
         title: Belt reader
         desc: >-
-            You have now unlocked the <strong>belt reader</strong>! It allows you to measure the throughput of a belt.<br><br>And wait until you unlock wires - then it gets really useful!
+            You have now unlocked the <strong>belt reader</strong>! It allows you to measure the throughput of a belt.<br><br>And wait until you unlock wires - then it gets really useful, especially as it now shows an empty shape output when there is nothing on a belt!
 
     reward_cutter_quad:
         title: Quad Cutter
@@ -865,13 +869,15 @@ storyRewards:
         title: Storage
         desc: >-
             You have unlocked the <strong>storage</strong> building - It allows you to store items up to a given capacity!<br><br>
-            It priorities the left output, so you can also use it as an <strong>overflow gate</strong>!
+            It priorities the left output, so you can also use it as an <strong>overflow gate</strong>! <br><br>
+            You have also unlocked the mine storage, which is most useful as an overflow gate but also for compactness.
 
     reward_blueprints:
-        title: Blueprints
+        title: Bugprints
         desc: >-
             You can now <strong>copy and paste</strong> parts of your factory! Select an area (Hold CTRL, then drag with your mouse), and press 'C' to copy it.<br><br>Pasting it is
-            <strong>not free</strong>, you need to produce <strong>blueprint shapes</strong> to afford it! (Those you just delivered).
+            <strong>not free</strong>, you need to produce <strong>bugprint shapes</strong> to afford it! (Those you just delivered).<br><br>
+            I had to do this, for the memes.
 
     reward_rotater_180:
         title: Rotator (180°)
@@ -882,9 +888,8 @@ storyRewards:
             Wires & Quad Painter
         desc: >-
             You just unlocked the <strong>Wires Layer</strong>: It is a separate layer on top of the regular layer and introduces a lot of new mechanics!<br><br>
-            For the beginning I unlocked you the <strong>Quad Painter</strong> - Connect the slots you would like to paint with on the wires layer!<br><br>
+            For the beginning I unlocked you the <strong>USELESS Quad Painter</strong> - Connect the slots you would like to paint with on the wires layer!<br><br>
             To switch to the wires layer, press <strong>E</strong>. <br><br>
-            PS: <strong>Enable hints</strong> in the settings to activate the wires tutorial!
 
     reward_filter:
         title: >-
@@ -910,28 +915,35 @@ storyRewards:
         desc: >-
             You unlocked <strong>logic gates</strong>! You don't have to be excited about this, but it's actually super cool!<br><br>
             With logic gates you can now compute AND, OR, XOR and NOT operations.<br><br>
-            As a bonus on top I also just gave you a <strong>transistor</strong>!
+            As a bonus on top you also recieved a <strong>transistor</strong>!
 
     reward_virtual_processing:
         title: Virtual Processing
         desc: >-
-            I just gave a whole bunch of new buildings which allow you to <strong>simulate the processing of shapes</strong>!<br><br>
+            You unlocked a whole bunch of new buildings which allow you to <strong>simulate the processing of shapes</strong>!<br><br>
             You can now simulate a cutter, rotator, stacker and more on the wires layer!
             With this you now have three options to continue the game:<br><br>
             - Build an <strong>automated machine</strong> to create any possible shape requested by the HUB (I recommend to try it!).<br><br>
             - Build something cool with wires.<br><br>
             - Continue to play normally.<br><br>
+            - Ignore the first three, just play and enjoy.<br><br>
             Whatever you choose, remember to have fun!
 
     # Special reward, which is shown when there is no reward actually
-    no_reward:
-        title: Next level
+    no_reward_upgrades:
+        title: Research
         desc: >-
-            This level gave you no reward, but the next one will! <br><br> PS: Better not destroy your existing factory - You'll need <strong>all</strong> those shapes later to
-            <strong>unlock upgrades</strong>!
+            You can now research speed upgrades! <br><br>
+            Remember that to keep building ratios accurate you need to have all four kinds of research on the same tier!
 
+    
+    no_reward:
+        title: Next Level
+        desc: >-
+            This level didn't give you any rewards, but the next one will! <br><br>
+    
     no_reward_freeplay:
-        title: Next level
+        title: Next Level
         desc: >-
             Congratulations!
 
@@ -947,6 +959,59 @@ storyRewards:
         desc: >-
             You have reached the end of the demo version!
 
+    reward_research_level:
+        title: Research Tier <x>
+        desc: >-
+            New research Level Unlocked!
+
+    reward_shape_combiner:
+        title: Shape Combiner
+        desc: >-
+            You unlocked the <strong>shape combiner</strong>! <br><br>
+            With the shape combiner, you can comine basic shapes to create new merged shapes! The shape combiner can only merge one layer shapes, but it accepts any mixture of the base shapes.<br>
+            A merged shape is a mixture of any two base shapes. <br><br>
+            While this might not seem like much, it will change <strong>everything</strong>!
+
+    reward_belt_crossing:
+        title: Belt Crossing
+        desc: >-
+            You unlocked the <strong>Belt Crossing</strong>! <br><br>
+            The belt crossing passes two belts over each other <strong>with no interaction between them</strong>! <br><br>
+            Incredibly useful, the belt crossing can help you compact your factories down to a fraction of their previous size!
+
+    reward_hyperlink:
+        title: Hyperlink
+        desc: >-
+            You unlocked the <strong>Hyperlink</strong>! <br><br>
+            The hyperlink transport up to 3 belts of items at superfast speed! <br><br>
+            You can use the hyperlink entrance and exit to move items around via the hyperlink.
+
+    reward_underground_belt_tier_3:
+        title: Smart Tunnel
+        desc: >-
+            You unlocked the <strong>Smart Tunnel</strong>! <br><br>
+            The smart tunnel does not connect to the other variants, and can also have inputs and outputs from the sides for EXTREME compactness.
+
+    reward_smart_cutter:
+        title: Smart Cutter
+        desc: >-
+            You unlocked the <strong>Smart Cutter</strong>! <br><br>
+            It accepts wire inputs for each corner and cuts off the indicated corners.
+
+    reward_deep_miner:
+        title: Deep Miner
+        desc: >-
+            You unlocked the <strong>Deep Miner</strong>! <br><br>
+            Yes, you can't chain it, BUT it outputs much more than a normal miner, making it possible to get more than before out of a deposit.
+
+    reward_smart_stacker:
+        title: Smart Stacker
+        desc: >-
+            You unlocked the <strong>Smart Stacker</strong>! <br><br>
+            It accepts four inputs to be stacked, but it does not need all four to function.<br><br>
+            So long as you have the primary left input, it will stack all the other inputs on top.<br>
+            Be sure to use the right ratios, otherwise some stcakers will not recieve part of the shapes you want them to stack!
+
 settings:
     title: Settings
     categories:
@@ -954,7 +1019,7 @@ settings:
         userInterface: User Interface
         advanced: Advanced
         performance: Performance
-        mods: Mods
+        mods: Mod Settings
 
     versionBadges:
         dev: Development
@@ -1151,22 +1216,13 @@ settings:
         advancedTransportMod:
             title: Advanced Transport Mod
             description: >-
-                Adds advanced new buildings and variants for transport. <br>
-                - The hyperlink <br>
-                - The belt crossing with 3 variants <br>
-                - The small storage <br>
-                - Plus much more on its way! ...
+                This setting no longer does anything.
 
         smartBuildingsMod:
             title: Smart Buildings Mod
             description: >-
-                Adds advanced new smart buildings and variants. <br>
-                - The smart cutter <br>
-                - The smart splitter and merger <br>
-                - The smart stacker (coming soon) <br>
-                - The smart painter (coming soon) <br>
-                - Plus much more coming soon!
-
+                This setting no longer does anything.
+                
 keybindings:
     title: Keybindings
     hint: >-
@@ -1242,7 +1298,7 @@ keybindings:
             Modifier: Rotate CCW instead
         cycleBuildingVariants: Cycle Variants
         confirmMassDelete: Delete area
-        pasteLastBlueprint: Paste last blueprint
+        pasteLastBlueprint: Paste last bugprint
         cycleBuildings: Cycle Buildings
         lockBeltDirection: Enable belt planner
         switchDirectionLockSide: >-
@@ -1323,7 +1379,7 @@ tips:
     - Full windmills/pinwheels can never spawn naturally.
     - Color your shapes before cutting for maximum efficiency.
     - With modules, space is merely a perception; a concern for mortal men.
-    - Make a separate blueprint factory. They're important for modules.
+    - Make a separate bugprint factory. They're important for modules.
     - Have a closer look at the color mixer, and your questions will be answered.
     - Use <b>CTRL</b> + Click to select an area.
     - Building too close to the hub can get in the way of later projects.

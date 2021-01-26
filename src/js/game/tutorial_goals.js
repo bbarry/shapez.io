@@ -34,5 +34,15 @@ export const enumHubGoalRewards = {
     reward_freeplay: "reward_freeplay",
 
     no_reward: "no_reward",
+    no_reward_upgrades: "no_reward_upgrades",
     no_reward_freeplay: "no_reward_freeplay",
+
+    reward_research_level: "reward_research_level",
+    reward_shape_combiner: "reward_shape_combiner",
+    reward_belt_crossing: "reward_belt_crossing",
+    reward_hyperlink: "reward_hyperlink",
+    reward_underground_belt_tier_3: "reward_underground_belt_tier_3",
+    reward_smart_cutter: "reward_smart_cutter",
+    reward_deep_miner: "reward_deep_miner",
+    reward_smart_stacker: "reward_smart_stacker",
 };

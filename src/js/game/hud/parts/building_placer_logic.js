@@ -413,7 +413,6 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
             rotation: this.currentBaseRotation,
             variant: this.currentVariant.get(),
             layer: metaBuilding.getLayer(),
-            entity: this.fakeEntity
         });
 
         const entity = this.root.logic.tryPlaceBuilding({

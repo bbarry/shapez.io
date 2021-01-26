@@ -59,7 +59,7 @@ export class MetaTrashBuilding extends MetaBuilding {
         );
         entity.addComponent(
             new ItemProcessorComponent({
-                inputsPerCharge: 1,
+                inputsToProcess: 1,
                 processorType: enumItemProcessorTypes.trash,
             })
         );

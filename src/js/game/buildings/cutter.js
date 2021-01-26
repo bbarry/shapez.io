@@ -52,8 +52,7 @@ export class MetaCutterBuilding extends MetaBuilding {
      * @param {GameRoot} root
      */
     getAvailableVariants(root) {
-        const smartBuildingsMod = root.app.settings.getAllSettings().smartBuildingsMod;
-        if(smartBuildingsMod) {
+        if(root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_smart_cutter)) {
             if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_cutter_quad)) {
                 return [defaultBuildingVariant, enumCutterVariants.quad, enumCutterVariants.laser];
             }
@@ -79,7 +78,7 @@ export class MetaCutterBuilding extends MetaBuilding {
     setupEntityComponents(entity) {
         entity.addComponent(
             new ItemProcessorComponent({
-                inputsPerCharge: 1,
+                inputsToProcess: 1,
                 processorType: enumItemProcessorTypes.cutter,
             })
         );

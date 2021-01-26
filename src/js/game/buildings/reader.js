@@ -95,7 +95,7 @@ export class MetaReaderBuilding extends MetaBuilding {
         entity.addComponent(
             new ItemProcessorComponent({
                 processorType: enumItemProcessorTypes.reader,
-                inputsPerCharge: 1,
+                inputsToProcess: 1,
             })
         );
 

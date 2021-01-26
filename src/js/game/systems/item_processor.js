@@ -123,13 +123,14 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                     }
                 }
                 // Check if it finished
-                if (chargeIndex === 0 && currentCharge.remainingTime <= 0.0) {
+                if (currentCharge.remainingTime <= 0.0) {
+                    if(!currentCharge.items) {
+                        this.processCharge(entity);
+                    }
                     const itemsToEject = currentCharge.items;
                         // Go over all items and try to eject them
                         for (let j = 0; j < itemsToEject.length; ++j) {
                             const { item, requiredSlot, preferredSlot } = itemsToEject[j];
-                            //
-                            assert(ejectorComp, "To eject items, the building needs to have an ejector");
 
                             let slot = null;
                             
@@ -150,7 +151,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                                 }
                                 else 
                                 {
-                                    if (entity.components.ItemEjector && entity.components.ItemEjector.slots[2]) 
+                                    if (!entity.components.HyperlinkAcceptor && ejectorComp.slots[2]) 
                                     {
                                         slot = ejectorComp.getNextFreeSlotForTriple(preferredSlot, ejectorComp.lastUsedSlot);
                                         if (slot !== null)
@@ -276,11 +277,12 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             // By default, we can start processing once all inputs are there
             case null:
             case enumItemProcessorRequirements.shapeMerger: {
-                return processorComp.inputSlots.length >= processorComp.inputsPerCharge;
+                const hasInputs = processorComp.inputSlots.length >= processorComp.inputsToProcess;
+                return hasInputs;
             }
 
             case enumItemProcessorRequirements.smartStacker: {
-                const hasEnoughInputs = processorComp.inputSlots.length >= processorComp.inputsPerCharge;
+                const hasEnoughInputs = processorComp.inputSlots.length >= processorComp.inputsToProcess;
 
                 /** @type {Object.<number, { item: BaseItem, sourceSlot: number }>} */
                 const itemsBySlot = {};
@@ -363,11 +365,38 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
      * @param {Entity} entity
      */
     startNewCharge(entity) {
+
+        //want it so that it only starts the charge when it has enough paint (if applicable) so we
+        //need to store the amount of paint somewhere array
+
+        // also need to only do handler at the END
         const processorComp = entity.components.ItemProcessor;
         // First, take items
-        const items = processorComp.inputSlots;
-        processorComp.inputSlots = [];
+        // add as many as needed for
+        processorComp.currentItems.push(processorComp.inputSlots);
+        
+        processorComp.inputSlots = []; // for now
 
+        
+        // Queue Charge
+        let baseSpeed = this.root.hubGoals.getProcessorBaseSpeed(processorComp.type);
+        if(entity.components.HyperlinkAcceptor && !entity.components.Hyperlink) {
+            baseSpeed *= 3;
+        }
+        processorComp.ongoingCharges.push({
+            items: null,
+            remainingTime: 1 / baseSpeed,
+        });
+    }
+
+    /**
+     * Processes a charge
+     * @param {Entity} entity
+     */
+    processCharge(entity) {
+        const processorComp = entity.components.ItemProcessor;
+
+        const items = processorComp.currentItems.shift();
         /** @type {Object<string, BaseItem>} */
         const itemsBySlot = {};
         for (let i = 0; i < items.length; ++i) {
@@ -395,12 +424,8 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                 this.root.signals.itemProduced.dispatch(outItems[i].item);
             }
         }
-        // Queue Charge
-        let baseSpeed = this.root.hubGoals.getProcessorBaseSpeed(processorComp.type);
-        processorComp.ongoingCharges.push({
-            items: outItems,
-            remainingTime: 1 / baseSpeed,
-        });
+
+        processorComp.ongoingCharges[0].items = outItems;
     }
 
     /**
@@ -420,7 +445,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             for (let i = 0; i < payload.items.length; ++i) {
                 payload.outItems.push({
                     item: payload.items[i].item,
-                    requiredSlot: (nextSlot + i) % availableSlots,
+                    preferredSlot: (nextSlot + i) % availableSlots,
                     doNotTrack: true,
                 });
             }
@@ -466,8 +491,8 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         const inputItem = /** @type {ShapeItem} */ (payload.items[0].item);
         assert(inputItem instanceof ShapeItem, "Input for cut is not a shape");
         const inputDefinition = inputItem.definition;
-
-        const cutDefinitions = this.root.shapeDefinitionMgr.shapeActionCutHalf(inputDefinition);
+        const rotation = payload.entity.components.StaticMapEntity.rotation;
+        const cutDefinitions = this.root.shapeDefinitionMgr.shapeActionCutHalf(inputDefinition, rotation);
 
         for (let i = 0; i < cutDefinitions.length; ++i) {
             const definition = cutDefinitions[i];

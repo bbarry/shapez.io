@@ -184,7 +184,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
      * @param {GameRoot} root
      */
     getIsUnlocked(root) {
-        return true;
+        return root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_hyperlink);
     }
 
     
@@ -197,7 +197,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
 
         entity.addComponent(
             new ItemProcessorComponent({
-                inputsPerCharge: 1,
+                inputsToProcess: 1,
                 processorType: enumItemProcessorTypes.hyperlink,
             })
         );

@@ -16,7 +16,7 @@ export class MetaShapeCombinerBuilding extends MetaBuilding {
     }
 
     getSilhouetteColor() {
-        return "#9fcd7d";
+        return "#0b8005";
     }
 
     getDimensions() {
@@ -37,7 +37,7 @@ export class MetaShapeCombinerBuilding extends MetaBuilding {
      * @param {GameRoot} root
      */
     getIsUnlocked(root) {
-        return true;
+        return root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_shape_combiner);
     }
 
     /**
@@ -47,7 +47,7 @@ export class MetaShapeCombinerBuilding extends MetaBuilding {
     setupEntityComponents(entity) {
         entity.addComponent(
             new ItemProcessorComponent({
-                inputsPerCharge: 2,
+                inputsToProcess: 2,
                 processorType: enumItemProcessorTypes.shapeMerger,
                 processingRequirement: enumItemProcessorRequirements.shapeMerger
             })

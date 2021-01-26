@@ -314,7 +314,7 @@ class SettingsStorage {
         this.autosaveInterval = "two_minutes";
 
         this.alwaysMultiplace = false;
-        this.offerHints = true;
+        this.offerHints = false;
         this.enableTunnelSmartplace = true;
         this.vignette = true;
         this.compactBuildingInfo = false;
@@ -545,7 +545,7 @@ export class ApplicationSettings extends ReadWriteProxy {
     }
 
     getCurrentVersion() {
-        return 32;
+        return 33;
     }
 
     /** @param {{settings: SettingsStorage, version: number}} data */
@@ -702,6 +702,12 @@ export class ApplicationSettings extends ReadWriteProxy {
             data.settings.smartBuildingsMod = false;
 
             data.version = 32;
+        }
+
+        if (data.version < 33) {
+            data.settings.offerHints = false;
+
+            data.version = 33;
         }
 
         return ExplainedResult.good();

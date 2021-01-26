@@ -44,7 +44,7 @@ export class MetaHubBuilding extends MetaBuilding {
         entity.addComponent(new HubComponent());
         entity.addComponent(
             new ItemProcessorComponent({
-                inputsPerCharge: 1,
+                inputsToProcess: 1,
                 processorType: enumItemProcessorTypes.hub,
             })
         );

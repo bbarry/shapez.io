@@ -46,7 +46,7 @@ export class MetaMixerBuilding extends MetaBuilding {
     setupEntityComponents(entity) {
         entity.addComponent(
             new ItemProcessorComponent({
-                inputsPerCharge: 2,
+                inputsToProcess: 2,
                 processorType: enumItemProcessorTypes.mixer,
             })
         );

@@ -4,7 +4,6 @@ import { MetaBalancerBuilding, enumBalancerVariants } from "../buildings/balance
 import { getCodeFromBuildingData } from "../building_codes";
 import { SmartBalancerComponent } from "../components/smart_balancer";
 import { GameSystemWithFilter } from "../game_system_with_filter";
-import { defaultBuildingVariant } from "../meta_building";
 
 
 /**

@@ -75,20 +75,14 @@ export class MetaBeltCrossingBuilding extends MetaBuilding {
      * @param {GameRoot} root
      */
     getAvailableVariants(root) {
-        const advancedTransportMod = root.app.settings.getAllSettings().advancedTransportMod;
-        let available = [];
-        if(advancedTransportMod) {
-            available.push(defaultBuildingVariant, enumBeltCrossingVariants.corner, enumBeltCrossingVariants.switcher);
-        }
-
-        return available;
+        return [defaultBuildingVariant, enumBeltCrossingVariants.corner, enumBeltCrossingVariants.switcher];
     }
 
     /**
      * @param {GameRoot} root
      */
     getIsUnlocked(root) {
-        return root.app.settings.getAllSettings().advancedTransportMod;
+        return root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_belt_crossing);
     }
 
     /**
@@ -104,7 +98,7 @@ export class MetaBeltCrossingBuilding extends MetaBuilding {
 
         entity.addComponent(
             new ItemProcessorComponent({
-                makeCharges: false
+                makeCharges: false,
             })
         );
 

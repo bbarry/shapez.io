@@ -53,9 +53,17 @@ export class HUDUnlockNotification extends BaseHUDPart {
     showForLevel(level, reward) {
         this.root.soundProxy.playUi(SOUNDS.levelComplete);
 
-        const levels = this.root.gameMode.getLevelDefinitions();
+        const researchLevel = this.root.hubGoals.researchLevel;
         // Don't use getIsFreeplay() because we want the freeplay level up to show
-        if (level > levels.length) {
+        if (reward == enumHubGoalRewards.reward_research_level) {
+            this.root.hud.signals.notification.dispatch(
+                // @ts-ignore
+                T.ingame.notifications.researchComplete.replace("<level>", String(researchLevel)),
+                enumNotificationType.success
+            );
+            return;
+        }
+        if (reward == enumHubGoalRewards.no_reward) {
             this.root.hud.signals.notification.dispatch(
                 T.ingame.notifications.freeplayLevelComplete.replace("<level>", String(level)),
                 enumNotificationType.success
@@ -68,7 +76,6 @@ export class HUDUnlockNotification extends BaseHUDPart {
             "<level>",
             ("" + level).padStart(2, "0")
         );
-
         const rewardName = T.storyRewards[reward].title;
 
         let html = `

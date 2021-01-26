@@ -46,7 +46,7 @@ export const KEYMAPPINGS = {
     buildings: {
         // Primary Toolbar
         belt: { keyCode: key("1") },
-        belt_crossing: { keyCode: key("-") },
+        belt_crossing: { keyCode: key("K") },
         balancer: { keyCode: key("2") },
         underground_belt: { keyCode: key("3") },
         miner: { keyCode: key("4") },

@@ -1,4 +1,5 @@
 import { makeDiv } from "../../../core/utils";
+import { enumHubGoalRewards } from "../../tutorial_goals";
 import { BaseHUDPart } from "../base_hud_part";
 import { DynamicDomAttach } from "../dynamic_dom_attach";
 import { enumNotificationType } from "./notifications";
@@ -44,18 +45,14 @@ export class HUDSandboxController extends BaseHUDPart {
                     <button class="styledButton plus">+</button>
                 </div>
 
-                <div class="additionalOptions">
-                    <button class="styledButton giveBlueprints">Fill blueprint shapes</button>
-                    <button class="styledButton maxOutAll">Max out all</button>
-                </div>
             </div>
         `
         );
 
         const bind = (selector, handler) => this.trackClicks(this.element.querySelector(selector), handler);
 
-        bind(".giveBlueprints", this.giveBlueprints);
-        bind(".maxOutAll", this.maxOutAll);
+        //bind(".giveBlueprints", this.giveBlueprints);
+        //bind(".maxOutAll", this.maxOutAll);
         bind(".levelToggle .minus", () => this.modifyLevel(-1));
         bind(".levelToggle .plus", () => this.modifyLevel(1));
 
@@ -89,11 +86,12 @@ export class HUDSandboxController extends BaseHUDPart {
 
     modifyUpgrade(id, amount) {
         const upgradeTiers = this.root.gameMode.getUpgrades()[id];
-        const maxLevel = upgradeTiers.length;
+        const maxResearchLevel = this.root.hubGoals.researchLevel;
 
+        const isAtMax = this.root.hubGoals.upgradeLevels[id] >= maxResearchLevel;
         this.root.hubGoals.upgradeLevels[id] = Math.max(
             0,
-            Math.min(maxLevel, (this.root.hubGoals.upgradeLevels[id] || 0) + amount)
+            Math.min(5, maxResearchLevel, (this.root.hubGoals.upgradeLevels[id] || 0) + amount),
         );
 
         // Compute improvement
@@ -103,14 +101,29 @@ export class HUDSandboxController extends BaseHUDPart {
         }
         this.root.hubGoals.upgradeImprovements[id] = improvement;
         this.root.signals.upgradePurchased.dispatch(id);
-        this.root.hud.signals.notification.dispatch(
-            "Upgrade '" + id + "' is now at tier " + (this.root.hubGoals.upgradeLevels[id] + 1),
-            enumNotificationType.upgrade
-        );
+        if(isAtMax) {
+            this.root.hud.signals.notification.dispatch(
+                "Upgrade '" + id + "' is already at the max tier unlocked",
+                enumNotificationType.upgrade
+            );
+        } else {
+            this.root.hud.signals.notification.dispatch(
+                "Upgrade '" + id + "' is now at tier " + (this.root.hubGoals.upgradeLevels[id] + 1),
+                enumNotificationType.upgrade
+            );
+        }
+        
     }
 
     modifyLevel(amount) {
         const hubGoals = this.root.hubGoals;
+        if(hubGoals.level + amount > 30) {
+            this.root.hud.signals.notification.dispatch(
+                "You can't cheat past level 20 :/",
+                enumNotificationType.upgrade
+            );
+            return;
+        }
         hubGoals.level = Math.max(1, hubGoals.level + amount);
         hubGoals.computeNextGoal();
 
@@ -121,10 +134,14 @@ export class HUDSandboxController extends BaseHUDPart {
 
         // Compute gained rewards
         hubGoals.gainedRewards = {};
+        hubGoals.researchLevel = 1;
         const levels = this.root.gameMode.getLevelDefinitions();
         for (let i = 0; i < hubGoals.level - 1; ++i) {
             if (i < levels.length) {
                 const reward = levels[i].reward;
+                if(reward == enumHubGoalRewards.reward_research_level) {
+                    hubGoals.researchLevel++;
+                }
                 hubGoals.gainedRewards[reward] = (hubGoals.gainedRewards[reward] || 0) + 1;
             }
         }

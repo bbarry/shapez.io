@@ -194,20 +194,20 @@ export class MetaBalancerBuilding extends MetaBuilding {
      * @param {GameRoot} root
      */
     getAvailableVariants(root) {
-        const smartBuildingsMod = root.app.settings.getAllSettings().smartBuildingsMod;
         let available = [defaultBuildingVariant];
-        if(smartBuildingsMod) {
-            available.push(enumBalancerVariants.mergerTriple, enumBalancerVariants.splitterTriple);
-        }
         if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_merger)) {
-            if(!smartBuildingsMod) {
+            if(false) {
                 available.push(enumBalancerVariants.merger, enumBalancerVariants.mergerInverse);
+            } else {
+                available.push(enumBalancerVariants.mergerTriple);
             }
         }
 
         if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_splitter)) {
-            if(!smartBuildingsMod) {
+            if(false) {
                 available.push(enumBalancerVariants.splitter, enumBalancerVariants.splitterInverse);
+            } else {
+                available.push(enumBalancerVariants.splitterTriple);
             }
         }
 
@@ -234,7 +234,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
 
         entity.addComponent(
             new ItemProcessorComponent({
-                inputsPerCharge: 1,
+                inputsToProcess: 1,
                 processorType: enumItemProcessorTypes.balancer,
             })
         );

@@ -59,15 +59,17 @@ export class ItemProcessorComponent extends Component {
      * @param {object} param0
      * @param {enumItemProcessorTypes=} param0.processorType Which type of processor this is
      * @param {enumItemProcessorRequirements=} param0.processingRequirement Applied processing requirement
-     * @param {number=} param0.inputsPerCharge How many items this machine needs until it can start working
+     * @param {number=} param0.inputsToProcess How many items this machine needs until it can start working
+     * @param {number=} param0.chargesPerInput How many items this machine outputs with each charge
      * @param {boolean=} param0.makeCharges Whether or not to instantly output to required slots with no processing
      *
      */
     constructor({
         processorType = enumItemProcessorTypes.balancer,
         processingRequirement = null,
-        inputsPerCharge = 1,
+        inputsToProcess = 1,
         makeCharges = true,
+        fixedOutput = false,
     }) {
         super();
 
@@ -83,13 +85,19 @@ export class ItemProcessorComponent extends Component {
         this.processingRequirement = processingRequirement;
 
         // How many inputs we need for one charge
-        this.inputsPerCharge = inputsPerCharge;
+        this.inputsToProcess = inputsToProcess;
 
         /**
          * Our current inputs
          * @type {Array<{ item: BaseItem, sourceSlot: number }>}
          */
         this.inputSlots = [];
+
+        /**
+         * Whether or not to make charges
+         * @type {Array<Array<{ item: BaseItem, sourceSlot: number }>>}
+         */
+        this.currentItems = [];
 
         /**
          * What we are currently processing, empty if we don't produce anything rn

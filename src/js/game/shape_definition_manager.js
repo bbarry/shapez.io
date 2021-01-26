@@ -87,19 +87,43 @@ export class ShapeDefinitionManager extends BasicSerializableObject {
     /**
      * Generates a definition for splitting a shape definition in two halfs
      * @param {ShapeDefinition} definition
+     * @param {number} rotation
      * @returns {[ShapeDefinition, ShapeDefinition]}
      */
-    shapeActionCutHalf(definition) {
-        const key = "cut/" + definition.getHash();
+    shapeActionCutHalf(definition, rotation) {
+        const key = "cut/" + definition.getHash() + "/" + rotation;
         if (this.operationCache[key]) {
             return /** @type {[ShapeDefinition, ShapeDefinition]} */ (this.operationCache[key]);
         }
-        const rightSide = definition.cloneFilteredByQuadrants([2, 3]);
-        const leftSide = definition.cloneFilteredByQuadrants([0, 1]);
+        let output1 = null;
+        let output2 = null;
+        //switch(rotation) {
+        //    case 0:
+        //        output1 = definition.cloneFilteredByQuadrants([2, 3]);
+        //        output2 = definition.cloneFilteredByQuadrants([0, 1]);
+        //        break;
+        //    case 90:
+        //        output1 = definition.cloneFilteredByQuadrants([0, 3]);
+        //        output2 = definition.cloneFilteredByQuadrants([2, 1]);
+        //        break;
+        //    case 180:
+        //        output1 = definition.cloneFilteredByQuadrants([0, 1]);
+        //        output2 = definition.cloneFilteredByQuadrants([2, 3]);
+        //        break;
+        //    case 270:
+        //        output1 = definition.cloneFilteredByQuadrants([2, 1]);
+        //        output2 = definition.cloneFilteredByQuadrants([0, 3]);
+        //        break;
+        //    default:
+        //        assert(false, "unknown cutter rotation: " + rotation);
+        //        break;
+        //}
+        output1 = definition.cloneFilteredByQuadrants([2, 3]);
+        output2 = definition.cloneFilteredByQuadrants([0, 1]);
 
         return /** @type {[ShapeDefinition, ShapeDefinition]} */ (this.operationCache[key] = [
-            this.registerOrReturnHandle(rightSide),
-            this.registerOrReturnHandle(leftSide),
+            this.registerOrReturnHandle(output1),
+            this.registerOrReturnHandle(output2),
         ]);
     }
     

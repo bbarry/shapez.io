@@ -10,6 +10,7 @@ import { T } from "../../translations";
 import { HubComponent } from "../components/hub";
 import { Entity } from "../entity";
 import { GameSystemWithFilter } from "../game_system_with_filter";
+import { enumHubGoalRewards } from "../tutorial_goals";
 
 const HUB_SIZE_TILES = 4;
 const HUB_SIZE_PIXELS = HUB_SIZE_TILES * globalConfig.tileSize;
@@ -118,7 +119,13 @@ export class HubSystem extends GameSystemWithFilter {
         }
 
         // Reward
-        const rewardText = T.storyRewards[goals.reward].title.toUpperCase();
+        let rewardTitle = T.storyRewards[goals.reward].title;
+        if(goals.reward == enumHubGoalRewards.reward_research_level) {
+            rewardTitle = rewardTitle.replace("<x>", String(this.root.hubGoals.researchLevel + 1))
+        }
+        const rewardText = rewardTitle.toUpperCase();
+        
+        
         if (rewardText.length > 12) {
             context.font = "bold 8px GameFont";
         } else {

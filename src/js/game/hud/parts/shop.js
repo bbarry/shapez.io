@@ -83,9 +83,9 @@ export class HUDShop extends BaseHUDPart {
             // Cleanup
             handle.requireIndexToElement = [];
 
-            handle.elem.classList.toggle("maxLevel", !tierHandle);
+            handle.elem.classList.toggle("maxLevel", !tierHandle || currentTier >= this.root.hubGoals.researchLevel);
 
-            if (!tierHandle) {
+            if (!tierHandle || currentTier >= this.root.hubGoals.researchLevel) {
                 // Max level
                 handle.elemDescription.innerText = T.ingame.shop.maximumLevel.replace(
                     "<currentMult>",
@@ -201,6 +201,7 @@ export class HUDShop extends BaseHUDPart {
 
         this.rerenderFull();
         this.root.signals.upgradePurchased.add(this.rerenderFull, this);
+        this.root.signals.storyGoalCompleted.add(this.rerenderFull, this);
     }
 
     cleanup() {

@@ -1,16 +1,19 @@
 import { T } from "../translations";
 import { enumBalancerVariants, MetaBalancerBuilding } from "./buildings/balancer";
+import { enumBeltCrossingVariants, MetaBeltCrossingBuilding } from "./buildings/belt_crossing";
 import { MetaConstantSignalBuilding } from "./buildings/constant_signal";
 import { enumCutterVariants, MetaCutterBuilding } from "./buildings/cutter";
 import { MetaDisplayBuilding } from "./buildings/display";
 import { MetaFilterBuilding } from "./buildings/filter";
+import { MetaHyperlinkBuilding } from "./buildings/hyperlink";
 import { MetaLogicGateBuilding } from "./buildings/logic_gate";
 import { enumMinerVariants, MetaMinerBuilding } from "./buildings/miner";
 import { MetaMixerBuilding } from "./buildings/mixer";
 import { enumPainterVariants, MetaPainterBuilding } from "./buildings/painter";
 import { MetaReaderBuilding } from "./buildings/reader";
 import { enumRotaterVariants, MetaRotaterBuilding } from "./buildings/rotater";
-import { MetaStackerBuilding } from "./buildings/stacker";
+import { MetaShapeCombinerBuilding } from "./buildings/shape_combiner";
+import { enumStackerVariants, MetaStackerBuilding } from "./buildings/stacker";
 import { MetaStorageBuilding } from "./buildings/storage";
 import { enumUndergroundBeltVariants, MetaUndergroundBeltBuilding } from "./buildings/underground_belt";
 import { defaultBuildingVariant, MetaBuilding } from "./meta_building";
@@ -42,8 +45,8 @@ export const enumHubGoalRewardsToContentUnlocked = {
     [enumHubGoalRewards.reward_underground_belt_tier_2]: typed([
         [MetaUndergroundBeltBuilding, enumUndergroundBeltVariants.tier2],
     ]),
-    [enumHubGoalRewards.reward_splitter]: typed([[MetaBalancerBuilding, enumBalancerVariants.splitter]]),
-    [enumHubGoalRewards.reward_merger]: typed([[MetaBalancerBuilding, enumBalancerVariants.merger]]),
+    [enumHubGoalRewards.reward_splitter]: typed([[MetaBalancerBuilding, enumBalancerVariants.splitterTriple]]),
+    [enumHubGoalRewards.reward_merger]: typed([[MetaBalancerBuilding, enumBalancerVariants.mergerTriple]]),
     [enumHubGoalRewards.reward_cutter_quad]: typed([[MetaCutterBuilding, enumCutterVariants.quad]]),
     [enumHubGoalRewards.reward_painter_double]: typed([[MetaPainterBuilding, enumPainterVariants.double]]),
     [enumHubGoalRewards.reward_storage]: typed([[MetaStorageBuilding, defaultBuildingVariant]]),
@@ -60,11 +63,22 @@ export const enumHubGoalRewardsToContentUnlocked = {
     [enumHubGoalRewards.reward_wires_painter_and_levers]: typed([
         [MetaPainterBuilding, enumPainterVariants.quad],
     ]),
+
+    [enumHubGoalRewards.reward_belt_crossing]: typed([[MetaBeltCrossingBuilding, defaultBuildingVariant]]),
+    [enumHubGoalRewards.reward_shape_combiner]: typed([[MetaShapeCombinerBuilding, defaultBuildingVariant]]),
+    [enumHubGoalRewards.reward_hyperlink]: typed([[MetaHyperlinkBuilding, defaultBuildingVariant]]),
+    [enumHubGoalRewards.reward_underground_belt_tier_3]: typed([[MetaUndergroundBeltBuilding, enumUndergroundBeltVariants.smart]]),
+    [enumHubGoalRewards.reward_smart_cutter]: typed([[MetaCutterBuilding, enumCutterVariants.laser]]),
+    [enumHubGoalRewards.reward_deep_miner]: typed([[MetaMinerBuilding, enumMinerVariants.deep]]),
+    [enumHubGoalRewards.reward_smart_stacker]: typed([[MetaStackerBuilding, enumStackerVariants.smart]]),
+
     [enumHubGoalRewards.reward_freeplay]: null,
     [enumHubGoalRewards.reward_blueprints]: null,
     [enumHubGoalRewards.no_reward]: null,
+    [enumHubGoalRewards.no_reward_upgrades]: null,
     [enumHubGoalRewards.no_reward_freeplay]: null,
     [enumHubGoalRewards.reward_demo_end]: null,
+    [enumHubGoalRewards.reward_research_level]: null,
 };
 
 if (G_IS_DEV) {

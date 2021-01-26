@@ -151,7 +151,7 @@ export class MetaPainterBuilding extends MetaBuilding {
 
                 entity.components.ItemProcessor.type = enumItemProcessorTypes.painter;
                 entity.components.ItemProcessor.processingRequirement = null;
-                entity.components.ItemProcessor.inputsPerCharge = 2;
+                entity.components.ItemProcessor.inputsToProcess = 2;
 
                 break;
             }
@@ -188,7 +188,8 @@ export class MetaPainterBuilding extends MetaBuilding {
 
                 entity.components.ItemProcessor.type = enumItemProcessorTypes.painterDouble;
                 entity.components.ItemProcessor.processingRequirement = null;
-                entity.components.ItemProcessor.inputsPerCharge = 3;
+                entity.components.ItemProcessor.inputsToProcess = 3;
+                entity.components.ItemProcessor.chargesPerInput = 2;
                 break;
             }
 
@@ -257,7 +258,7 @@ export class MetaPainterBuilding extends MetaBuilding {
                 entity.components.ItemProcessor.type = enumItemProcessorTypes.painterQuad;
                 entity.components.ItemProcessor.processingRequirement =
                     enumItemProcessorRequirements.painterQuad;
-                entity.components.ItemProcessor.inputsPerCharge = 5;
+                entity.components.ItemProcessor.inputsToProcess = 5;
 
                 break;
             }

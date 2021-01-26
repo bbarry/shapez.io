@@ -22,13 +22,12 @@ import { queryParamOptions } from "../../../core/query_parameters";
 
 export class HUDBuildingsToolbar extends HUDBaseToolbar {
     constructor(root) {
-        const advancedTransportMod = root.app.settings.getAllSettings().advancedTransportMod;
         super(root, {
             primaryBuildings: [
                 MetaBeltBuilding,
                 MetaBalancerBuilding,
                 MetaUndergroundBeltBuilding,
-                ...(advancedTransportMod ? [MetaBeltCrossingBuilding] : []),
+                MetaBeltCrossingBuilding,
                 MetaMinerBuilding,
                 MetaCutterBuilding,
                 MetaRotaterBuilding,
@@ -36,15 +35,16 @@ export class HUDBuildingsToolbar extends HUDBaseToolbar {
                 MetaMixerBuilding,
                 MetaPainterBuilding,
                 MetaTrashBuilding,
-                ...(queryParamOptions.sandboxMode || G_IS_DEV ? [MetaItemProducerBuilding] : []),
+                //...(queryParamOptions.sandboxMode || G_IS_DEV ? [MetaItemProducerBuilding] : []),
             ],
             secondaryBuildings: [
-                ...(advancedTransportMod ? [MetaHyperlinkBuilding] : []),
+                MetaHyperlinkBuilding,
                 MetaStorageBuilding,
                 MetaReaderBuilding,
                 MetaLeverBuilding,
                 MetaFilterBuilding,
                 MetaDisplayBuilding,
+                MetaShapeCombinerBuilding,
             ],
             visibilityCondition: () =>
                 !this.root.camera.getIsMapOverlayActive() && this.root.currentLayer === "regular",

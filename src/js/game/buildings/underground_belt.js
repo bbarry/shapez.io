@@ -113,7 +113,10 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
      */
     getAvailableVariants(root) {
         if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_underground_belt_tier_2)) {
-            return [defaultBuildingVariant, enumUndergroundBeltVariants.tier2, enumUndergroundBeltVariants.smart];
+            if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_underground_belt_tier_3)) {
+                return [defaultBuildingVariant, enumUndergroundBeltVariants.tier2, enumUndergroundBeltVariants.smart];
+            }
+            return [defaultBuildingVariant, enumUndergroundBeltVariants.tier2];
         }
         return super.getAvailableVariants(root);
     }
@@ -149,7 +152,11 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
     getBlueprintSprite(rotationVariant, variant) {
         let suffix = "";
         if (variant !== defaultBuildingVariant) {
-            suffix = "-" + variant;
+            if (variant == enumUndergroundBeltVariants.smart) {
+                suffix = "-" + variant + "_" + rotationVariant;
+            } else {
+                suffix = "-" + variant;
+            }
         }
 
         switch (arrayUndergroundRotationVariantToMode[rotationVariant]) {
@@ -347,7 +354,7 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
                 totalConnections++;
             }
         }
-        let rotationVariant = 0;
+        let rotationVariant = isSender ? 0 : 1;
         if (totalConnections !== 1) {
             //keep old rotation variant
             rotationVariant = oldRotationVariant && totalConnections > 0 ? oldRotationVariant : isSender ? 0 : 1;

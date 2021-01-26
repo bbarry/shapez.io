@@ -50,9 +50,8 @@ export class MetaStackerBuilding extends MetaBuilding {
      * @param {GameRoot} root
      */
     getAvailableVariants(root) {
-        const smartBuildingsMod = root.app.settings.getAllSettings().smartBuildingsMod;
         let available = [defaultBuildingVariant];
-        if(smartBuildingsMod) {
+        if(root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_smart_stacker)) {
             available.push(enumStackerVariants.smart);
         }
         return available;
@@ -64,7 +63,7 @@ export class MetaStackerBuilding extends MetaBuilding {
     setupEntityComponents(entity) {
         entity.addComponent(
             new ItemProcessorComponent({
-                inputsPerCharge: 2,
+                inputsToProcess: 2,
             })
         );
 

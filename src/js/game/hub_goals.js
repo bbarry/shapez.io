@@ -6,7 +6,7 @@ import { enumColors } from "./colors";
 import { enumItemProcessorTypes } from "./components/item_processor";
 import { enumAnalyticsDataSource } from "./production_analytics";
 import { GameRoot } from "./root";
-import { enumSubShape, ShapeDefinition } from "./shape_definition";
+import { enumSubShape, enumMergedShape, ShapeDefinition } from "./shape_definition";
 import { enumHubGoalRewards } from "./tutorial_goals";
 
 export class HubGoals extends BasicSerializableObject {
@@ -19,6 +19,7 @@ export class HubGoals extends BasicSerializableObject {
             level: types.uint,
             storedShapes: types.keyValueMap(types.uint),
             upgradeLevels: types.keyValueMap(types.uint),
+            researchLevel: types.uint,
         };
     }
 
@@ -32,7 +33,9 @@ export class HubGoals extends BasicSerializableObject {
         if (errorCode) {
             return errorCode;
         }
-
+        if(this.researchLevel < 1) {
+            this.researchLevel == 1;
+        }
         const levels = root.gameMode.getLevelDefinitions();
 
         // If freeplay is not available, clamp the level
@@ -74,6 +77,9 @@ export class HubGoals extends BasicSerializableObject {
 
         this.level = 1;
 
+        /** @type {number} */
+        this.researchLevel = 1;
+
         /**
          * Which story rewards we already gained
          * @type {Object.<string, number>}
@@ -98,6 +104,7 @@ export class HubGoals extends BasicSerializableObject {
          */
         this.upgradeImprovements = {};
 
+
         // Reset levels first
         const upgrades = this.root.gameMode.getUpgrades();
         for (const key in upgrades) {
@@ -108,7 +115,7 @@ export class HubGoals extends BasicSerializableObject {
         this.computeNextGoal();
 
         // Allow quickly switching goals in dev mode
-        if (G_IS_DEV) {
+        if (G_IS_DEV && false) {
             window.addEventListener("keydown", ev => {
                 if (ev.key === "b") {
                     // root is not guaranteed to exist within ~0.5s after loading in
@@ -239,11 +246,11 @@ export class HubGoals extends BasicSerializableObject {
         }
 
         //Floor Required amount to remove confusion
-        const required = Math.min(200, Math.floor(4 + (this.level - 27) * 0.25));
+        const required = Math.min(200, Math.floor(4 + (this.level - 40) * 0.25));
         this.currentGoal = {
             definition: this.computeFreeplayShape(this.level),
             required,
-            reward: enumHubGoalRewards.no_reward_freeplay,
+            reward: this.level % 5 == 0 ? enumHubGoalRewards.reward_research_level : enumHubGoalRewards.no_reward,
             throughputOnly: true,
         };
     }
@@ -254,7 +261,9 @@ export class HubGoals extends BasicSerializableObject {
     onGoalCompleted() {
         const reward = this.currentGoal.reward;
         this.gainedRewards[reward] = (this.gainedRewards[reward] || 0) + 1;
-
+        if(reward == enumHubGoalRewards.reward_research_level) {
+            this.researchLevel++;
+        }
         this.root.app.gameAnalytics.handleLevelCompleted(this.level);
         ++this.level;
         this.computeNextGoal();
@@ -277,11 +286,10 @@ export class HubGoals extends BasicSerializableObject {
         const tiers = this.root.gameMode.getUpgrades()[upgradeId];
         const currentLevel = this.getUpgradeLevel(upgradeId);
 
-        if (currentLevel >= tiers.length) {
+        if (currentLevel >= tiers.length || currentLevel >= this.researchLevel) {
             // Max level
             return false;
         }
-
         if (G_IS_DEV && globalConfig.debug.upgradesNoCost) {
             return true;
         }
@@ -324,6 +332,7 @@ export class HubGoals extends BasicSerializableObject {
         const upgradeTiers = this.root.gameMode.getUpgrades()[upgradeId];
         const currentLevel = this.getUpgradeLevel(upgradeId);
 
+        //@HERE check so that this.getunlockedupgradelevel
         const tierData = upgradeTiers[currentLevel];
         if (!tierData) {
             return false;
@@ -382,7 +391,7 @@ export class HubGoals extends BasicSerializableObject {
      * @returns {ShapeDefinition}
      */
     computeFreeplayShape(level) {
-        const layerCount = clamp(this.level / 25, 2, 4);
+        const layerCount = clamp(this.level / 33, 2, 4);
 
         /** @type {Array<import("./shape_definition").ShapeLayer>} */
         let layers = [];
@@ -392,14 +401,14 @@ export class HubGoals extends BasicSerializableObject {
         const colors = this.generateRandomColorSet(rng, level > 35);
 
         let pickedSymmetry = null; // pairs of quadrants that must be the same
-        let availableShapes = [enumSubShape.rect, enumSubShape.circle, enumSubShape.star];
+        let availableShapes = [enumSubShape.rect, enumSubShape.circle, enumSubShape.star, enumMergedShape.circlestar, enumMergedShape.rectcircle, enumMergedShape.starrect];
         if (rng.next() < 0.5) {
             pickedSymmetry = [
                 // radial symmetry
                 [0, 2],
                 [1, 3],
             ];
-            availableShapes.push(enumSubShape.windmill); // windmill looks good only in radial symmetry
+            availableShapes.push(enumSubShape.windmill, enumMergedShape.rectwindmill, enumMergedShape.starwindmill, enumMergedShape.circlewindmill); // windmill looks good only in radial symmetry
         } else {
             const symmetries = [
                 [
@@ -429,7 +438,7 @@ export class HubGoals extends BasicSerializableObject {
         }
 
         const randomColor = () => rng.choice(colors);
-        const randomShape = () => rng.choice(Object.values(enumSubShape));
+        const randomShape = () => rng.choice(availableShapes);
 
         let anyIsMissingTwo = false;
 

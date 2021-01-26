@@ -24,11 +24,15 @@ export class BeltReaderSystem extends GameSystemWithFilter {
             }
 
             pinsComp.slots[1].value = readerComp.lastItem;
-            pinsComp.slots[0].value =
-                (readerComp.lastItemTimes[readerComp.lastItemTimes.length - 1] || 0) >
-                minimumTimeForThroughput
-                    ? BOOL_TRUE_SINGLETON
-                    : BOOL_FALSE_SINGLETON;
+            if( (readerComp.lastItemTimes[readerComp.lastItemTimes.length - 1] || 0) >
+            minimumTimeForThroughput) {
+                pinsComp.slots[0].value = BOOL_TRUE_SINGLETON;
+            } else {
+                pinsComp.slots[0].value = BOOL_FALSE_SINGLETON;
+                if(entity.components.ItemEjector.canEjectOnSlot(0)) {
+                    readerComp.lastItem = null;
+                }
+            }
 
             if (now - readerComp.lastThroughputComputation > 0.5) {
                 // Compute throughput

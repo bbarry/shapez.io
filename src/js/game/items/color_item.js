@@ -48,6 +48,7 @@ export class ColorItem extends BaseItem {
     constructor(color) {
         super();
         this.color = color;
+        this.uses = 4;
     }
 
     getBackgroundColorAsResource() {
