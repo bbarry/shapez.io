@@ -88,10 +88,11 @@ export class HUDSandboxController extends BaseHUDPart {
         const upgradeTiers = this.root.gameMode.getUpgrades()[id];
         const maxResearchLevel = this.root.hubGoals.researchLevel;
 
-        const isAtMax = this.root.hubGoals.upgradeLevels[id] >= maxResearchLevel;
+        const currentLevel = this.root.hubGoals.upgradeLevels[id]
+        const isAtMax =  currentLevel >= maxResearchLevel;
         this.root.hubGoals.upgradeLevels[id] = Math.max(
             0,
-            Math.min(5, maxResearchLevel, (this.root.hubGoals.upgradeLevels[id] || 0) + amount),
+            Math.min(currentLevel > 4 ? currentLevel : 4, maxResearchLevel, (this.root.hubGoals.upgradeLevels[id] || 0) + amount),
         );
 
         // Compute improvement
@@ -117,7 +118,7 @@ export class HUDSandboxController extends BaseHUDPart {
 
     modifyLevel(amount) {
         const hubGoals = this.root.hubGoals;
-        if(hubGoals.level + amount > 30) {
+        if(hubGoals.level + amount > 50) {
             this.root.hud.signals.notification.dispatch(
                 "You can't cheat past level 20 :/",
                 enumNotificationType.upgrade

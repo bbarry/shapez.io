@@ -292,7 +292,9 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
      * @return {{ rotation: number, rotationVariant: number, connectedEntities?: Array<Entity> }}
      */
     computeBestVariantForSmart( root, tile, rotation, mode, thisEntity, contents ) {
-        const isSender = mode == enumUndergroundBeltMode.sender;
+        //const isSender = mode && mode == enumUndergroundBeltMode.sender;
+        const rVariant = thisEntity ? thisEntity.components.UndergroundBelt.rotationVariant : null;
+        const isSender = rVariant ? rVariant == 0 || rVariant == 2 || rVariant == 4 : mode == enumUndergroundBeltMode.sender;
 
         const oldRotationVariant = thisEntity ? thisEntity.components.UndergroundBelt.rotationVariant : null;
         const topDirection = enumAngleToDirection[rotation];
@@ -305,7 +307,7 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
         let hasCenterConnector = false;
         let hasRightConnector = false;
         let hasLeftConnector = false;
-        if (mode !== enumUndergroundBeltMode.receiver) {
+        if (isSender) {
             for (let i = 0; i < ejectors.length; ++i) {
                 const ejector = ejectors[i];
     

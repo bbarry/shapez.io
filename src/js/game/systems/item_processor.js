@@ -252,7 +252,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                 // @ts-ignore
                 const layer = item.definition.layers[0];
                 for(let quad = 0; quad < 4; ++quad) {
-                    if(enumMergedShape[layer[quad].subShape]) {
+                    if(layer[quad] && enumMergedShape[layer[quad].subShape]) {
                         return false;
                     }
                 }

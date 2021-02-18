@@ -47,7 +47,7 @@ export class UndergroundBeltSystem extends GameSystemWithFilter {
         // clear outdated handles
         this.staleAreaWatcher.recomputeOnComponentsChanged(
             [UndergroundBeltComponent],
-            globalConfig.undergroundBeltMaxTilesByTier[globalConfig.undergroundBeltMaxTilesByTier.length - 1]
+            globalConfig.undergroundBeltMaxTilesByTier[globalConfig.undergroundBeltMaxTilesByTier.length - 2]
         );
 
         this.root.signals.entityDestroyed.add(this.updateSmartUndergroundBeltVariant, this);
@@ -253,11 +253,12 @@ export class UndergroundBeltSystem extends GameSystemWithFilter {
                         tile: new Vector(x, y),
                         rotation: targetStaticComp.originalRotation,
                         variant: enumUndergroundBeltVariants.smart,
-                        layer: targetEntity.layer,
-                        entity: targetEntity
+                        layer: targetEntity.layer
                     });
-                    // Change stuff
-                    metaUndergroundBelt.updateVariants(targetEntity, rotationVariant, enumUndergroundBeltVariants.smart);
+                    // Change stuff if needed
+                    if(rotationVariant != targetUndergroundBeltComp.rotationVariant) {
+                        metaUndergroundBelt.updateVariants(targetEntity, rotationVariant, enumUndergroundBeltVariants.smart);
+                    }
 
                     // Update code as well
                     targetStaticComp.code = getCodeFromBuildingData(

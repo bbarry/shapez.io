@@ -446,6 +446,7 @@ export class HubGoals extends BasicSerializableObject {
             /** @type {import("./shape_definition").ShapeLayer} */
             const layer = [null, null, null, null];
 
+            //set the full layer shape
             for (let j = 0; j < pickedSymmetry.length; ++j) {
                 const group = pickedSymmetry[j];
                 const shape = randomShape();
@@ -459,13 +460,34 @@ export class HubGoals extends BasicSerializableObject {
                 }
             }
 
+            let lastLayer = layer;
+            if(i > 0) {
+                lastLayer = layers[i - 1];
+            }
+
+            //first find number of corners on the last layer
+            let totalConnections = 0;
+            for(let quad = 0; quad < 4; ++quad) {
+                if(lastLayer[quad]) {
+                totalConnections++;
+                }
+            }
+
+            for(let quad = 0; quad < 4; ++quad) {
+                if(rng.next() > (i > 0 ? 0.85 : 0.9) && totalConnections > (i > 0 ? 1 : 2)) {
+                    layer[quad] = null;
+                    totalConnections--;
+                }
+            }
+            
             // Sometimes they actually are missing *two* ones!
             // Make sure at max only one layer is missing it though, otherwise we could
             // create an uncreateable shape
-            if (level > 75 && rng.next() > 0.95 && !anyIsMissingTwo) {
-                layer[rng.nextIntRange(0, 4)] = null;
-                anyIsMissingTwo = true;
-            }
+
+            //if (level > 75 && rng.next() > 0.95 && !anyIsMissingTwo) {
+            //    layer[rng.nextIntRange(0, 4)] = null;
+            //    anyIsMissingTwo = true;
+            //}
 
             layers.push(layer);
         }

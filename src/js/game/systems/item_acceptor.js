@@ -85,6 +85,9 @@ export class ItemAcceptorSystem extends GameSystemWithFilter {
                 ];
 
                 const slotData = acceptorComp.slots[slotIndex];
+                if(!slotData) {
+                    continue;
+                }
                 const realSlotPos = staticComp.localTileToWorld(slotData.pos);
 
                 if (!chunk.tileSpaceRectangle.containsPoint(realSlotPos.x, realSlotPos.y)) {

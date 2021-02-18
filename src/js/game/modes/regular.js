@@ -400,7 +400,7 @@ export function generateLevelDefinitions(limitedVersion = false) {
             reward: enumHubGoalRewards.reward_constant_signal,
         },
         {
-            shape: "3g3g--3g:----Sc--:2c2c--2c",
+            shape: "3g3g--3g:3g--Sc--:2c2c--2c",
             required: 7000,
             reward: enumHubGoalRewards.reward_research_level,
         },
@@ -420,7 +420,7 @@ export function generateLevelDefinitions(limitedVersion = false) {
             reward: enumHubGoalRewards.reward_virtual_processing,
         },
         {
-            shape: "Sb------:--Cb--Cb:3u------:----3r--",
+            shape: "SbCu--Cu:--Cb--Cb:3u------:----3r--",
             required: 10000,
             reward: enumHubGoalRewards.reward_freeplay,
         },
