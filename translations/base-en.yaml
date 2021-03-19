@@ -59,20 +59,18 @@ steamPage:
         - Sandbox mode
         - ... and a lot more!
 
-    title_open_source: This game is open source!
+    title_open_source: This mod is open source!
     text_open_source: >-
-        Anybody can contribute, I'm actively involved in the community and attempt to review all suggestions and take feedback into consideration where possible.
-
-        Be sure to check out my trello board for the full roadmap!
+        Not that anyone cares :/
 
     title_links: Links
 
     links:
-        discord: Official Discord
+        discord: Modding Server
         roadmap: Roadmap
-        subreddit: Subreddit
+        subreddit: Original Game
         source_code: Source code (GitHub)
-        translate: Help translate
+        translate: Shape Viewer
 
 global:
     loading: Loading
@@ -131,11 +129,11 @@ mainMenu:
     continue: Continue
     newGame: New Game
     changelog: Changelog
-    subreddit: Reddit
+    subreddit: Original Game
     importSavegame: Import
-    openSourceHint: This game is open source!
-    discordLink: Official Discord Server
-    helpTranslate: Help translate!
+    openSourceHint: This mod is open source!
+    discordLink: Shapez.io Modding Server
+    helpTranslate: Shape Viewer
     madeBy: Made by <author-link>
 
     # This is shown when using firefox and other browsers which are not supported.
@@ -213,9 +211,9 @@ dialogs:
         desc: You can only have one savegame at a time in the demo version. Please remove the existing one or get the standalone version!
 
     updateSummary:
-        title: New update!
+        title: Latest Update!
         desc: >-
-            Here are the changes since you last played:
+            Here are the latest changes to the game:
 
     upgradesIntroduction:
         title: Research Upgrades

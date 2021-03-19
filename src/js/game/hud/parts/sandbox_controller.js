@@ -12,7 +12,8 @@ export class HUDSandboxController extends BaseHUDPart {
             [],
             `
             <label>Sandbox Options</label>
-            <span class="sandboxHint">Use F6 to toggle this overlay</span>
+            <span class="sandboxHint">Use F6 to toggle this overlay</span><br>
+            <span class="sandboxHint">Only use this if you don't want to play through properly</span>
 
             <div class="buttons">
                 <div class="levelToggle plusMinus">
@@ -21,29 +22,7 @@ export class HUDSandboxController extends BaseHUDPart {
                     <button class="styledButton plus">+</button>
                 </div>
                 
-                <div class="upgradesBelt plusMinus">
-                    <label>Upgrades &rarr; Belt</label>
-                    <button class="styledButton minus">-</button>
-                    <button class="styledButton plus">+</button>
-                </div>
                 
-                <div class="upgradesExtraction plusMinus">
-                    <label>Upgrades &rarr; Extraction</label>
-                    <button class="styledButton minus">-</button>
-                    <button class="styledButton plus">+</button>
-                </div>
-                
-                <div class="upgradesProcessing plusMinus">
-                    <label>Upgrades &rarr; Processing</label>
-                    <button class="styledButton minus">-</button>
-                    <button class="styledButton plus">+</button>
-                </div>
-                
-                <div class="upgradesPainting plusMinus">
-                    <label>Upgrades &rarr; Painting</label>
-                    <button class="styledButton minus">-</button>
-                    <button class="styledButton plus">+</button>
-                </div>
 
             </div>
         `
@@ -51,8 +30,6 @@ export class HUDSandboxController extends BaseHUDPart {
 
         const bind = (selector, handler) => this.trackClicks(this.element.querySelector(selector), handler);
 
-        //bind(".giveBlueprints", this.giveBlueprints);
-        //bind(".maxOutAll", this.maxOutAll);
         bind(".levelToggle .minus", () => this.modifyLevel(-1));
         bind(".levelToggle .plus", () => this.modifyLevel(1));
 
@@ -67,21 +44,6 @@ export class HUDSandboxController extends BaseHUDPart {
 
         bind(".upgradesPainting .minus", () => this.modifyUpgrade("painting", -1));
         bind(".upgradesPainting .plus", () => this.modifyUpgrade("painting", 1));
-    }
-
-    giveBlueprints() {
-        const shape = this.root.gameMode.getBlueprintShapeKey();
-        if (!this.root.hubGoals.storedShapes[shape]) {
-            this.root.hubGoals.storedShapes[shape] = 0;
-        }
-        this.root.hubGoals.storedShapes[shape] += 1e9;
-    }
-
-    maxOutAll() {
-        this.modifyUpgrade("belt", 100);
-        this.modifyUpgrade("miner", 100);
-        this.modifyUpgrade("processors", 100);
-        this.modifyUpgrade("painting", 100);
     }
 
     modifyUpgrade(id, amount) {
@@ -118,7 +80,7 @@ export class HUDSandboxController extends BaseHUDPart {
 
     modifyLevel(amount) {
         const hubGoals = this.root.hubGoals;
-        if(hubGoals.level + amount > 50) {
+        if(hubGoals.level + amount > 20) {
             this.root.hud.signals.notification.dispatch(
                 "You can't cheat past level 20 :/",
                 enumNotificationType.upgrade
@@ -162,7 +124,7 @@ export class HUDSandboxController extends BaseHUDPart {
             }
         });
 
-        this.visible = !G_IS_DEV;
+        this.visible = false;
         this.domAttach = new DynamicDomAttach(this.root, this.element);
     }
 
@@ -174,3 +136,28 @@ export class HUDSandboxController extends BaseHUDPart {
         this.domAttach.update(this.visible);
     }
 }
+/*
+                <div class="upgradesBelt plusMinus">
+                    <label>Upgrades &rarr; Belt</label>
+                    <button class="styledButton minus">-</button>
+                    <button class="styledButton plus">+</button>
+                </div>
+                
+                <div class="upgradesExtraction plusMinus">
+                    <label>Upgrades &rarr; Extraction</label>
+                    <button class="styledButton minus">-</button>
+                    <button class="styledButton plus">+</button>
+                </div>
+                
+                <div class="upgradesProcessing plusMinus">
+                    <label>Upgrades &rarr; Processing</label>
+                    <button class="styledButton minus">-</button>
+                    <button class="styledButton plus">+</button>
+                </div>
+                
+                <div class="upgradesPainting plusMinus">
+                    <label>Upgrades &rarr; Painting</label>
+                    <button class="styledButton minus">-</button>
+                    <button class="styledButton plus">+</button>
+                </div>
+*/

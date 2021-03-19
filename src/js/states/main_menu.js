@@ -38,7 +38,7 @@ export class MainMenuState extends GameState {
             <a href="#" class="steamLink ${A_B_TESTING_LINK_TYPE}" target="_blank">Get the shapez.io standalone!</a>
         `;
 
-        const showDemoBadges = this.app.restrictionMgr.getIsStandaloneMarketingActive();
+        const showDemoBadges = false;
 
         return `
             <div class="topButtons">
@@ -59,7 +59,7 @@ export class MainMenuState extends GameState {
 
             <div class="logo">
                 <img src="${cachebust("res/logo.png")}" alt="shapez.io Logo">
-                <span class="updateLabel">v${G_BUILD_VERSION}</span>
+                <span class="updateLabel">v1.1.0</span>
             </div>
 
             <div class="mainWrapper ${showDemoBadges ? "demo" : "noDemo"}">
@@ -91,14 +91,15 @@ export class MainMenuState extends GameState {
                 <div class="sidelinks">
                     <a class="redditLink">${T.mainMenu.subreddit}</a>
 
+                    <a class="helpTranslate">${T.mainMenu.helpTranslate}</a>
+
                     <a class="changelog">${T.changelog.title}</a>
 
-                    <a class="helpTranslate">${T.mainMenu.helpTranslate}</a>
                 </div>
 
                 <div class="author">${T.mainMenu.madeBy.replace(
                     "<author-link>",
-                    '<a class="producerLink" target="_blank">Tobias Springer</a>'
+                    '<a class="producerLink" target="_blank">Sense_101/TygerSkyDev</a>'
                 )}</div>
             </div>
         `;
@@ -242,7 +243,7 @@ export class MainMenuState extends GameState {
         const producerLink = this.htmlElement.querySelector(".producerLink");
         this.trackClicks(
             producerLink,
-            () => this.app.platformWrapper.openExternalLink("https://tobspr.com"),
+            () => this.app.platformWrapper.openExternalLink("https://github.com/Sense101"),
             { preventClick: true }
         );
     }
@@ -527,7 +528,7 @@ export class MainMenuState extends GameState {
     onTranslationHelpLinkClicked() {
         this.app.analytics.trackUiClick("translation_help_link");
         this.app.platformWrapper.openExternalLink(
-            "https://github.com/tobspr/shapez.io/blob/master/translations"
+            "https://sense101.github.io/ShapezIndustriesViewer/"
         );
     }
 

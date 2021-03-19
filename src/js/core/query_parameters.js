@@ -3,7 +3,7 @@ const options = queryString.parse(location.search);
 
 export let queryParamOptions = {
     embedProvider: null,
-    fullVersion: false,
+    fullVersion: true,
     sandboxMode: false,
 };
 

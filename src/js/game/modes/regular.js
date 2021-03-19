@@ -9,7 +9,7 @@ const preparementShape = "CyCy--Cy:1g1g1g--:5w5w5w5w";
 const blueprintShape = "Sb----Sb:CbCbCbCb:--CwCw--";
 
 // Tiers need % of the previous tier as requirement too
-const tierGrowth = 3.5;
+const tierGrowth = 1.5;
 
 /**
  * Generates all upgrades

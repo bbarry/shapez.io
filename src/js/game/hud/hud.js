@@ -146,9 +146,9 @@ export class GameHUD {
             this.parts.sandboxController = new HUDSandboxController(this.root);
         }
 
-        if (!G_IS_RELEASE && !G_IS_DEV) {
-            this.parts.betaOverlay = new HUDBetaOverlay(this.root);
-        }
+        //if (!G_IS_RELEASE && !G_IS_DEV) {
+        //    this.parts.betaOverlay = new HUDBetaOverlay(this.root);
+        //}
 
         const frag = document.createDocumentFragment();
         for (const key in this.parts) {

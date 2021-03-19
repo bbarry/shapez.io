@@ -5,7 +5,7 @@
     flex-direction: column;
 
     // background: #aaacb4 center center / cover !important;
-    background: #bbc2cf center center / cover !important;
+    background: #95abd3 center center / cover !important;
 
     .topButtons {
         position: absolute;
@@ -183,16 +183,16 @@
         position: relative;
         .updateLabel {
             position: absolute;
-            transform: translateX(50%) rotate(-5deg);
+            transform: translateX(50%) rotate(+5deg);
             color: rgb(231, 78, 58);
             @include Heading;
             font-weight: bold;
-            @include S(right, 40px);
+            @include S(left, 40px);
             @include S(bottom, 20px);
 
             @include InlineAnimation(1.3s ease-in-out infinite) {
                 50% {
-                    transform: translateX(50%) rotate(-7deg) scale(1.1);
+                    transform: translateX(50%) rotate(+7deg) scale(1.1);
                 }
             }
 
@@ -551,15 +551,15 @@
 
                 &.redditLink {
                     /* @load-async */
-                    background-image: uiResource("main_menu/reddit.svg");
+                    background-image: uiResource("main_menu/reddit.png");
+                }
+                &.helpTranslate {
+                    /* @load-async */
+                    background-image: uiResource("main_menu/translate.png");
                 }
                 &.changelog {
                     /* @load-async */
                     background-image: uiResource("main_menu/changelog.svg");
-                }
-                &.helpTranslate {
-                    /* @load-async */
-                    background-image: uiResource("main_menu/translate.svg");
                 }
             }
         }

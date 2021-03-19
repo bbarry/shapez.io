@@ -12,10 +12,10 @@ export const IS_MAC = navigator.platform.toLowerCase().indexOf("mac") >= 0;
 const smoothCanvas = true;
 
 export const THIRDPARTY_URLS = {
-    discord: "https://discord.gg/HN7EVzV",
-    github: "https://github.com/tobspr/shapez.io",
-    reddit: "https://www.reddit.com/r/shapezio",
-    shapeViewer: "https://viewer.shapez.io",
+    discord: "https://discord.gg/gvC5v8sQEt",
+    github: "https://github.com/Sense101/shapez.io/tree/Shapez",
+    reddit: "https://shapez.io",
+    shapeViewer: "https://sense101.github.io/ShapezIndustriesViewer/",
 
     standaloneStorePage: "https://store.steampowered.com/app/1318690/shapezio/",
 

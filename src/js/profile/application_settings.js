@@ -20,7 +20,6 @@ export const enumCategories = {
     userInterface: "userInterface",
     performance: "performance",
     advanced: "advanced",
-    mods: "mods",
 };
 
 export const uiScales = [
@@ -201,7 +200,7 @@ export const allApplicationSettings = [
         (app, value) => null
     ),
 
-    new BoolSetting("offerHints", enumCategories.userInterface, (app, value) => {}),
+    //new BoolSetting("offerHints", enumCategories.userInterface, (app, value) => {}),
 
     new EnumSetting("theme", {
         options: Object.keys(THEMES),
@@ -286,9 +285,6 @@ export const allApplicationSettings = [
     new BoolSetting("disableTileGrid", enumCategories.performance, (app, value) => {}),
     new BoolSetting("lowQualityTextures", enumCategories.performance, (app, value) => {}),
     new BoolSetting("simplifiedBelts", enumCategories.performance, (app, value) => {}),
-    
-    new BoolSetting("advancedTransportMod", enumCategories.mods, (app, value) => {}),
-    new BoolSetting("smartBuildingsMod", enumCategories.mods, (app, value) => {}),
 ];
 
 export function getApplicationSettingById(id) {
