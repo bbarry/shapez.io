@@ -308,8 +308,7 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
             tile: mouseTile,
             rotation: this.currentBaseRotation,
             variant: this.currentVariant.get(),
-            layer: metaBuilding.getLayer(),
-            entity: this.fakeEntity
+            layer: metaBuilding.getLayer()
         });
 
         // Check if there are connected entities

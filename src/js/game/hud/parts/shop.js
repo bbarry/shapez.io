@@ -83,22 +83,30 @@ export class HUDShop extends BaseHUDPart {
             // Cleanup
             handle.requireIndexToElement = [];
 
-            handle.elem.classList.toggle("maxLevel", !tierHandle || currentTier >= this.root.hubGoals.researchLevel);
+            handle.elem.classList.toggle("maxLevel", !tierHandle);
 
+            
             if (!tierHandle || currentTier >= this.root.hubGoals.researchLevel) {
                 // Max level
                 handle.elemDescription.innerText = T.ingame.shop.maximumLevel.replace(
                     "<currentMult>",
                     formatBigNumber(currentTierMultiplier)
                 );
-                continue;
+                if(!tierHandle)
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                // Set description
+            handle.elemDescription.innerText = T.shopUpgrades[upgradeId].description
+            .replace("<currentMult>", formatBigNumber(currentTierMultiplier))
+            .replace("<newMult>", formatBigNumber(currentTierMultiplier + tierHandle.improvement));
+
             }
 
-            // Set description
-            handle.elemDescription.innerText = T.shopUpgrades[upgradeId].description
-                .replace("<currentMult>", formatBigNumber(currentTierMultiplier))
-                .replace("<newMult>", formatBigNumber(currentTierMultiplier + tierHandle.improvement));
-
+            
             tierHandle.required.forEach(({ shape, amount }) => {
                 const container = makeDiv(handle.elemRequirements, null, ["requirement"]);
 
@@ -180,8 +188,9 @@ export class HUDShop extends BaseHUDPart {
                 progressBar.style.width = progress * 100.0 + "%";
                 progressBar.classList.toggle("complete", progress >= 1.0);
             }
-
-            handle.buyButton.classList.toggle("buyable", this.root.hubGoals.canUnlockUpgrade(upgradeId));
+            const currentTier = this.root.hubGoals.getUpgradeLevel(upgradeId);
+            handle.buyButton.classList.toggle("buyable", this.root.hubGoals.canUnlockUpgrade(upgradeId)
+             && currentTier < this.root.hubGoals.researchLevel);
         }
     }
 

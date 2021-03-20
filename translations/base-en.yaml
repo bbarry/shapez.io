@@ -814,7 +814,8 @@ storyRewards:
 
     reward_balancer:
         title: Balancer
-        desc: The multifunctional <strong>balancer</strong> has been unlocked - It can be used to build bigger factories by <strong>splitting and merging items</strong> onto multiple belts!
+        desc: >-
+            The multifunctional <strong>balancer</strong> has been unlocked - It can be used to build bigger factories by <strong>splitting and merging items</strong> onto multiple belts!
 
     reward_tunnel:
         title: Tunnel
@@ -868,7 +869,7 @@ storyRewards:
         desc: >-
             You have unlocked the <strong>storage</strong> building - It allows you to store items up to a given capacity!<br><br>
             It priorities the left output, so you can also use it as an <strong>overflow gate</strong>! <br><br>
-            You have also unlocked the mine storage, which is most useful as an overflow gate but also for compactness.
+            <i>You have also unlocked the mini storage, which is most useful as an overflow gate but also for compactness.</i>
 
     reward_blueprints:
         title: Bugprints
@@ -920,12 +921,8 @@ storyRewards:
         desc: >-
             You unlocked a whole bunch of new buildings which allow you to <strong>simulate the processing of shapes</strong>!<br><br>
             You can now simulate a cutter, rotator, stacker and more on the wires layer!
-            With this you now have three options to continue the game:<br><br>
-            - Build an <strong>automated machine</strong> to create any possible shape requested by the HUB (I recommend to try it!).<br><br>
-            - Build something cool with wires.<br><br>
-            - Continue to play normally.<br><br>
-            - Ignore the first three, just play and enjoy.<br><br>
-            Whatever you choose, remember to have fun!
+            With this you are now able to build an <strong>automated machine</strong> to create any possible shape requested by the HUB!
+            <br><br> You have also unlocked the display, which can be used to show wire signals!
 
     # Special reward, which is shown when there is no reward actually
     no_reward_upgrades:
@@ -1211,15 +1208,11 @@ settings:
             description: >-
                 Controls the size of the shapes on the map overview (when zooming out).
 
-        advancedTransportMod:
-            title: Advanced Transport Mod
+        levelSkip:
+            title: Skip Starter Levels
             description: >-
-                This setting no longer does anything.
-
-        smartBuildingsMod:
-            title: Smart Buildings Mod
-            description: >-
-                This setting no longer does anything.
+                If enabled, allows you to press B while hovering over the hub to skip to the next level. <br><br>
+                This only works if your level is less than twenty.
                 
 keybindings:
     title: Keybindings

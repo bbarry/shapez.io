@@ -115,13 +115,24 @@ export class HubGoals extends BasicSerializableObject {
         this.computeNextGoal();
 
         // Allow quickly switching goals in dev mode
-        if (G_IS_DEV && false) {
+        if (this.root.app.settings.getAllSettings().levelSkip) {
             window.addEventListener("keydown", ev => {
                 if (ev.key === "b") {
                     // root is not guaranteed to exist within ~0.5s after loading in
                     if (this.root && this.root.app && this.root.app.gameAnalytics) {
-                        if (!this.isEndOfDemoReached()) {
-                            this.onGoalCompleted();
+                        if (!this.isEndOfDemoReached() && this.level < 20 && !this.root.hud.hasBlockingOverlayOpen()) {
+                            const mousePosition = this.root.app.mousePosition;
+                            if (!mousePosition) {
+                                // Not on screen
+                                return null;
+                            }
+                            // Figure which points the line visits
+                            const worldPos = this.root.camera.screenToWorld(mousePosition);
+                            const mouseTile = worldPos.toTileSpace();
+                            if(mouseTile.x > -3 && mouseTile.x < 2 && mouseTile.y > -3 && mouseTile.y < 2)
+                            {
+                                this.onGoalCompleted();
+                            }
                         }
                     }
                 }

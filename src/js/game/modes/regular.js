@@ -52,19 +52,19 @@ function generateUpgrades(limitedVersion = false) {
                 required: [{ shape: "CrCrCrCr", amount: 1500 }],
             },
             {
-                required: [{ shape: "CgCgCwCg:Cw------", amount: 5000 }],
+                required: [{ shape: "CgCgCwCg:Cw------", amount: 3000 }],
             },
             {
-                required: [{ shape: "CwCcCwCc:--Cw--Cw:--Cc--Cc", amount: 10000 }],
+                required: [{ shape: "CwCcCwCc:--Cw--Cw:--Cc--Cc", amount: 5000 }],
             },
             {
-                required: [{ shape: preparementShape, amount: 15000 }],
+                required: [{ shape: preparementShape, amount: 10000 }],
                 excludePrevious: true,
             },
             {
                 required: [
-                    { shape: preparementShape, amount: 20000 },
-                    { shape: finalGameShape, amount: 30000 },
+                    { shape: preparementShape, amount: 15000 },
+                    { shape: finalGameShape, amount: 20000 },
                 ],
                 excludePrevious: true,
             },
@@ -82,19 +82,19 @@ function generateUpgrades(limitedVersion = false) {
                 required: [{ shape: "RpRpRpRp", amount: 1500 }],
             },
             {
-                required: [{ shape: "RpRbRpRb:RbRpRbRp:RpRbRpRb", amount: 5000 }],
+                required: [{ shape: "RpRbRpRb:RbRpRbRp:RpRbRpRb", amount: 3000 }],
             },
             {
-                required: [{ shape: "RpRbRpRb:RrRwRrRw:RpRbRpRb:RrRwRrRw", amount: 10000 }],
+                required: [{ shape: "RpRbRpRb:RrRwRrRw:RpRbRpRb:RrRwRrRw", amount: 5000 }],
             },
             {
-                required: [{ shape: preparementShape, amount: 15000 }],
+                required: [{ shape: preparementShape, amount: 10000 }],
                 excludePrevious: true,
             },
             {
                 required: [
-                    { shape: preparementShape, amount: 20000 },
-                    { shape: finalGameShape, amount: 30000 },
+                    { shape: preparementShape, amount: 15000 },
+                    { shape: finalGameShape, amount: 20000 },
                 ],
                 excludePrevious: true,
             },
@@ -112,19 +112,19 @@ function generateUpgrades(limitedVersion = false) {
                 required: [{ shape: "SwSwSwSw", amount: 1500 }],
             },
             {
-                required: [{ shape: "----Sw--:--SpSwSp", amount: 5000 }],
+                required: [{ shape: "----Sw--:--SpSwSp", amount: 3000 }],
             },
             {
-                required: [{ shape: "Sg----Sg:----SbSb:SuSuSu--", amount: 10000 }],
+                required: [{ shape: "Sg----Sg:----SbSb:SuSuSu--", amount: 5000 }],
             },
             {
-                required: [{ shape: preparementShape, amount: 15000 }],
+                required: [{ shape: preparementShape, amount: 10000 }],
                 excludePrevious: true,
             },
             {
                 required: [
-                    { shape: preparementShape, amount: 20000 },
-                    { shape: finalGameShape, amount: 30000 },
+                    { shape: preparementShape, amount: 15000 },
+                    { shape: finalGameShape, amount: 20000 },
                 ],
                 excludePrevious: true,
             },
@@ -142,19 +142,19 @@ function generateUpgrades(limitedVersion = false) {
                 required: [{ shape: "WyRrWyRr", amount: 1500 }],
             },
             {
-                required: [{ shape: "WrWgWbWw:WbWwWrWg", amount: 5000 }],
+                required: [{ shape: "WrWgWbWw:WbWwWrWg", amount: 3000 }],
             },
             {
-                required: [{ shape: "----WwWy:Wp--Ww--:--WcWw--", amount: 10000 }],
+                required: [{ shape: "----WwWy:Wp--Ww--:--WcWw--", amount: 5000 }],
             },
             {
-                required: [{ shape: preparementShape, amount: 15000 }],
+                required: [{ shape: preparementShape, amount: 10000 }],
                 excludePrevious: true,
             },
             {
                 required: [
-                    { shape: preparementShape, amount: 20000 },
-                    { shape: finalGameShape, amount: 30000 },
+                    { shape: preparementShape, amount: 15000 },
+                    { shape: finalGameShape, amount: 20000 },
                 ],
                 excludePrevious: true,
             },

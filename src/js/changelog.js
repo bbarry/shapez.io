@@ -1,17 +1,17 @@
 export const CHANGELOG = [
-    {
-        version: "ShapezIndustries 1.0 RELEASE",
-        date: "23.01.2021",
-        entries: [
-            "Completely revamped progression!",
-            "game-changing new systems and mechanics!",
-            "unlocks for ALL the buildings in the shapez industries mod!",
-            "40 levels, with completely new shapes!",
-            "rewards for completing every 5 freeplay levels!",
-            "less shapes needed to complete levels!",
-            "Important bug fixes!",
-        ],
-    },
+    //{
+    //    version: "ShapezIndustries 1.0 RELEASE",
+    //    date: "23.01.2021",
+    //    entries: [
+    //        "Completely revamped progression!",
+    //        "game-changing new systems and mechanics!",
+    //        "unlocks for ALL the buildings in the shapez industries mod!",
+    //        "40 levels, with completely new shapes!",
+    //        "rewards for completing every 5 freeplay levels!",
+    //        "less shapes needed to complete levels!",
+    //        "Important bug fixes!",
+    //    ],
+    //},
     {
         version: "1.2.2",
         date: "07.12.2020",

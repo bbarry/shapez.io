@@ -285,6 +285,7 @@ export const allApplicationSettings = [
     new BoolSetting("disableTileGrid", enumCategories.performance, (app, value) => {}),
     new BoolSetting("lowQualityTextures", enumCategories.performance, (app, value) => {}),
     new BoolSetting("simplifiedBelts", enumCategories.performance, (app, value) => {}),
+    new BoolSetting("levelSkip", enumCategories.userInterface, (app, value) => {}),
 ];
 
 export function getApplicationSettingById(id) {
@@ -329,6 +330,8 @@ class SettingsStorage {
         this.simplifiedBelts = false;
         this.zoomToCursor = true;
         this.mapResourcesScale = 0.5;
+
+        this.levelSkip = false;
 
         /**
          * @type {Object.<string, number>}
@@ -541,7 +544,7 @@ export class ApplicationSettings extends ReadWriteProxy {
     }
 
     getCurrentVersion() {
-        return 33;
+        return 34;
     }
 
     /** @param {{settings: SettingsStorage, version: number}} data */
@@ -704,6 +707,12 @@ export class ApplicationSettings extends ReadWriteProxy {
             data.settings.offerHints = false;
 
             data.version = 33;
+        }
+
+        if (data.version < 34) {
+            data.settings.offerHints = false;
+            data.settings.levelSkip = false;
+            data.version = 34;
         }
 
         return ExplainedResult.good();
