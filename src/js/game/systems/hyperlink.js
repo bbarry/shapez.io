@@ -17,10 +17,10 @@ export class HyperlinkSystem extends GameSystemWithFilter {
 
         // Notice: These must come *after* the entity destroyed signals
         this.root.signals.entityAdded.add(this.updateSurroundingHyperlinkPlacement, this);
-
     }
 
-    updateSurroundingHyperlinkPlacement(entity) { // @HERE
+    updateSurroundingHyperlinkPlacement(entity) {
+        // @HERE
         if (!this.root.gameInitialized) {
             return;
         }
@@ -34,7 +34,6 @@ export class HyperlinkSystem extends GameSystemWithFilter {
         // Compute affected area
         const originalRect = staticComp.getTileSpaceBounds();
         const affectedArea = originalRect.expandedInAllDirections(1);
-
 
         for (let x = affectedArea.x; x < affectedArea.right(); ++x) {
             for (let y = affectedArea.y; y < affectedArea.bottom(); ++y) {
@@ -69,9 +68,10 @@ export class HyperlinkSystem extends GameSystemWithFilter {
                     // Compute delta to see if anything changed
                     const newDirection = arrayHyperlinkVariantToRotation[rotationVariant];
 
-                    if (targetStaticComp.rotation !== rotation || newDirection !== targetHyperlinkComp.direction) {
-
-
+                    if (
+                        targetStaticComp.rotation !== rotation ||
+                        newDirection !== targetHyperlinkComp.direction
+                    ) {
                         // Change stuff
                         targetStaticComp.rotation = rotation;
                         metaHyperlink.updateVariants(targetEntity, rotationVariant, defaultBuildingVariant);

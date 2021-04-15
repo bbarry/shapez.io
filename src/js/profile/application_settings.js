@@ -337,8 +337,6 @@ class SettingsStorage {
          * @type {Object.<string, number>}
          */
         this.keybindingOverrides = {};
-
-        
     }
 }
 
@@ -696,7 +694,7 @@ export class ApplicationSettings extends ReadWriteProxy {
 
             data.version = 31;
         }
-        
+
         if (data.version < 32) {
             data.settings.smartBuildingsMod = false;
 

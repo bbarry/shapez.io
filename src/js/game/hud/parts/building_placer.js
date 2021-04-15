@@ -174,7 +174,7 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
     rerenderVariants() {
         removeAllChildren(this.variantsElement);
         this.rerenderInfoDialog();
-        this.root.soundProxy
+        this.root.soundProxy;
         const metaBuilding = this.currentMetaBuilding.get();
 
         // First, clear up all click detectors
@@ -216,7 +216,7 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
             const dimensions = metaBuilding.getDimensions(variant);
             const sprite = metaBuilding.getPreviewSprite(0, variant);
             const spriteWrapper = makeDiv(element, null, ["iconWrap"]);
-            
+
             spriteWrapper.setAttribute("data-tile-w", dimensions.x);
             spriteWrapper.setAttribute("data-tile-h", dimensions.y);
 
@@ -308,7 +308,7 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
             tile: mouseTile,
             rotation: this.currentBaseRotation,
             variant: this.currentVariant.get(),
-            layer: metaBuilding.getLayer()
+            layer: metaBuilding.getLayer(),
         });
 
         // Check if there are connected entities
@@ -570,13 +570,16 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
             }
         }
 
-        for (let acceptorSlotIndex = 0; acceptorSlotIndex < hyperlinkAcceptorSlots.length; ++acceptorSlotIndex) {
+        for (
+            let acceptorSlotIndex = 0;
+            acceptorSlotIndex < hyperlinkAcceptorSlots.length;
+            ++acceptorSlotIndex
+        ) {
             const slot = hyperlinkAcceptorSlots[acceptorSlotIndex];
 
             const acceptorSlotWsTile = staticComp.localTileToWorld(slot.pos);
             const acceptorSlotWsPos = acceptorSlotWsTile.toWorldSpaceCenterOfTile();
-            if(!slot)
-            {
+            if (!slot) {
                 continue;
             }
             // Go over all slots

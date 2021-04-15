@@ -1,6 +1,5 @@
 import { Component } from "../component";
 
-
 export class SmartBalancerComponent extends Component {
     static getId() {
         return "SmartBalancer";

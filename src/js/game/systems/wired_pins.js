@@ -28,7 +28,7 @@ export class WiredPinsSystem extends GameSystemWithFilter {
         this.root.signals.prePlacementCheck.add(this.prePlacementCheck, this);
         this.root.signals.freeEntityAreaBeforeBuild.add(this.freeEntityAreaBeforeBuild, this);
     }
-    
+
     /**
      * Performs pre-placement checks
      * @param {Entity} entity
@@ -58,8 +58,9 @@ export class WiredPinsSystem extends GameSystemWithFilter {
                         if (!pinComponent) {
                             continue;
                         }
-                        const isHyperlink = 
-                            otherEntity.components.HyperlinkEjector && otherEntity.components.HyperlinkAcceptor;
+                        const isHyperlink =
+                            otherEntity.components.HyperlinkEjector &&
+                            otherEntity.components.HyperlinkAcceptor;
                         if (staticComp.getMetaBuilding().getIsReplaceable() || isHyperlink) {
                             // Don't mind here, even if there would be a collision we
                             // could replace it

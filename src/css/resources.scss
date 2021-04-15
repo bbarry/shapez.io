@@ -1,6 +1,6 @@
-$buildings: belt, belt_crossing, hyperlink, cutter, miner, mixer, painter, rotater, balancer, stacker, trash, underground_belt, wire,
-    constant_signal, logic_gate, lever, filter, wire_tunnel, display, virtual_processor, reader, storage, shape_combiner,
-    transistor, analyzer, comparator, item_producer;
+$buildings: belt, belt_crossing, hyperlink, cutter, miner, mixer, painter, rotater, balancer, stacker, trash,
+    underground_belt, wire, constant_signal, logic_gate, lever, filter, wire_tunnel, display,
+    virtual_processor, reader, storage, shape_combiner, transistor, analyzer, comparator, item_producer;
 
 @each $building in $buildings {
     [data-icon="building_icons/#{$building}.png"] {
@@ -9,11 +9,13 @@ $buildings: belt, belt_crossing, hyperlink, cutter, miner, mixer, painter, rotat
     }
 }
 
-$buildingsAndVariants: belt, belt_crossing, belt_crossing-corner, belt_crossing-switcher, hyperlink, balancer, underground_belt, underground_belt-tier2, miner, miner-chainable, miner-deep,
-    cutter, cutter-quad, cutter-laser, rotater, rotater-ccw, stacker, mixer, painter-double, painter-quad, trash, storage, shape_combiner, stacker-smart, underground_belt-smart,
-    reader, rotater-rotate180, display, constant_signal, wire, wire_tunnel, logic_gate-or, logic_gate-not,
-    logic_gate-xor, analyzer, virtual_processor-rotater, virtual_processor-unstacker, item_producer,
-    virtual_processor-stacker, virtual_processor-painter, wire-second, painter, painter-mirrored, comparator;
+$buildingsAndVariants: belt, belt_crossing, belt_crossing-corner, belt_crossing-switcher, hyperlink, balancer,
+    underground_belt, underground_belt-tier2, miner, miner-chainable, miner-deep, cutter, cutter-quad,
+    cutter-laser, rotater, rotater-ccw, stacker, mixer, painter-double, painter-quad, trash, storage,
+    shape_combiner, stacker-smart, underground_belt-smart, reader, rotater-rotate180, display, constant_signal,
+    wire, wire_tunnel, logic_gate-or, logic_gate-not, logic_gate-xor, analyzer, virtual_processor-rotater,
+    virtual_processor-unstacker, item_producer, virtual_processor-stacker, virtual_processor-painter,
+    wire-second, painter, painter-mirrored, comparator;
 @each $building in $buildingsAndVariants {
     [data-icon="building_tutorials/#{$building}.png"] {
         /* @load-async */

@@ -7,7 +7,6 @@ import { enumSubShape, enumMergedShape, ShapeDefinition } from "./shape_definiti
 
 const logger = createLogger("shape_definition_manager");
 
-
 export class ShapeDefinitionManager extends BasicSerializableObject {
     static getId() {
         return "ShapeDefinitionManager";
@@ -126,8 +125,7 @@ export class ShapeDefinitionManager extends BasicSerializableObject {
             this.registerOrReturnHandle(output2),
         ]);
     }
-    
-    
+
     /**
      * Generates a definition for cutting with the laser cutter
      * @param {ShapeDefinition} definition

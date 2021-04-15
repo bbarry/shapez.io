@@ -75,32 +75,32 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             const entity = this.allEntities[i];
             const processorComp = entity.components.ItemProcessor;
             let ejectorComp = entity.components.HyperlinkEjector;
-            if(!ejectorComp) {
+            if (!ejectorComp) {
                 ejectorComp = entity.components.ItemEjector;
             }
 
             for (let chargeIndex = 0; ; chargeIndex++) {
                 // Check if we have an open queue spot and can start a new charge
                 if (this.canProcess(entity)) {
-                    if(!processorComp.makeCharges && processorComp.inputSlots[0]) {
-                        for(let i = 0; i < processorComp.inputSlots.length; ++i) {
+                    if (!processorComp.makeCharges && processorComp.inputSlots[0]) {
+                        for (let i = 0; i < processorComp.inputSlots.length; ++i) {
                             const slot = processorComp.inputSlots[i].sourceSlot;
                             const item = processorComp.inputSlots[i].item;
                             const isOnMap = this.root.camera.getIsMapOverlayActive();
                             const isOffWindow = this.root.app.unloaded || !this.root.app.pageVisible;
-                            if(ejectorComp.canEjectOnSlot(slot) && (this.isAcceptorSlotFree(entity, slot) || isOnMap || isOffWindow))
-                            {
-                                if(ejectorComp.tryEject(slot, item)) {
+                            if (
+                                ejectorComp.canEjectOnSlot(slot) &&
+                                (this.isAcceptorSlotFree(entity, slot) || isOnMap || isOffWindow)
+                            ) {
+                                if (ejectorComp.tryEject(slot, item)) {
                                     processorComp.inputSlots.splice(i, 1);
                                 }
                             }
                         }
-                    }
-                    else if (processorComp.ongoingCharges.length < MAX_QUEUED_CHARGES) {
+                    } else if (processorComp.ongoingCharges.length < MAX_QUEUED_CHARGES) {
                         this.startNewCharge(entity);
                     }
                 }
-                
 
                 if (chargeIndex >= 1 || processorComp.ongoingCharges.length == 0) {
                     break;
@@ -124,65 +124,60 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                 }
                 // Check if it finished
                 if (currentCharge.remainingTime <= 0.0) {
-                    if(!currentCharge.items) {
+                    if (!currentCharge.items) {
                         this.processCharge(entity);
                     }
                     const itemsToEject = currentCharge.items;
-                        // Go over all items and try to eject them
-                        for (let j = 0; j < itemsToEject.length; ++j) {
-                            const { item, requiredSlot, preferredSlot } = itemsToEject[j];
+                    // Go over all items and try to eject them
+                    for (let j = 0; j < itemsToEject.length; ++j) {
+                        const { item, requiredSlot, preferredSlot } = itemsToEject[j];
 
-                            let slot = null;
-                            
-                            if (requiredSlot !== null && requiredSlot !== undefined) 
-                            {
-                                // We have a slot override, check if that is free
-                                if (ejectorComp.canEjectOnSlot(requiredSlot)) 
-                                {
-                                    slot = requiredSlot;
-                                }
-                            } else if (preferredSlot !== null && preferredSlot !== undefined) {
-                                // We have a slot preference, try using it but otherwise use a free slot
+                        let slot = null;
 
-                                if (ejectorComp.canEjectOnSlot(preferredSlot) && preferredSlot !== ejectorComp.lastUsedSlot)
-                                {
-                                    slot = preferredSlot;
-                                    ejectorComp.lastUsedSlot = slot;
-                                }
-                                else 
-                                {
-                                    if (!entity.components.HyperlinkAcceptor && ejectorComp.slots[2]) 
-                                    {
-                                        slot = ejectorComp.getNextFreeSlotForTriple(preferredSlot, ejectorComp.lastUsedSlot);
-                                        if (slot !== null)
-                                        {
-                                            ejectorComp.lastUsedSlot = slot;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        slot = ejectorComp.getFirstFreeSlot();
-                                    }
-                                }
-                            } else {
-                                // We can eject on any slot
-                                slot = ejectorComp.getFirstFreeSlot();
+                        if (requiredSlot !== null && requiredSlot !== undefined) {
+                            // We have a slot override, check if that is free
+                            if (ejectorComp.canEjectOnSlot(requiredSlot)) {
+                                slot = requiredSlot;
                             }
-                            if (slot !== null) {
-                                // Alright, we can actually eject
-                                if (!ejectorComp.tryEject(slot, item)) {
-                                    assert(false, "Failed to eject");
+                        } else if (preferredSlot !== null && preferredSlot !== undefined) {
+                            // We have a slot preference, try using it but otherwise use a free slot
+
+                            if (
+                                ejectorComp.canEjectOnSlot(preferredSlot) &&
+                                preferredSlot !== ejectorComp.lastUsedSlot
+                            ) {
+                                slot = preferredSlot;
+                                ejectorComp.lastUsedSlot = slot;
+                            } else {
+                                if (!entity.components.HyperlinkAcceptor && ejectorComp.slots[2]) {
+                                    slot = ejectorComp.getNextFreeSlotForTriple(
+                                        preferredSlot,
+                                        ejectorComp.lastUsedSlot
+                                    );
+                                    if (slot !== null) {
+                                        ejectorComp.lastUsedSlot = slot;
+                                    }
                                 } else {
-                                    itemsToEject.splice(j, 1);
-                                    j -= 1;
+                                    slot = ejectorComp.getFirstFreeSlot();
                                 }
+                            }
+                        } else {
+                            // We can eject on any slot
+                            slot = ejectorComp.getFirstFreeSlot();
+                        }
+                        if (slot !== null) {
+                            // Alright, we can actually eject
+                            if (!ejectorComp.tryEject(slot, item)) {
+                                assert(false, "Failed to eject");
+                            } else {
+                                itemsToEject.splice(j, 1);
+                                j -= 1;
                             }
                         }
-                        
-                    
-                    
+                    }
+
                     // If the charge was entirely emptied to the outputs, start the next charge
-                    if (itemsToEject.length === 0){
+                    if (itemsToEject.length === 0) {
                         processorComp.ongoingCharges.shift();
                         chargeIndex--;
                     }
@@ -202,8 +197,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             "To accept items, the building needs to have an Item Acceptor"
         );
         const acceptorComp = entity.components.ItemAcceptor;
-        for(let i = 0; i < acceptorComp.itemConsumptionAnimations.length; ++i)
-        {
+        for (let i = 0; i < acceptorComp.itemConsumptionAnimations.length; ++i) {
             const isSlot = acceptorComp.itemConsumptionAnimations[i].slotIndex == slotIndex;
             if (isSlot) {
                 return false;
@@ -226,8 +220,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         const pinsComp = entity.components.WiredPins;
 
         switch (itemProcessorComp.processingRequirement) {
-            
-            
             case enumItemProcessorRequirements.painterQuad: {
                 if (slotIndex === 0) {
                     // Always accept the shape
@@ -241,18 +233,17 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                     return false;
                 }
                 return true;
-
             }
 
             case enumItemProcessorRequirements.shapeMerger: {
                 // @ts-ignore
-                if(!(item.definition.layers.length == 1)) {
+                if (!(item.definition.layers.length == 1)) {
                     return false;
                 }
                 // @ts-ignore
                 const layer = item.definition.layers[0];
-                for(let quad = 0; quad < 4; ++quad) {
-                    if(layer[quad] && enumMergedShape[layer[quad].subShape]) {
+                for (let quad = 0; quad < 4; ++quad) {
+                    if (layer[quad] && enumMergedShape[layer[quad].subShape]) {
                         return false;
                     }
                 }
@@ -260,7 +251,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             }
             // By default, everything is accepted
             default:
-            case enumItemProcessorRequirements.smartStacker: 
+            case enumItemProcessorRequirements.smartStacker:
                 return true;
         }
     }
@@ -293,7 +284,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                 if (!itemsBySlot[0]) {
                     return false;
                 }
-                if(!hasEnoughInputs) {
+                if (!hasEnoughInputs) {
                     return false;
                 }
                 return true;
@@ -365,7 +356,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
      * @param {Entity} entity
      */
     startNewCharge(entity) {
-
         //want it so that it only starts the charge when it has enough paint (if applicable) so we
         //need to store the amount of paint somewhere array
 
@@ -374,13 +364,12 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         // First, take items
         // add as many as needed for
         processorComp.currentItems.push(processorComp.inputSlots);
-        
+
         processorComp.inputSlots = []; // for now
 
-        
         // Queue Charge
         let baseSpeed = this.root.hubGoals.getProcessorBaseSpeed(processorComp.type);
-        if(entity.components.HyperlinkAcceptor && !entity.components.Hyperlink) {
+        if (entity.components.HyperlinkAcceptor && !entity.components.Hyperlink) {
             baseSpeed *= 3;
         }
         processorComp.ongoingCharges.push({
@@ -417,7 +406,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             itemsBySlot,
             outItems,
         });
-        
+
         // Track produced items
         for (let i = 0; i < outItems.length; ++i) {
             if (!outItems[i].doNotTrack) {
@@ -437,11 +426,19 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
             "To be a hyperlink, the building needs to have a hyperlink part"
         );
         const availableSlots = payload.entity.components.HyperlinkEjector.slots.length;
-        
+
         const processorComp = payload.entity.components.ItemProcessor;
 
         const nextSlot = processorComp.nextOutputSlot++ % availableSlots;
-        if(payload.entity.components.ItemEjector){
+        if (payload.entity.components.ItemEjector) {
+            for (let i = 0; i < payload.items.length; ++i) {
+                payload.outItems.push({
+                    item: payload.items[i].item,
+                    preferredSlot: (nextSlot + i) % availableSlots,
+                    doNotTrack: true,
+                });
+            }
+        } else {
             for (let i = 0; i < payload.items.length; ++i) {
                 payload.outItems.push({
                     item: payload.items[i].item,
@@ -450,19 +447,9 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                 });
             }
         }
-        else{
-            for (let i = 0; i < payload.items.length; ++i) {
-                payload.outItems.push({
-                    item: payload.items[i].item,
-                    preferredSlot: (nextSlot + i) % availableSlots,
-                    doNotTrack: true,
-                });
-            }
-        }
-        
+
         return true;
     }
-
 
     process_BALANCER(payload) {
         assert(
@@ -473,7 +460,7 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         const processorComp = payload.entity.components.ItemProcessor;
 
         const nextSlot = processorComp.nextOutputSlot++ % availableSlots;
-        
+
         for (let i = 0; i < payload.items.length; ++i) {
             payload.outItems.push({
                 item: payload.items[i].item,
@@ -505,8 +492,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         }
     }
 
-    
-
     /**
      * @param {ProcessorImplementationPayload} payload
      */
@@ -537,15 +522,18 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
         for (let i = 0; i < 4; ++i) {
             const network = pinsComp.slots[i].linkedNetwork;
             const networkValue = network && network.hasValue() ? network.currentValue : null;
-            if(networkValue && isTruthyItem(networkValue)){
-                wantedCorners.splice(i - 4 + wantedCorners.length,1);
+            if (networkValue && isTruthyItem(networkValue)) {
+                wantedCorners.splice(i - 4 + wantedCorners.length, 1);
                 unwantedCorners.push(i);
             }
         }
         const inputDefinition = inputItem.definition;
-        const allDefinitons = this.root.shapeDefinitionMgr.shapeActionCutLaser(inputDefinition, wantedCorners, unwantedCorners);
-        for(let i = 0; i < allDefinitons.length; ++i)
-        {
+        const allDefinitons = this.root.shapeDefinitionMgr.shapeActionCutLaser(
+            inputDefinition,
+            wantedCorners,
+            unwantedCorners
+        );
+        for (let i = 0; i < allDefinitons.length; ++i) {
             if (!allDefinitons[i].isEntirelyEmpty()) {
                 payload.outItems.push({
                     item: this.root.shapeDefinitionMgr.getShapeItemFromDefinition(allDefinitons[i]),
@@ -553,7 +541,6 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
                 });
             }
         }
-        
     }
 
     /**
@@ -631,9 +618,9 @@ export class ItemProcessorSystem extends GameSystemWithFilter {
 
         const stackedDefinition = this.root.shapeDefinitionMgr.shapeActionSmartStack(
             mainItem.definition,
-            item1? item1.definition : null,
-            item2? item2.definition : null,
-            item3? item3.definition : null,
+            item1 ? item1.definition : null,
+            item2 ? item2.definition : null,
+            item3 ? item3.definition : null
         );
         payload.outItems.push({
             item: this.root.shapeDefinitionMgr.getShapeItemFromDefinition(stackedDefinition),

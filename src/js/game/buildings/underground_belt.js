@@ -26,7 +26,7 @@ export const smartUndergroundBeltRotationVariants = {
     center: "center",
     left: "left",
     right: "right",
-}
+};
 
 /** @enum {string} */
 export const enumUndergroundBeltVariants = {
@@ -48,13 +48,13 @@ const overlayMatrices = [
 
     // Receiver
     generateMatrixRotations([0, 1, 0, 0, 1, 0, 1, 1, 1]),
-    
+
     // Left Sender
     generateMatrixRotations([1, 1, 1, 1, 1, 0, 0, 0, 0]),
 
     // Left Receiver
     generateMatrixRotations([0, 0, 0, 1, 1, 0, 1, 1, 1]),
-    
+
     // Right Sender
     generateMatrixRotations([1, 1, 1, 0, 1, 1, 0, 0, 0]),
 
@@ -114,7 +114,11 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
     getAvailableVariants(root) {
         if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_underground_belt_tier_2)) {
             if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_underground_belt_tier_3)) {
-                return [defaultBuildingVariant, enumUndergroundBeltVariants.tier2, enumUndergroundBeltVariants.smart];
+                return [
+                    defaultBuildingVariant,
+                    enumUndergroundBeltVariants.tier2,
+                    enumUndergroundBeltVariants.smart,
+                ];
             }
             return [defaultBuildingVariant, enumUndergroundBeltVariants.tier2];
         }
@@ -232,7 +236,6 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
 
             const contents = root.map.getTileContent(tile, "regular");
             if (contents) {
-                
                 const undergroundComp = contents.components.UndergroundBelt;
                 if (undergroundComp && undergroundComp.tier === tier) {
                     const staticComp = contents.components.StaticMapEntity;
@@ -241,8 +244,15 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
                             // If we encounter an underground receiver on our way which is also faced in our direction, we don't accept that
                             break;
                         }
-                        if(tier == 2) {
-                            return this.computeBestVariantForSmart(root, originalTile, targetRotation, enumUndergroundBeltMode.receiver, entity, contents);
+                        if (tier == 2) {
+                            return this.computeBestVariantForSmart(
+                                root,
+                                originalTile,
+                                targetRotation,
+                                enumUndergroundBeltMode.receiver,
+                                entity,
+                                contents
+                            );
                         } else {
                             return {
                                 rotation: targetRotation,
@@ -250,12 +260,18 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
                                 connectedEntities: [contents],
                             };
                         }
-                        
                     } else if (staticComp.rotation === targetSenderRotation) {
                         // Draw connections to receivers
                         if (undergroundComp.mode === enumUndergroundBeltMode.receiver) {
-                            if(tier == 2) {
-                                return this.computeBestVariantForSmart(root, originalTile, rotation, enumUndergroundBeltMode.sender, entity, contents);
+                            if (tier == 2) {
+                                return this.computeBestVariantForSmart(
+                                    root,
+                                    originalTile,
+                                    rotation,
+                                    enumUndergroundBeltMode.sender,
+                                    entity,
+                                    contents
+                                );
                             } else {
                                 return {
                                     rotation: rotation,
@@ -270,15 +286,21 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
                 }
             }
         }
-        if(tier == 2) {
-            return this.computeBestVariantForSmart(root, originalTile, rotation, enumUndergroundBeltMode.sender, entity, null);
+        if (tier == 2) {
+            return this.computeBestVariantForSmart(
+                root,
+                originalTile,
+                rotation,
+                enumUndergroundBeltMode.sender,
+                entity,
+                null
+            );
         } else {
             return {
                 rotation,
                 rotationVariant: 0,
             };
         }
-        
     }
 
     /**
@@ -291,10 +313,12 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
      * @param {Entity} contents
      * @return {{ rotation: number, rotationVariant: number, connectedEntities?: Array<Entity> }}
      */
-    computeBestVariantForSmart( root, tile, rotation, mode, thisEntity, contents ) {
+    computeBestVariantForSmart(root, tile, rotation, mode, thisEntity, contents) {
         //const isSender = mode && mode == enumUndergroundBeltMode.sender;
         const rVariant = thisEntity ? thisEntity.components.UndergroundBelt.rotationVariant : null;
-        const isSender = rVariant ? rVariant == 0 || rVariant == 2 || rVariant == 4 : mode == enumUndergroundBeltMode.sender;
+        const isSender = rVariant
+            ? rVariant == 0 || rVariant == 2 || rVariant == 4
+            : mode == enumUndergroundBeltMode.sender;
 
         const oldRotationVariant = thisEntity ? thisEntity.components.UndergroundBelt.rotationVariant : null;
         const topDirection = enumAngleToDirection[rotation];
@@ -303,14 +327,14 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
         const leftDirection = enumAngleToDirection[(rotation + 270) % 360];
 
         const { ejectors, acceptors } = root.logic.getEjectorsAndAcceptorsAtTile(tile, false, true);
-        
+
         let hasCenterConnector = false;
         let hasRightConnector = false;
         let hasLeftConnector = false;
         if (isSender) {
             for (let i = 0; i < ejectors.length; ++i) {
                 const ejector = ejectors[i];
-    
+
                 if (ejector.toDirection === leftDirection) {
                     hasRightConnector = true;
                 } else if (ejector.toDirection === rightDirection) {
@@ -319,15 +343,25 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
                     hasCenterConnector = true;
                 }
             }
-            if(oldRotationVariant == 0 && hasCenterConnector) {
-                return {rotation: rotation, rotationVariant: 0, connectedEntities: contents ? [contents] : [], };
+            if (oldRotationVariant == 0 && hasCenterConnector) {
+                return {
+                    rotation: rotation,
+                    rotationVariant: 0,
+                    connectedEntities: contents ? [contents] : [],
+                };
             } else if (oldRotationVariant == 2 && hasLeftConnector) {
-                return {rotation: rotation, rotationVariant: 2, connectedEntities: contents ? [contents] : [], };
+                return {
+                    rotation: rotation,
+                    rotationVariant: 2,
+                    connectedEntities: contents ? [contents] : [],
+                };
             } else if (oldRotationVariant == 4 && hasRightConnector) {
-                return {rotation: rotation, rotationVariant: 4, connectedEntities: contents ? [contents] : [], };
+                return {
+                    rotation: rotation,
+                    rotationVariant: 4,
+                    connectedEntities: contents ? [contents] : [],
+                };
             }
-            
-            
         } else {
             for (let i = 0; i < acceptors.length; ++i) {
                 const acceptor = acceptors[i];
@@ -339,15 +373,25 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
                     hasCenterConnector = true;
                 }
             }
-            if(oldRotationVariant == 1 && hasCenterConnector) {
-                return {rotation: rotation, rotationVariant: 1, connectedEntities: contents ? [contents] : [], };
+            if (oldRotationVariant == 1 && hasCenterConnector) {
+                return {
+                    rotation: rotation,
+                    rotationVariant: 1,
+                    connectedEntities: contents ? [contents] : [],
+                };
             } else if (oldRotationVariant == 3 && hasLeftConnector) {
-                return {rotation: rotation, rotationVariant: 3, connectedEntities: contents ? [contents] : [], };
+                return {
+                    rotation: rotation,
+                    rotationVariant: 3,
+                    connectedEntities: contents ? [contents] : [],
+                };
             } else if (oldRotationVariant == 5 && hasRightConnector) {
-                return {rotation: rotation, rotationVariant: 5, connectedEntities: contents ? [contents] : [], };
+                return {
+                    rotation: rotation,
+                    rotationVariant: 5,
+                    connectedEntities: contents ? [contents] : [],
+                };
             }
-            
-            
         }
         const connections = [hasCenterConnector, hasLeftConnector, hasRightConnector];
         let totalConnections = 0;
@@ -359,7 +403,8 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
         let rotationVariant = isSender ? 0 : 1;
         if (totalConnections !== 1) {
             //keep old rotation variant
-            rotationVariant = oldRotationVariant && totalConnections > 0 ? oldRotationVariant : isSender ? 0 : 1;
+            rotationVariant =
+                oldRotationVariant && totalConnections > 0 ? oldRotationVariant : isSender ? 0 : 1;
         } else if (hasCenterConnector) {
             rotationVariant = 0;
             if (!isSender) {
@@ -399,12 +444,12 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
                 entity.components.ItemAcceptor.setSlots([
                     {
                         pos: new Vector(0, 0),
-                        directions: 
-                            rotationVariant == 0 
+                        directions:
+                            rotationVariant == 0
                                 ? [enumDirection.bottom]
                                 : rotationVariant == 2
-                                    ? [enumDirection.left]
-                                    : [enumDirection.right],
+                                ? [enumDirection.left]
+                                : [enumDirection.right],
                     },
                 ]);
                 return;
@@ -415,11 +460,12 @@ export class MetaUndergroundBeltBuilding extends MetaBuilding {
                 entity.components.ItemEjector.setSlots([
                     {
                         pos: new Vector(0, 0),
-                        direction: rotationVariant == 1 
-                        ? enumDirection.top
-                        : rotationVariant == 3
-                            ? enumDirection.left
-                            : enumDirection.right,
+                        direction:
+                            rotationVariant == 1
+                                ? enumDirection.top
+                                : rotationVariant == 3
+                                ? enumDirection.left
+                                : enumDirection.right,
                     },
                 ]);
                 return;

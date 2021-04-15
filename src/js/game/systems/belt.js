@@ -15,7 +15,6 @@ import { GameSystemWithFilter } from "../game_system_with_filter";
 import { MapChunkView } from "../map_chunk_view";
 import { defaultBuildingVariant } from "../meta_building";
 
-
 export const BELT_ANIM_COUNT = 14;
 
 const logger = createLogger("belt");
@@ -114,7 +113,8 @@ export class BeltSystem extends GameSystemWithFilter {
      * Updates the belt placement after an entity has been added / deleted
      * @param {Entity} entity
      */
-    updateSurroundingBeltPlacement(entity) { // @HERE
+    updateSurroundingBeltPlacement(entity) {
+        // @HERE
         if (!this.root.gameInitialized) {
             return;
         }

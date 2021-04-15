@@ -42,8 +42,7 @@ export class ItemAcceptorSystem extends GameSystemWithFilter {
         for (let i = 0; i < this.allEntities.length; ++i) {
             const entity = this.allEntities[i];
             let aceptorComp = entity.components.ItemAcceptor;
-            if(!aceptorComp)
-            {
+            if (!aceptorComp) {
                 aceptorComp = entity.components.HyperlinkAcceptor;
             }
             const animations = aceptorComp.itemConsumptionAnimations;
@@ -85,7 +84,7 @@ export class ItemAcceptorSystem extends GameSystemWithFilter {
                 ];
 
                 const slotData = acceptorComp.slots[slotIndex];
-                if(!slotData) {
+                if (!slotData) {
                     continue;
                 }
                 const realSlotPos = staticComp.localTileToWorld(slotData.pos);

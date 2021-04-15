@@ -41,7 +41,7 @@ export class MinerSystem extends GameSystemWithFilter {
             const entity = this.allEntities[i];
             const minerComp = entity.components.Miner;
             let miningSpeed = minerBaseSpeed * miningSpeedMultiplier;
-            if(minerComp.deep){
+            if (minerComp.deep) {
                 miningSpeed *= 2.5;
             }
 

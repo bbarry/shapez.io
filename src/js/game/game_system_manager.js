@@ -43,7 +43,7 @@ export class GameSystemManager {
             /* typehints:start */
             /** @type {BeltSystem} */
             belt: null,
-            
+
             /** @type {SmartBalancerSystem} */
             smartBalancer: null,
 
@@ -67,13 +67,13 @@ export class GameSystemManager {
 
             /** @type {StaticMapEntitySystem} */
             staticMapEntities: null,
-            
+
             /** @type {HyperlinkSystem} */
             hyperlink: null,
 
             /** @type {HyperlinkAcceptorSystem} */
             hyperlinkAcceptor: null,
-            
+
             /** @type {HyperlinkEjectorSystem} */
             hyperlinkEjector: null,
 
@@ -137,17 +137,16 @@ export class GameSystemManager {
         // IMPORTANT: Item acceptor must be before the belt, because it may not tick after the belt
         // has put in the item into the acceptor animation, otherwise its off
         add("itemAcceptor", ItemAcceptorSystem);
-        
+
         add("hyperlinkAcceptor", HyperlinkAcceptorSystem);
-        
+
         add("undergroundBelt", UndergroundBeltSystem);
 
         add("belt", BeltSystem);
-        
+
         add("smartBalancer", SmartBalancerSystem);
 
         add("hyperlink", HyperlinkSystem);
-
 
         add("miner", MinerSystem);
 

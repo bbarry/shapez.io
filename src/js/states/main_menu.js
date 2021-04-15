@@ -527,9 +527,7 @@ export class MainMenuState extends GameState {
 
     onTranslationHelpLinkClicked() {
         this.app.analytics.trackUiClick("translation_help_link");
-        this.app.platformWrapper.openExternalLink(
-            "https://sense101.github.io/ShapezIndustriesViewer/"
-        );
+        this.app.platformWrapper.openExternalLink("https://sense101.github.io/ShapezIndustriesViewer/");
     }
 
     onPlayButtonClicked() {

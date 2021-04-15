@@ -33,7 +33,7 @@ export class MetaMinerBuilding extends MetaBuilding {
      */
     getAdditionalStatistics(root, variant) {
         let speedMultiplier = 1;
-        if(variant == enumMinerVariants.deep){
+        if (variant == enumMinerVariants.deep) {
             speedMultiplier = 2.5;
         }
         const speed = root.hubGoals.getMinerBaseSpeed() * speedMultiplier;

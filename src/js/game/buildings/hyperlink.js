@@ -355,7 +355,7 @@ export class MetaHyperlinkBuilding extends MetaBuilding {
         const bottomDirection = enumAngleToDirection[(rotation + 180) % 360];
         const leftDirection = enumAngleToDirection[(rotation + 270) % 360];
 
-        const { ejectors, acceptors } = root.logic.getEjectorsAndAcceptorsAtTile(tile, true);
+        const { ejectors, acceptors } = root.logic.getEjectorsAndAcceptorsAtTile(tile, true, false);
 
         let hasBottomEjector = false;
         let hasRightEjector = false;

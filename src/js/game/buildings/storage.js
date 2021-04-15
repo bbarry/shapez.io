@@ -13,7 +13,7 @@ import { enumHubGoalRewards } from "../tutorial_goals";
 /** @enum {string} */
 export const enumStorageVariants = {
     mini: "mini",
-}
+};
 
 const storageSize = 5000;
 const miniStorageSize = 500;
@@ -32,14 +32,14 @@ export class MetaStorageBuilding extends MetaBuilding {
      */
     getAdditionalStatistics(root, variant) {
         let number = storageSize;
-        if(variant == enumStorageVariants.mini) {
+        if (variant == enumStorageVariants.mini) {
             number = miniStorageSize;
         }
         return [[T.ingame.buildingPlacement.infoTexts.storage, formatBigNumber(number)]];
     }
 
     getDimensions(variant) {
-        if(variant == enumStorageVariants.mini) {
+        if (variant == enumStorageVariants.mini) {
             return new Vector(1, 1);
         }
         return new Vector(2, 2);
@@ -74,14 +74,11 @@ export class MetaStorageBuilding extends MetaBuilding {
             })
         );
 
-        entity.addComponent(
-            new StorageComponent({})
-        );
+        entity.addComponent(new StorageComponent({}));
 
         entity.addComponent(
             new WiredPinsComponent({
-                slots: [
-                ],
+                slots: [],
             })
         );
     }
@@ -105,7 +102,7 @@ export class MetaStorageBuilding extends MetaBuilding {
                 direction: isMini ? enumDirection.right : enumDirection.top,
             },
         ]);
-        if(isMini) {
+        if (isMini) {
             entity.components.ItemAcceptor.setSlots([
                 {
                     pos: new Vector(0, 0),
@@ -124,7 +121,7 @@ export class MetaStorageBuilding extends MetaBuilding {
                 },
             ]);
         }
-        
+
         entity.components.WiredPins.setSlots([
             {
                 pos: isMini ? new Vector(0, 0) : new Vector(1, 1),

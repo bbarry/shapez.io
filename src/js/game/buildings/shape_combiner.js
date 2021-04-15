@@ -3,12 +3,15 @@ import { enumDirection, Vector } from "../../core/vector";
 import { T } from "../../translations";
 import { ItemAcceptorComponent } from "../components/item_acceptor";
 import { ItemEjectorComponent } from "../components/item_ejector";
-import { enumItemProcessorTypes, enumItemProcessorRequirements, ItemProcessorComponent } from "../components/item_processor";
+import {
+    enumItemProcessorTypes,
+    enumItemProcessorRequirements,
+    ItemProcessorComponent,
+} from "../components/item_processor";
 import { Entity } from "../entity";
 import { defaultBuildingVariant, MetaBuilding } from "../meta_building";
 import { GameRoot } from "../root";
 import { enumHubGoalRewards } from "../tutorial_goals";
-
 
 export class MetaShapeCombinerBuilding extends MetaBuilding {
     constructor() {
@@ -22,7 +25,6 @@ export class MetaShapeCombinerBuilding extends MetaBuilding {
     getDimensions() {
         return new Vector(3, 1);
     }
-
 
     /**
      * @param {GameRoot} root
@@ -49,7 +51,7 @@ export class MetaShapeCombinerBuilding extends MetaBuilding {
             new ItemProcessorComponent({
                 inputsToProcess: 2,
                 processorType: enumItemProcessorTypes.shapeMerger,
-                processingRequirement: enumItemProcessorRequirements.shapeMerger
+                processingRequirement: enumItemProcessorRequirements.shapeMerger,
             })
         );
 

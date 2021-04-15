@@ -162,7 +162,6 @@ export class MetaPainterBuilding extends MetaBuilding {
                 if (entity.components.WiredPins) {
                     entity.removeComponent(WiredPinsComponent);
                 }
-                
 
                 entity.components.ItemAcceptor.setSlots([
                     {

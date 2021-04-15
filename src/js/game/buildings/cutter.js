@@ -11,7 +11,7 @@ import { GameRoot } from "../root";
 import { enumHubGoalRewards } from "../tutorial_goals";
 
 /** @enum {string} */
-export const enumCutterVariants = { quad: "quad", laser: "laser", };
+export const enumCutterVariants = { quad: "quad", laser: "laser" };
 
 export class MetaCutterBuilding extends MetaBuilding {
     constructor() {
@@ -52,7 +52,7 @@ export class MetaCutterBuilding extends MetaBuilding {
      * @param {GameRoot} root
      */
     getAvailableVariants(root) {
-        if(root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_smart_cutter)) {
+        if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_smart_cutter)) {
             if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_cutter_quad)) {
                 return [defaultBuildingVariant, enumCutterVariants.quad, enumCutterVariants.laser];
             }
@@ -99,13 +99,15 @@ export class MetaCutterBuilding extends MetaBuilding {
     updateVariants(entity, rotationVariant, variant) {
         switch (variant) {
             case defaultBuildingVariant: {
-                if(entity.components.WiredPins){entity.removeComponent(WiredPinsComponent);}
+                if (entity.components.WiredPins) {
+                    entity.removeComponent(WiredPinsComponent);
+                }
 
                 entity.components.ItemAcceptor.setSlots([
                     {
                         pos: new Vector(0, 0),
                         directions: [enumDirection.bottom],
-                        filter: "shape"
+                        filter: "shape",
                     },
                 ]);
 
@@ -117,12 +119,14 @@ export class MetaCutterBuilding extends MetaBuilding {
                 break;
             }
             case enumCutterVariants.quad: {
-                if(entity.components.WiredPins){entity.removeComponent(WiredPinsComponent);}
+                if (entity.components.WiredPins) {
+                    entity.removeComponent(WiredPinsComponent);
+                }
                 entity.components.ItemAcceptor.setSlots([
                     {
                         pos: new Vector(0, 0),
                         directions: [enumDirection.bottom],
-                        filter: "shape"
+                        filter: "shape",
                     },
                 ]);
 
@@ -136,7 +140,7 @@ export class MetaCutterBuilding extends MetaBuilding {
                 break;
             }
             case enumCutterVariants.laser: {
-                if(!entity.components.WiredPins){
+                if (!entity.components.WiredPins) {
                     entity.addComponent(new WiredPinsComponent({ slots: [] }));
                 }
                 entity.components.WiredPins.setSlots([
@@ -160,12 +164,12 @@ export class MetaCutterBuilding extends MetaBuilding {
                         direction: enumDirection.top,
                         type: enumPinSlotType.logicalAcceptor,
                     },
-                ])
+                ]);
                 entity.components.ItemAcceptor.setSlots([
                     {
                         pos: new Vector(0, 0),
                         directions: [enumDirection.left],
-                        filter: "shape"
+                        filter: "shape",
                     },
                 ]);
                 entity.components.ItemEjector.setSlots([

@@ -33,7 +33,7 @@ export class HubGoals extends BasicSerializableObject {
         if (errorCode) {
             return errorCode;
         }
-        if(this.researchLevel < 1) {
+        if (this.researchLevel < 1) {
             this.researchLevel == 1;
         }
         const levels = root.gameMode.getLevelDefinitions();
@@ -104,7 +104,6 @@ export class HubGoals extends BasicSerializableObject {
          */
         this.upgradeImprovements = {};
 
-
         // Reset levels first
         const upgrades = this.root.gameMode.getUpgrades();
         for (const key in upgrades) {
@@ -120,7 +119,11 @@ export class HubGoals extends BasicSerializableObject {
                 if (ev.key === "b") {
                     // root is not guaranteed to exist within ~0.5s after loading in
                     if (this.root && this.root.app && this.root.app.gameAnalytics) {
-                        if (!this.isEndOfDemoReached() && this.level < 20 && !this.root.hud.hasBlockingOverlayOpen()) {
+                        if (
+                            !this.isEndOfDemoReached() &&
+                            this.level < 20 &&
+                            !this.root.hud.hasBlockingOverlayOpen()
+                        ) {
                             const mousePosition = this.root.app.mousePosition;
                             if (!mousePosition) {
                                 // Not on screen
@@ -129,8 +132,7 @@ export class HubGoals extends BasicSerializableObject {
                             // Figure which points the line visits
                             const worldPos = this.root.camera.screenToWorld(mousePosition);
                             const mouseTile = worldPos.toTileSpace();
-                            if(mouseTile.x > -3 && mouseTile.x < 2 && mouseTile.y > -3 && mouseTile.y < 2)
-                            {
+                            if (mouseTile.x > -3 && mouseTile.x < 2 && mouseTile.y > -3 && mouseTile.y < 2) {
                                 this.onGoalCompleted();
                             }
                         }
@@ -261,7 +263,8 @@ export class HubGoals extends BasicSerializableObject {
         this.currentGoal = {
             definition: this.computeFreeplayShape(this.level),
             required,
-            reward: this.level % 5 == 0 ? enumHubGoalRewards.reward_research_level : enumHubGoalRewards.no_reward,
+            reward:
+                this.level % 5 == 0 ? enumHubGoalRewards.reward_research_level : enumHubGoalRewards.no_reward,
             throughputOnly: true,
         };
     }
@@ -272,7 +275,7 @@ export class HubGoals extends BasicSerializableObject {
     onGoalCompleted() {
         const reward = this.currentGoal.reward;
         this.gainedRewards[reward] = (this.gainedRewards[reward] || 0) + 1;
-        if(reward == enumHubGoalRewards.reward_research_level) {
+        if (reward == enumHubGoalRewards.reward_research_level) {
             this.researchLevel++;
         }
         this.root.app.gameAnalytics.handleLevelCompleted(this.level);
@@ -412,14 +415,26 @@ export class HubGoals extends BasicSerializableObject {
         const colors = this.generateRandomColorSet(rng, level > 35);
 
         let pickedSymmetry = null; // pairs of quadrants that must be the same
-        let availableShapes = [enumSubShape.rect, enumSubShape.circle, enumSubShape.star, enumMergedShape.circlestar, enumMergedShape.rectcircle, enumMergedShape.starrect];
+        let availableShapes = [
+            enumSubShape.rect,
+            enumSubShape.circle,
+            enumSubShape.star,
+            enumMergedShape.circlestar,
+            enumMergedShape.rectcircle,
+            enumMergedShape.starrect,
+        ];
         if (rng.next() < 0.5) {
             pickedSymmetry = [
                 // radial symmetry
                 [0, 2],
                 [1, 3],
             ];
-            availableShapes.push(enumSubShape.windmill, enumMergedShape.rectwindmill, enumMergedShape.starwindmill, enumMergedShape.circlewindmill); // windmill looks good only in radial symmetry
+            availableShapes.push(
+                enumSubShape.windmill,
+                enumMergedShape.rectwindmill,
+                enumMergedShape.starwindmill,
+                enumMergedShape.circlewindmill
+            ); // windmill looks good only in radial symmetry
         } else {
             const symmetries = [
                 [
@@ -472,25 +487,25 @@ export class HubGoals extends BasicSerializableObject {
             }
 
             let lastLayer = layer;
-            if(i > 0) {
+            if (i > 0) {
                 lastLayer = layers[i - 1];
             }
 
             //first find number of corners on the last layer
             let totalConnections = 0;
-            for(let quad = 0; quad < 4; ++quad) {
-                if(lastLayer[quad]) {
-                totalConnections++;
+            for (let quad = 0; quad < 4; ++quad) {
+                if (lastLayer[quad]) {
+                    totalConnections++;
                 }
             }
 
-            for(let quad = 0; quad < 4; ++quad) {
-                if(rng.next() > (i > 0 ? 0.85 : 0.9) && totalConnections > (i > 0 ? 1 : 2)) {
+            for (let quad = 0; quad < 4; ++quad) {
+                if (rng.next() > (i > 0 ? 0.85 : 0.9) && totalConnections > (i > 0 ? 1 : 2)) {
                     layer[quad] = null;
                     totalConnections--;
                 }
             }
-            
+
             // Sometimes they actually are missing *two* ones!
             // Make sure at max only one layer is missing it though, otherwise we could
             // create an uncreateable shape

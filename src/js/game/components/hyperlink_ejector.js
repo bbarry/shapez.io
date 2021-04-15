@@ -1,7 +1,7 @@
 import { enumDirection, enumDirectionToVector, Vector } from "../../core/vector";
 import { types } from "../../savegame/serialization";
 import { BaseItem } from "../base_item";
-import { BeltPath } from "../belt_path";//maybe not
+import { BeltPath } from "../belt_path"; //maybe not
 import { Component } from "../component";
 import { Entity } from "../entity";
 import { typeItemSingleton } from "../item_resolver";
@@ -17,7 +17,7 @@ import { typeItemSingleton } from "../item_resolver";
  *    cachedTargetEntity?: Entity
  * }} HyperlinkEjectorSlot
  */
- 
+
 export class HyperlinkEjectorComponent extends Component {
     static getId() {
         return "HyperlinkEjector";
@@ -49,7 +49,7 @@ export class HyperlinkEjectorComponent extends Component {
         this.lastUsedSlot = null;
         this.hasSpaceToMove = false;
     }
-    
+
     /**
      * @param {Array<{pos: Vector, direction: enumDirection }>} slots The slots to eject on
      */

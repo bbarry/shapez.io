@@ -5,7 +5,6 @@ import { getCodeFromBuildingData } from "../building_codes";
 import { SmartBalancerComponent } from "../components/smart_balancer";
 import { GameSystemWithFilter } from "../game_system_with_filter";
 
-
 /**
  * Manages all smart Balancers
  */
@@ -17,7 +16,6 @@ export class SmartBalancerSystem extends GameSystemWithFilter {
 
         // Notice: These must come *after* the entity destroyed signals
         this.root.signals.entityAdded.add(this.updateSmartBalancerVariant, this);
-
     }
 
     updateSmartBalancerVariant(entity) {
@@ -34,7 +32,6 @@ export class SmartBalancerSystem extends GameSystemWithFilter {
         // Compute affected area
         const originalRect = staticComp.getTileSpaceBounds();
         const affectedArea = originalRect.expandedInAllDirections(1);
-
 
         for (let x = affectedArea.x; x < affectedArea.right(); ++x) {
             for (let y = affectedArea.y; y < affectedArea.bottom(); ++y) {
@@ -68,10 +65,12 @@ export class SmartBalancerSystem extends GameSystemWithFilter {
 
                     // Compute delta to see if anything changed
 
-
-
                     // Change stuff
-                    metaSmartBalancer.updateVariants(targetEntity, rotationVariant, targetBalancerComp.variant);
+                    metaSmartBalancer.updateVariants(
+                        targetEntity,
+                        rotationVariant,
+                        targetBalancerComp.variant
+                    );
 
                     // Update code as well
                     targetStaticComp.code = getCodeFromBuildingData(
@@ -82,7 +81,6 @@ export class SmartBalancerSystem extends GameSystemWithFilter {
 
                     // Make sure the chunks know about the update
                     this.root.signals.entityChanged.dispatch(targetEntity);
-                    
                 }
             }
         }

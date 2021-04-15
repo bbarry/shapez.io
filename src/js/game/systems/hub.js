@@ -120,12 +120,11 @@ export class HubSystem extends GameSystemWithFilter {
 
         // Reward
         let rewardTitle = T.storyRewards[goals.reward].title;
-        if(goals.reward == enumHubGoalRewards.reward_research_level) {
-            rewardTitle = rewardTitle.replace("<x>", String(this.root.hubGoals.researchLevel + 1))
+        if (goals.reward == enumHubGoalRewards.reward_research_level) {
+            rewardTitle = rewardTitle.replace("<x>", String(this.root.hubGoals.researchLevel + 1));
         }
         const rewardText = rewardTitle.toUpperCase();
-        
-        
+
         if (rewardText.length > 12) {
             context.font = "bold 8px GameFont";
         } else {

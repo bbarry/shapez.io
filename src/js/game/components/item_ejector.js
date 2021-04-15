@@ -98,7 +98,7 @@ export class ItemEjectorComponent extends Component {
      * @returns {boolean}
      */
     canEjectOnSlot(slotIndex) {
-        if(slotIndex >= this.slots.length) {
+        if (slotIndex >= this.slots.length) {
             return false;
         }
         return !this.slots[slotIndex].item;

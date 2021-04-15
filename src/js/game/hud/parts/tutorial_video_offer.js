@@ -17,12 +17,12 @@ export class HUDTutorialVideoOffer extends BaseHUDPart {
         //        const dialogData = isForeign
         //            ? T.dialogs.tutorialVideoAvailableForeignLanguage
         //            : T.dialogs.tutorialVideoAvailable;
-//
+        //
         //        const { ok } = this.root.hud.parts.dialogs.showInfo(dialogData.title, dialogData.desc, [
         //            "cancel:bad",
         //            "ok:good",
         //        ]);
-//
+        //
         //        this.root.app.analytics.trackUiClick("ingame_video_link_show_" + level);
         //        ok.add(() => {
         //            this.root.app.platformWrapper.openExternalLink(tutorialVideoLink);

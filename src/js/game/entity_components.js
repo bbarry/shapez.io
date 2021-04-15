@@ -41,7 +41,7 @@ export class EntityComponentStorage {
 
         /** @type {HyperlinkComponent} */
         this.Hyperlink;
-        
+
         /** @type {SmartBalancerComponent} */
         this.SmartBalancer;
 

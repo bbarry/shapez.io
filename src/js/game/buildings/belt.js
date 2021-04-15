@@ -9,7 +9,6 @@ import { MetaBuilding } from "../meta_building";
 import { GameRoot } from "../root";
 import { THEME } from "../theme";
 
-
 export const arrayBeltVariantToRotation = [enumDirection.top, enumDirection.left, enumDirection.right];
 
 export const beltOverlayMatrices = {
@@ -228,4 +227,3 @@ export class MetaBeltBuilding extends MetaBuilding {
         };
     }
 }
-

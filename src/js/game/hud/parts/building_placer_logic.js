@@ -662,7 +662,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
                     this.root.soundProxy.playUi(metaBuilding.getPlacementSound(this.currentVariant.get()));
                 }
             }
-            
+
             return STOP_PROPAGATION;
         }
 

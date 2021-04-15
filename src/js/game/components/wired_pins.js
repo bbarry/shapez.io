@@ -29,7 +29,6 @@ export class WiredPinsComponent extends Component {
         return "WiredPins";
     }
 
-    
     static getSchema() {
         return {
             slots: types.fixedSizeArray(

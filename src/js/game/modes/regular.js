@@ -34,7 +34,7 @@ function generateUpgrades(limitedVersion = false) {
         if (i < 20) {
             fixedImprovements.push(0.1);
         } else if (i < 100) {
-            fixedImprovements.push(0.05);//lvl15
+            fixedImprovements.push(0.05); //lvl15
         } else {
             fixedImprovements.push(0.025);
         }
@@ -217,80 +217,95 @@ function generateUpgrades(limitedVersion = false) {
  */
 export function generateLevelDefinitions(limitedVersion = false) {
     const levelDefinitions = [
-        {//1
+        {
+            //1
             shape: "CuCuCuCu", //belt t1
             required: 20,
             reward: enumHubGoalRewards.reward_cutter_and_trash,
         },
-        {//2
+        {
+            //2
             shape: "----CuCu",
             required: 30,
             reward: enumHubGoalRewards.no_reward_upgrades,
         },
-        {//3
+        {
+            //3
             shape: "RuRuRuRu", // miner t1
             required: 50,
             reward: enumHubGoalRewards.no_reward,
         },
-        {//4
+        {
+            //4
             shape: "RuRu----",
             required: 70,
             reward: enumHubGoalRewards.reward_rotater,
         },
-        {//5
+        {
+            //5
             shape: "Cu----Cu", //belt t2
             required: 80,
             reward: enumHubGoalRewards.reward_balancer,
         },
         //now we can ramp up numbers
-        {//6
+        {
+            //6
             shape: "SuSuSuSu", //cutting t1
             required: 100,
             reward: enumHubGoalRewards.no_reward,
         },
-        {//7
-            shape: "--SuSu--", 
+        {
+            //7
+            shape: "--SuSu--",
             required: 120,
             reward: enumHubGoalRewards.reward_tunnel,
         },
-        {//8
+        {
+            //8
             shape: "----Su--", //cutting t2
             required: 150,
-            reward: enumHubGoalRewards.reward_research_level,//t2
+            reward: enumHubGoalRewards.reward_research_level, //t2
         },
-        {//9
+        {
+            //9
             shape: "------Ru", // miner t2
             required: 200,
             reward: enumHubGoalRewards.reward_painter,
         },
         //ok, now paint fun
-        {//10
+        {
+            //10
             shape: "CrCrCrCr", // belt t3
             required: 100,
             reward: enumHubGoalRewards.reward_rotater_ccw,
         },
-        {//11
+        {
+            //11
             shape: "RbRb----", //paint t1
             required: 150,
             reward: enumHubGoalRewards.reward_miner_chainable,
         },
-        {//12
+        {
+            //12
             shape: "----Cg--", // paint t2
             required: 200,
             reward: enumHubGoalRewards.reward_mixer,
         },
         //now color mixing, 3 more levels including white to unlock stacking
-        {//13
+        {
+            //13
             shape: "RpRpRpRp", // miner t3
             required: 300,
-            reward: enumHubGoalRewards.reward_research_level,//t3
+            reward: enumHubGoalRewards.reward_research_level, //t3
         },
-        {//14
+        {
+            //14
             shape: "----CcCc",
             required: 400,
             reward: enumHubGoalRewards.reward_rotater_180,
         },
-        {//15
+        {
+            //15
             shape: "SwSwSwSw", //cutting t3
             required: 500,
             reward: enumHubGoalRewards.reward_stacker,
@@ -340,7 +355,7 @@ export function generateLevelDefinitions(limitedVersion = false) {
         {
             shape: "--SrSr--:SuCwCwSu:WrWrWrWr",
             required: 1800,
-            reward: enumHubGoalRewards.reward_research_level,//t5-merged shapes included
+            reward: enumHubGoalRewards.reward_research_level, //t5-merged shapes included
         },
         {
             shape: "--Rw--Rw:SgRgSgRg:--Rw--Rw:CcCcCcCc",
@@ -424,11 +439,10 @@ export function generateLevelDefinitions(limitedVersion = false) {
             required: 10000,
             reward: enumHubGoalRewards.reward_freeplay,
         },
-/*
+        /*
 3u3u--3u:----Su--:2u2u--2u stingray
 1u2u2u1u
 */
-
     ];
 
     if (G_IS_DEV) {

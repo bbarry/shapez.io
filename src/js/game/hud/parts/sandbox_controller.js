@@ -38,11 +38,15 @@ export class HUDSandboxController extends BaseHUDPart {
         const upgradeTiers = this.root.gameMode.getUpgrades()[id];
         const maxResearchLevel = this.root.hubGoals.researchLevel;
 
-        const currentLevel = this.root.hubGoals.upgradeLevels[id]
-        const isAtMax =  currentLevel >= maxResearchLevel;
+        const currentLevel = this.root.hubGoals.upgradeLevels[id];
+        const isAtMax = currentLevel >= maxResearchLevel;
         this.root.hubGoals.upgradeLevels[id] = Math.max(
             0,
-            Math.min(currentLevel > 4 ? currentLevel : 4, maxResearchLevel, (this.root.hubGoals.upgradeLevels[id] || 0) + amount),
+            Math.min(
+                currentLevel > 4 ? currentLevel : 4,
+                maxResearchLevel,
+                (this.root.hubGoals.upgradeLevels[id] || 0) + amount
+            )
         );
 
         // Compute improvement
@@ -52,7 +56,7 @@ export class HUDSandboxController extends BaseHUDPart {
         }
         this.root.hubGoals.upgradeImprovements[id] = improvement;
         this.root.signals.upgradePurchased.dispatch(id);
-        if(isAtMax) {
+        if (isAtMax) {
             this.root.hud.signals.notification.dispatch(
                 "Upgrade '" + id + "' is already at the max tier unlocked",
                 enumNotificationType.upgrade
@@ -63,12 +67,11 @@ export class HUDSandboxController extends BaseHUDPart {
                 enumNotificationType.upgrade
             );
         }
-        
     }
 
     modifyLevel(amount) {
         const hubGoals = this.root.hubGoals;
-        if(hubGoals.level + amount > 20 && false) {
+        if (hubGoals.level + amount > 20 && false) {
             this.root.hud.signals.notification.dispatch(
                 "You can't cheat past level 20 :/",
                 enumNotificationType.upgrade
@@ -90,7 +93,7 @@ export class HUDSandboxController extends BaseHUDPart {
         for (let i = 0; i < hubGoals.level - 1; ++i) {
             if (i < levels.length) {
                 const reward = levels[i].reward;
-                if(reward == enumHubGoalRewards.reward_research_level) {
+                if (reward == enumHubGoalRewards.reward_research_level) {
                     hubGoals.researchLevel++;
                 }
                 hubGoals.gainedRewards[reward] = (hubGoals.gainedRewards[reward] || 0) + 1;

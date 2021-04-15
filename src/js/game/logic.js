@@ -71,7 +71,7 @@ export class GameLogic {
                 const otherEntity = this.root.map.getLayerContentXY(x, y, entity.layer);
                 if (otherEntity) {
                     const metaClass = otherEntity.components.StaticMapEntity.getMetaBuilding();
-                    const isHyperlink = 
+                    const isHyperlink =
                         otherEntity.components.HyperlinkEjector && otherEntity.components.HyperlinkAcceptor;
                     if (!metaClass.getIsReplaceable() && !isHyperlink) {
                         // This one is a direct blocker
@@ -132,8 +132,8 @@ export class GameLogic {
                 const contents = this.root.map.getLayerContentXY(x, y, entity.layer);
                 if (contents) {
                     assertAlways(
-                        contents.components.StaticMapEntity.getMetaBuilding().getIsReplaceable() 
-                        || (contents.components.HyperlinkAcceptor && contents.components.HyperlinkEjector),
+                        contents.components.StaticMapEntity.getMetaBuilding().getIsReplaceable() ||
+                            (contents.components.HyperlinkAcceptor && contents.components.HyperlinkEjector),
                         "Tried to replace non-repleaceable entity"
                     );
                     if (!this.tryDeleteBuilding(contents)) {
@@ -362,22 +362,21 @@ export class GameLogic {
                 const entity = this.root.map.getLayerContentXY(tile.x + dx, tile.y + dy, "regular");
                 if (entity) {
                     const itemProcessor = entity.components.ItemProcessor;
-                    const isTrash =  itemProcessor && itemProcessor.type == enumItemProcessorTypes.trash;
-                    if(!includeTrash && isTrash)
-                    {
+                    const isTrash = itemProcessor && itemProcessor.type == enumItemProcessorTypes.trash;
+                    if (!includeTrash && isTrash) {
                         continue;
                     }
-                    
+
                     let ejectorSlots = [];
                     let acceptorSlots = [];
 
                     const staticComp = entity.components.StaticMapEntity;
                     let itemEjector = entity.components.ItemEjector;
-                    if(isHyperlink){
+                    if (isHyperlink) {
                         itemEjector = entity.components.HyperlinkEjector;
                     }
                     let itemAcceptor = entity.components.ItemAcceptor;
-                    if(isHyperlink){
+                    if (isHyperlink) {
                         itemAcceptor = entity.components.HyperlinkAcceptor;
                     }
                     const beltComp = entity.components.Belt;

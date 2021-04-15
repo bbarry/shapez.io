@@ -31,7 +31,7 @@ export class HyperlinkEjectorSystem extends GameSystemWithFilter {
 
         this.root.signals.postLoadHook.add(this.recomputeCacheFull, this);
     }
-    
+
     /**
      * Recomputes an area after it changed
      * @param {Rectangle} area
@@ -128,7 +128,6 @@ export class HyperlinkEjectorSystem extends GameSystemWithFilter {
 
         // Precompute effective belt speed
         let progressGrowth = 8 * this.root.dynamicTickrate.deltaSeconds;
-        
 
         if (G_IS_DEV && globalConfig.debug.instantBelts) {
             progressGrowth = 1;
@@ -146,25 +145,25 @@ export class HyperlinkEjectorSystem extends GameSystemWithFilter {
                     // No item available to be ejected
                     continue;
                 }
-            
+
                 // Advance items on the slot
                 sourceSlot.progress = Math.min(
                     1,
                     sourceSlot.progress +
                         progressGrowth *
                             this.root.hubGoals.getBeltBaseSpeed() *
-                            globalConfig.itemSpacingOnBelts * 2
+                            globalConfig.itemSpacingOnBelts *
+                            2
                 );
                 if (G_IS_DEV && globalConfig.debug.disableEjectorProcessing) {
                     sourceSlot.progress = 1.0;
                 }
-                
-            
+
                 // Check if we are still in the process of ejecting, can't proceed then
                 if (sourceSlot.progress < 1.0) {
                     continue;
                 }
-            
+
                 // Check if the target acceptor can actually accept this item
                 const destEntity = sourceSlot.cachedTargetEntity;
                 const destSlot = sourceSlot.cachedDestSlot;
@@ -173,7 +172,7 @@ export class HyperlinkEjectorSystem extends GameSystemWithFilter {
                     if (!targetAcceptorComp.canAcceptItem(destSlot.index, item)) {
                         continue;
                     }
-            
+
                     // Try to hand over the item
                     if (this.tryPassOverItem(item, destEntity, destSlot.index)) {
                         // Handover successful, clear slot

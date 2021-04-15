@@ -33,7 +33,7 @@ export class HyperlinkAcceptorComponent extends Component {
      * @param {object} param0
      * @param {Array<ItemAcceptorSlotConfig>} param0.slots The slots from which we accept items
      */
-    constructor({ slots = []}) {
+    constructor({ slots = [] }) {
         super();
 
         /**
@@ -128,7 +128,7 @@ export class HyperlinkAcceptorComponent extends Component {
                 }
             }
         }
-        
+
         return null;
     }
 }

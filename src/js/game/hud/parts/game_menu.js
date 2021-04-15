@@ -22,8 +22,7 @@ export class HUDGameMenu extends BaseHUDPart {
                     T.ingame.notifications.newUpgrade,
                     enumNotificationType.upgrade,
                 ]),
-                visible: () =>
-                    this.root.hubGoals.level >= 3,
+                visible: () => this.root.hubGoals.level >= 3,
             },
             {
                 id: "stats",

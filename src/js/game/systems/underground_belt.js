@@ -225,7 +225,6 @@ export class UndergroundBeltSystem extends GameSystemWithFilter {
         const originalRect = staticComp.getTileSpaceBounds();
         const affectedArea = originalRect.expandedInAllDirections(1);
 
-
         for (let x = affectedArea.x; x < affectedArea.right(); ++x) {
             for (let y = affectedArea.y; y < affectedArea.bottom(); ++y) {
                 if (originalRect.containsPoint(x, y)) {
@@ -253,11 +252,15 @@ export class UndergroundBeltSystem extends GameSystemWithFilter {
                         tile: new Vector(x, y),
                         rotation: targetStaticComp.originalRotation,
                         variant: enumUndergroundBeltVariants.smart,
-                        layer: targetEntity.layer
+                        layer: targetEntity.layer,
                     });
                     // Change stuff if needed
-                    if(rotationVariant != targetUndergroundBeltComp.rotationVariant) {
-                        metaUndergroundBelt.updateVariants(targetEntity, rotationVariant, enumUndergroundBeltVariants.smart);
+                    if (rotationVariant != targetUndergroundBeltComp.rotationVariant) {
+                        metaUndergroundBelt.updateVariants(
+                            targetEntity,
+                            rotationVariant,
+                            enumUndergroundBeltVariants.smart
+                        );
                     }
 
                     // Update code as well
@@ -269,7 +272,6 @@ export class UndergroundBeltSystem extends GameSystemWithFilter {
 
                     // Make sure the chunks know about the update
                     this.root.signals.entityChanged.dispatch(targetEntity);
-                    
                 }
             }
         }

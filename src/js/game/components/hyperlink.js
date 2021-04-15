@@ -1,7 +1,6 @@
 import { enumDirection } from "../../core/vector";
 import { Component } from "../component";
 
-
 export class HyperlinkComponent extends Component {
     static getId() {
         return "Hyperlink";
@@ -16,6 +15,5 @@ export class HyperlinkComponent extends Component {
         super();
 
         this.direction = direction;
-
     }
 }

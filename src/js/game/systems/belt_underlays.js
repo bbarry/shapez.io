@@ -12,7 +12,11 @@ import {
     Vector,
 } from "../../core/vector";
 import { BeltComponent } from "../components/belt";
-import { BeltUnderlaysComponent, enumRequiredBeltUnderlayType, enumClippedBeltUnderlayType } from "../components/belt_underlays";
+import {
+    BeltUnderlaysComponent,
+    enumRequiredBeltUnderlayType,
+    enumClippedBeltUnderlayType,
+} from "../components/belt_underlays";
 import { ItemAcceptorComponent } from "../components/item_acceptor";
 import { ItemEjectorComponent } from "../components/item_ejector";
 import { Entity } from "../entity";
@@ -177,8 +181,7 @@ export class BeltUnderlaysSystem extends GameSystemWithFilter {
      * @returns {enumClippedBeltUnderlayType} The type of the underlay
      */
     computeBeltUnderlayType(entity, underlayTile) {
-        switch (underlayTile.requiredType)
-        {
+        switch (underlayTile.requiredType) {
             case enumRequiredBeltUnderlayType.alwaysFull:
                 return enumClippedBeltUnderlayType.full;
             case enumRequiredBeltUnderlayType.alwaysBottom:

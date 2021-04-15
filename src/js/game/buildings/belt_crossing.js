@@ -62,8 +62,7 @@ export class MetaBeltCrossingBuilding extends MetaBuilding {
      * @returns {Array<[string, string]>}
      */
     getAdditionalStatistics(root, variant) {
-        const speed =
-            root.hubGoals.getProcessorBaseSpeed(enumItemProcessorTypes.balancer);
+        const speed = root.hubGoals.getProcessorBaseSpeed(enumItemProcessorTypes.balancer);
         return [[T.ingame.buildingPlacement.infoTexts.speed, formatItemsPerSecond(speed)]];
     }
 
@@ -120,16 +119,15 @@ export class MetaBeltCrossingBuilding extends MetaBuilding {
      */
     updateVariants(entity, rotationVariant, variant) {
         switch (variant) {
-            
             case defaultBuildingVariant: {
                 entity.components.ItemAcceptor.setSlots([
                     {
                         pos: new Vector(0, 0),
-                        directions: [enumDirection.bottom]
+                        directions: [enumDirection.bottom],
                     },
                     {
                         pos: new Vector(0, 0),
-                        directions: [enumDirection.left]
+                        directions: [enumDirection.left],
                     },
                 ]);
 
@@ -154,11 +152,11 @@ export class MetaBeltCrossingBuilding extends MetaBuilding {
                 entity.components.ItemAcceptor.setSlots([
                     {
                         pos: new Vector(0, 0),
-                        directions: [enumDirection.bottom]
+                        directions: [enumDirection.bottom],
                     },
                     {
                         pos: new Vector(0, 0),
-                        directions: [enumDirection.left]
+                        directions: [enumDirection.left],
                     },
                 ]);
 
@@ -175,7 +173,7 @@ export class MetaBeltCrossingBuilding extends MetaBuilding {
 
                 entity.components.BeltUnderlays.underlays = [
                     { pos: new Vector(0, 0), direction: enumDirection.top },
-                    { pos: new Vector(0, 0), direction: enumDirection.right},
+                    { pos: new Vector(0, 0), direction: enumDirection.right },
                 ];
                 break;
             }
@@ -183,11 +181,11 @@ export class MetaBeltCrossingBuilding extends MetaBuilding {
                 entity.components.ItemAcceptor.setSlots([
                     {
                         pos: new Vector(0, 0),
-                        directions: [enumDirection.bottom]
+                        directions: [enumDirection.bottom],
                     },
                     {
                         pos: new Vector(1, 0),
-                        directions: [enumDirection.bottom]
+                        directions: [enumDirection.bottom],
                     },
                 ]);
 

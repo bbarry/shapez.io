@@ -31,7 +31,7 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
 
         this.root.signals.postLoadHook.add(this.recomputeCacheFull, this);
     }
-    
+
     /**
      * Recomputes an area after it changed
      * @param {Rectangle} area
@@ -157,7 +157,7 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
                     // No item available to be ejected
                     continue;
                 }
-            
+
                 // Advance items on the slot
                 sourceSlot.progress = Math.min(
                     1,
@@ -166,16 +166,16 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
                             this.root.hubGoals.getBeltBaseSpeed() *
                             globalConfig.itemSpacingOnBelts
                 );
-            
+
                 if (G_IS_DEV && globalConfig.debug.disableEjectorProcessing) {
                     sourceSlot.progress = 1.0;
                 }
-            
+
                 // Check if we are still in the process of ejecting, can't proceed then
                 if (sourceSlot.progress < 1.0) {
                     continue;
                 }
-            
+
                 // Check if we are ejecting to a belt path
                 const destPath = sourceSlot.cachedBeltPath;
                 if (destPath) {
@@ -183,12 +183,12 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
                     if (destPath.tryAcceptItem(item)) {
                         sourceSlot.item = null;
                     }
-            
+
                     // Always stop here, since there can *either* be a belt path *or*
                     // a slot
                     continue;
                 }
-            
+
                 // Check if the target acceptor can actually accept this item
                 const destEntity = sourceSlot.cachedTargetEntity;
                 const destSlot = sourceSlot.cachedDestSlot;
@@ -197,7 +197,7 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
                     if (!targetAcceptorComp.canAcceptItem(destSlot.index, item)) {
                         continue;
                     }
-            
+
                     // Try to hand over the item
                     if (this.tryPassOverItem(item, destEntity, destSlot.index)) {
                         // Handover successful, clear slot
@@ -378,7 +378,6 @@ export class ItemEjectorSystem extends GameSystemWithFilter {
                     const maxProgress =
                         (0.5 + nextBeltPath.spacingToFirstItem - globalConfig.itemSpacingOnBelts) * 2;
                     progress = Math.min(progress, maxProgress);
-                    
                 }
 
                 // Skip if the item would barely be visible

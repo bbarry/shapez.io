@@ -3,7 +3,11 @@ import { enumDirection, Vector } from "../../core/vector";
 import { T } from "../../translations";
 import { ItemAcceptorComponent } from "../components/item_acceptor";
 import { ItemEjectorComponent } from "../components/item_ejector";
-import { enumItemProcessorTypes, enumItemProcessorRequirements, ItemProcessorComponent } from "../components/item_processor";
+import {
+    enumItemProcessorTypes,
+    enumItemProcessorRequirements,
+    ItemProcessorComponent,
+} from "../components/item_processor";
 import { Entity } from "../entity";
 import { defaultBuildingVariant, MetaBuilding } from "../meta_building";
 import { GameRoot } from "../root";
@@ -12,7 +16,7 @@ import { enumHubGoalRewards } from "../tutorial_goals";
 /** @enum {string} */
 export const enumStackerVariants = {
     smart: "smart",
-}
+};
 export class MetaStackerBuilding extends MetaBuilding {
     constructor() {
         super("stacker");
@@ -28,7 +32,6 @@ export class MetaStackerBuilding extends MetaBuilding {
         }
         return new Vector(2, 1);
     }
-
 
     /**
      * @param {GameRoot} root
@@ -51,7 +54,7 @@ export class MetaStackerBuilding extends MetaBuilding {
      */
     getAvailableVariants(root) {
         let available = [defaultBuildingVariant];
-        if(root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_smart_stacker)) {
+        if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_smart_stacker)) {
             available.push(enumStackerVariants.smart);
         }
         return available;
@@ -74,9 +77,7 @@ export class MetaStackerBuilding extends MetaBuilding {
         );
         entity.addComponent(
             new ItemAcceptorComponent({
-                slots: [
-                    
-                ],
+                slots: [],
             })
         );
     }
@@ -89,13 +90,15 @@ export class MetaStackerBuilding extends MetaBuilding {
      */
     updateVariants(entity, rotationVariant, variant) {
         const isSmart = variant == enumStackerVariants.smart;
-        entity.components.ItemProcessor.type = isSmart ? enumItemProcessorTypes.smartStacker : enumItemProcessorTypes.stacker;
-        entity.components.ItemProcessor.processingRequirement = isSmart ? enumItemProcessorRequirements.smartStacker : null;
-        
-        entity.components.ItemEjector.setSlots([
-            { pos: new Vector(0, 0), direction: enumDirection.top },
-        ]);
-        if(isSmart) {
+        entity.components.ItemProcessor.type = isSmart
+            ? enumItemProcessorTypes.smartStacker
+            : enumItemProcessorTypes.stacker;
+        entity.components.ItemProcessor.processingRequirement = isSmart
+            ? enumItemProcessorRequirements.smartStacker
+            : null;
+
+        entity.components.ItemEjector.setSlots([{ pos: new Vector(0, 0), direction: enumDirection.top }]);
+        if (isSmart) {
             entity.components.ItemAcceptor.setSlots([
                 {
                     pos: new Vector(0, 0),
@@ -117,7 +120,7 @@ export class MetaStackerBuilding extends MetaBuilding {
                     directions: [enumDirection.bottom],
                     filter: "shape",
                 },
-            ])
+            ]);
         } else {
             entity.components.ItemAcceptor.setSlots([
                 {
@@ -130,7 +133,7 @@ export class MetaStackerBuilding extends MetaBuilding {
                     directions: [enumDirection.bottom],
                     filter: "shape",
                 },
-            ])
+            ]);
         }
     }
 }
