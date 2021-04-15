@@ -32,22 +32,11 @@ const numberToRotationVariant = {
 
 /** @enum {string} */
 export const enumBalancerVariants = {
-    merger: "merger",
-    mergerInverse: "merger-inverse",
-    splitter: "splitter",
-    splitterInverse: "splitter-inverse",
     splitterTriple: "splitter-triple",
     mergerTriple: "merger-triple",
     //do stuff in all this code with this
 };
 
-export const overlayMatrices = {
-    [defaultBuildingVariant]: null,
-    [enumBalancerVariants.merger]: generateMatrixRotations([0, 1, 0, 0, 1, 1, 0, 1, 0]),
-    [enumBalancerVariants.mergerInverse]: generateMatrixRotations([0, 1, 0, 1, 1, 0, 0, 1, 0]),
-    [enumBalancerVariants.splitter]: generateMatrixRotations([0, 1, 0, 0, 1, 1, 0, 1, 0]),
-    [enumBalancerVariants.splitterInverse]: generateMatrixRotations([0, 1, 0, 1, 1, 0, 0, 1, 0]),
-};
 
 const mergerMatrices = {
     0: generateMatrixRotations([0, 1, 0, 0, 1, 0, 0, 1, 0]),
@@ -74,10 +63,6 @@ export class MetaBalancerBuilding extends MetaBuilding {
         switch (variant) {
             case defaultBuildingVariant:
                 return new Vector(2, 1);
-            case enumBalancerVariants.merger:
-            case enumBalancerVariants.mergerInverse:
-            case enumBalancerVariants.splitter:
-            case enumBalancerVariants.splitterInverse:
             case enumBalancerVariants.splitterTriple:
             case enumBalancerVariants.mergerTriple:
                 return new Vector(1, 1);
@@ -103,7 +88,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
                 matrix = splitterMatrices[rotationVariant];
                 break;
             default:
-                matrix = overlayMatrices[variant];
+                matrix = null;
                 break;
 
         }
@@ -196,19 +181,11 @@ export class MetaBalancerBuilding extends MetaBuilding {
     getAvailableVariants(root) {
         let available = [defaultBuildingVariant];
         if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_merger)) {
-            if(false) {
-                available.push(enumBalancerVariants.merger, enumBalancerVariants.mergerInverse);
-            } else {
-                available.push(enumBalancerVariants.mergerTriple);
-            }
+            available.push(enumBalancerVariants.mergerTriple);
         }
 
         if (root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_splitter)) {
-            if(false) {
-                available.push(enumBalancerVariants.splitter, enumBalancerVariants.splitterInverse);
-            } else {
-                available.push(enumBalancerVariants.splitterTriple);
-            }
+            available.push(enumBalancerVariants.splitterTriple);
         }
 
         return available;
@@ -280,63 +257,6 @@ export class MetaBalancerBuilding extends MetaBuilding {
                     { pos: new Vector(1, 0), direction: enumDirection.top },
                 ];
 
-                break;
-            }
-            case enumBalancerVariants.merger:
-            case enumBalancerVariants.mergerInverse: {
-                if (entity.components.SmartBalancer) {entity.removeComponent(SmartBalancerComponent);}
-                entity.components.ItemAcceptor.setSlots([
-                    {
-                        pos: new Vector(0, 0),
-                        directions: [enumDirection.bottom],
-                    },
-                    {
-                        pos: new Vector(0, 0),
-                        directions: [
-                            variant === enumBalancerVariants.mergerInverse
-                                ? enumDirection.left
-                                : enumDirection.right,
-                        ],
-                    },
-                ]);
-
-                entity.components.ItemEjector.setSlots([
-                    { pos: new Vector(0, 0), direction: enumDirection.top },
-                ]);
-
-                entity.components.BeltUnderlays.underlays = [
-                    { pos: new Vector(0, 0), direction: enumDirection.top },
-                ];
-
-                break;
-            }
-            case enumBalancerVariants.splitter:
-            case enumBalancerVariants.splitterInverse: {
-                if (entity.components.SmartBalancer) {entity.removeComponent(SmartBalancerComponent);}
-                entity.components.ItemAcceptor.setSlots([
-                    {
-                        pos: new Vector(0, 0),
-                        directions: [enumDirection.bottom],
-                    },
-                ]);
-
-                entity.components.ItemEjector.setSlots([
-                    {
-                        pos: new Vector(0, 0),
-                        direction: enumDirection.top,
-                    },
-                    {
-                        pos: new Vector(0, 0),
-                        direction:
-                            variant === enumBalancerVariants.splitterInverse
-                                ? enumDirection.left
-                                : enumDirection.right,
-                    },
-                ]);
-    
-                entity.components.BeltUnderlays.underlays = [
-                    { pos: new Vector(0, 0), direction: enumDirection.top },
-                ];
                 break;
             }
 
@@ -432,8 +352,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
      * @return {{ rotation: number, rotationVariant: number, connectedEntities?: Array<Entity> }}
      */
     computeOptimalDirectionAndRotationVariantAtTile({ root, tile, rotation, variant, layer }) {
-        if (variant !== enumBalancerVariants.mergerTriple &&
-        variant !== enumBalancerVariants.splitterTriple) {
+        if (variant == defaultBuildingVariant) {
             return {
                 rotation,
                 rotationVariant: 0,
@@ -444,7 +363,7 @@ export class MetaBalancerBuilding extends MetaBuilding {
         const bottomDirection = enumAngleToDirection[(rotation + 180) % 360];
         const leftDirection = enumAngleToDirection[(rotation + 270) % 360];
 
-        const { ejectors, acceptors } = root.logic.getEjectorsAndAcceptorsAtTile(tile, false);
+        const { ejectors, acceptors } = root.logic.getEjectorsAndAcceptorsAtTile(tile, false, false);
 
 
         let rotationVariant = 0;

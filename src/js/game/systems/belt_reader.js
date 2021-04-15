@@ -50,6 +50,11 @@ export class BeltReaderSystem extends GameSystemWithFilter {
                     }
 
                     throughput = 1 / (averageSpacing / averageSpacingNum);
+                    const decimal = throughput - Math.floor(throughput);
+                    if(decimal > 0.8)
+                    {
+                        throughput = Math.round(throughput);
+                    }
                 }
 
                 readerComp.lastThroughput = Math.min(globalConfig.beltSpeedItemsPerSecond * 23.9, throughput);

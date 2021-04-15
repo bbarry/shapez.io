@@ -4,6 +4,7 @@ import { STOP_PROPAGATION } from "../core/signal";
 import { round2Digits } from "../core/utils";
 import { enumDirection, enumDirectionToVector, enumInvertedDirections, Vector } from "../core/vector";
 import { getBuildingDataFromCode } from "./building_codes";
+import { enumItemProcessorTypes } from "./components/item_processor";
 import { enumWireVariant } from "./components/wire";
 import { Entity } from "./entity";
 import { CHUNK_OVERLAY_RES } from "./map_chunk_view";
@@ -347,7 +348,7 @@ export class GameLogic {
 
     g(tile, edge) {}
 
-    getEjectorsAndAcceptorsAtTile(tile, isHyperlink) {
+    getEjectorsAndAcceptorsAtTile(tile, isHyperlink, includeTrash) {
         let ejectors = [];
         let acceptors = [];
 
@@ -360,6 +361,13 @@ export class GameLogic {
 
                 const entity = this.root.map.getLayerContentXY(tile.x + dx, tile.y + dy, "regular");
                 if (entity) {
+                    const itemProcessor = entity.components.ItemProcessor;
+                    const isTrash =  itemProcessor && itemProcessor.type == enumItemProcessorTypes.trash;
+                    if(!includeTrash && isTrash)
+                    {
+                        continue;
+                    }
+                    
                     let ejectorSlots = [];
                     let acceptorSlots = [];
 

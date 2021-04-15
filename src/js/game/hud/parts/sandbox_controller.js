@@ -32,18 +32,6 @@ export class HUDSandboxController extends BaseHUDPart {
 
         bind(".levelToggle .minus", () => this.modifyLevel(-1));
         bind(".levelToggle .plus", () => this.modifyLevel(1));
-
-        bind(".upgradesBelt .minus", () => this.modifyUpgrade("belt", -1));
-        bind(".upgradesBelt .plus", () => this.modifyUpgrade("belt", 1));
-
-        bind(".upgradesExtraction .minus", () => this.modifyUpgrade("miner", -1));
-        bind(".upgradesExtraction .plus", () => this.modifyUpgrade("miner", 1));
-
-        bind(".upgradesProcessing .minus", () => this.modifyUpgrade("processors", -1));
-        bind(".upgradesProcessing .plus", () => this.modifyUpgrade("processors", 1));
-
-        bind(".upgradesPainting .minus", () => this.modifyUpgrade("painting", -1));
-        bind(".upgradesPainting .plus", () => this.modifyUpgrade("painting", 1));
     }
 
     modifyUpgrade(id, amount) {
@@ -80,7 +68,7 @@ export class HUDSandboxController extends BaseHUDPart {
 
     modifyLevel(amount) {
         const hubGoals = this.root.hubGoals;
-        if(hubGoals.level + amount > 20) {
+        if(hubGoals.level + amount > 20 && false) {
             this.root.hud.signals.notification.dispatch(
                 "You can't cheat past level 20 :/",
                 enumNotificationType.upgrade

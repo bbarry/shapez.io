@@ -69,7 +69,6 @@ export class ItemProcessorComponent extends Component {
         processingRequirement = null,
         inputsToProcess = 1,
         makeCharges = true,
-        fixedOutput = false,
     }) {
         super();
 

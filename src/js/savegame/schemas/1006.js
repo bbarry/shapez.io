@@ -61,14 +61,6 @@ export class SavegameInterface_V1006 extends SavegameInterface_V1005 {
 
             // Splitter (=Balancer)
             "sprites/blueprints/splitter.png": findCode(MetaBalancerBuilding),
-            "sprites/blueprints/splitter-compact.png": findCode(
-                MetaBalancerBuilding,
-                enumBalancerVariants.merger
-            ),
-            "sprites/blueprints/splitter-compact-inverse.png": findCode(
-                MetaBalancerBuilding,
-                enumBalancerVariants.mergerInverse
-            ),
 
             // Underground belt
             "sprites/blueprints/underground_belt_entry.png": findCode(
