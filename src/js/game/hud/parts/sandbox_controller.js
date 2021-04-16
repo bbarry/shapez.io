@@ -46,6 +46,7 @@ export class HUDSandboxController extends BaseHUDPart {
                 </div>
 
                 <div class="additionalOptions">
+                    <button class="styledButton levelAll">Level up all upgrades</button>
                     <button class="styledButton giveBlueprints">Fill blueprint shapes</button>
                 </div>
             </div>
@@ -54,7 +55,8 @@ export class HUDSandboxController extends BaseHUDPart {
 
         const bind = (selector, handler) => this.trackClicks(this.element.querySelector(selector), handler);
 
-        //bind(".giveBlueprints", this.giveBlueprints);
+        bind(".giveBlueprints", this.giveBlueprints);
+        bind(".levelAll", this.levelAll);
         bind(".levelToggle .minus", () => this.modifyLevel(-1));
         bind(".levelToggle .plus", () => this.modifyLevel(1));
 
@@ -69,6 +71,21 @@ export class HUDSandboxController extends BaseHUDPart {
 
         bind(".upgradesPainting .minus", () => this.modifyUpgrade("painting", -1));
         bind(".upgradesPainting .plus", () => this.modifyUpgrade("painting", 1));
+    }
+
+    giveBlueprints() {
+        const shape = this.root.gameMode.getBlueprintShapeKey();
+        if (!this.root.hubGoals.storedShapes[shape]) {
+            this.root.hubGoals.storedShapes[shape] = 0;
+        }
+        this.root.hubGoals.storedShapes[shape] += 1e9;
+    }
+
+    levelAll() {
+        this.modifyUpgrade("belt", 100);
+        this.modifyUpgrade("miner", 100);
+        this.modifyUpgrade("processors", 100);
+        this.modifyUpgrade("painting", 100);
     }
 
     modifyUpgrade(id, amount) {
