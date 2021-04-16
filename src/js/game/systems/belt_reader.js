@@ -9,66 +9,47 @@ export class BeltReaderSystem extends GameSystemWithFilter {
     }
 
     update() {
-        /*
-        potential ideas for new belt reader design:
-        if every time an item acceptor took an item in it told it
-        
-        */
         const now = this.root.time.now();
+        const minimumTime = now - globalConfig.readerAnalyzeIntervalSeconds;
         const minimumTimeForThroughput = now - 1;
         for (let i = 0; i < this.allEntities.length; ++i) {
             const entity = this.allEntities[i];
 
             const readerComp = entity.components.BeltReader;
+            const lastItemTimes = readerComp.lastItemTimes;
             const pinsComp = entity.components.WiredPins;
 
-            let interval = globalConfig.readerAnalyzeIntervalSeconds;
-            if (readerComp.lastItemTimes.length < 5) {
-                interval *= 4;
-            }
-            const minimumTime = now - interval;
-
             // Remove outdated items
-            while (readerComp.lastItemTimes[0] < minimumTime) {
-                readerComp.lastItemTimes.shift();
+            while (lastItemTimes[0] < minimumTime) {
+                readerComp.lastRemovedItemTime = lastItemTimes.shift();
             }
             
-            
-
-            pinsComp.slots[1].value = readerComp.lastItem;
-            if (readerComp.lastThroughput > 0.05) {
-                pinsComp.slots[0].value = BOOL_TRUE_SINGLETON;
-            } else {
-                pinsComp.slots[0].value = BOOL_FALSE_SINGLETON;
-                if (entity.components.ItemProcessor.ongoingCharges.length < 1 
-                    && !(readerComp.lastItemTimes[readerComp.lastItemTimes.length - 1] || 0 > minimumTimeForThroughput)){
-                    readerComp.lastItem = null;
-                }
-            }
-
             if (now - readerComp.lastThroughputComputation > 0.5) {
                 // Compute throughput
                 readerComp.lastThroughputComputation = now;
 
+                const oneItem = lastItemTimes.length == 1;
                 let throughput = 0;
-                if (readerComp.lastItemTimes.length < 2) {
-                    throughput = 0;
-                } else {
-                    let averageSpacing = 0;
-                    let averageSpacingNum = 0;
-                    for (let i = 0; i < readerComp.lastItemTimes.length - 1; ++i) {
-                        averageSpacing += readerComp.lastItemTimes[i + 1] - readerComp.lastItemTimes[i];
+                if (lastItemTimes.length > 0) {
+                    let averageSpacing = oneItem ? lastItemTimes[0] - readerComp.lastRemovedItemTime : 0;
+                    let averageSpacingNum = oneItem ? 1 : 0;
+                    for (let i = 0; i < lastItemTimes.length - 1; ++i) {
+                        averageSpacing += lastItemTimes[i + 1] - lastItemTimes[i];
                         ++averageSpacingNum;
                     }
 
-                    throughput = 1 / (averageSpacing / averageSpacingNum);
-                    //const decimal = throughput - Math.floor(throughput);
-                    //if (decimal > 0.8) {
-                    //    throughput = Math.round(throughput);
-                    //}
+                    throughput = 1 / (averageSpacing / averageSpacingNum) + 0.01;
                 }
 
-                readerComp.lastThroughput = Math.min(globalConfig.beltSpeedItemsPerSecond * 23.9, throughput);
+                readerComp.lastThroughput = Math.min(globalConfig.beltSpeedItemsPerSecond, throughput);
+            }
+
+            if (readerComp.lastThroughput > 0) {
+                pinsComp.slots[0].value = BOOL_TRUE_SINGLETON;
+                pinsComp.slots[1].value = readerComp.lastItem;
+            } else {
+                pinsComp.slots[0].value = BOOL_FALSE_SINGLETON;
+                pinsComp.slots[1].value = null;
             }
         }
     }

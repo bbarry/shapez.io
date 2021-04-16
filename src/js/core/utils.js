@@ -566,6 +566,8 @@ export function round1DigitLocalized(speed, separator = T.global.decimalSeparato
     return round1Digit(speed).toString().replace(".", separator);
 }
 
+
+
 /**
  * Formats a number like 2.51 to "2.51 items / s"
  * @param {number} speed
