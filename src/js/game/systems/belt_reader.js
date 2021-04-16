@@ -9,8 +9,12 @@ export class BeltReaderSystem extends GameSystemWithFilter {
     }
 
     update() {
+        /*
+        potential ideas for new belt reader design:
+        if every time an item acceptor took an item in it told it
+        
+        */
         const now = this.root.time.now();
-        const minimumTime = now - globalConfig.readerAnalyzeIntervalSeconds;
         const minimumTimeForThroughput = now - 1;
         for (let i = 0; i < this.allEntities.length; ++i) {
             const entity = this.allEntities[i];
@@ -18,20 +22,26 @@ export class BeltReaderSystem extends GameSystemWithFilter {
             const readerComp = entity.components.BeltReader;
             const pinsComp = entity.components.WiredPins;
 
+            let interval = globalConfig.readerAnalyzeIntervalSeconds;
+            if (readerComp.lastItemTimes.length < 5) {
+                interval *= 4;
+            }
+            const minimumTime = now - interval;
+
             // Remove outdated items
             while (readerComp.lastItemTimes[0] < minimumTime) {
                 readerComp.lastItemTimes.shift();
             }
+            
+            
 
             pinsComp.slots[1].value = readerComp.lastItem;
-            if (
-                (readerComp.lastItemTimes[readerComp.lastItemTimes.length - 1] || 0) >
-                minimumTimeForThroughput
-            ) {
+            if (readerComp.lastThroughput > 0.05) {
                 pinsComp.slots[0].value = BOOL_TRUE_SINGLETON;
             } else {
                 pinsComp.slots[0].value = BOOL_FALSE_SINGLETON;
-                if (entity.components.ItemEjector.canEjectOnSlot(0)) {
+                if (entity.components.ItemProcessor.ongoingCharges.length < 1 
+                    && !(readerComp.lastItemTimes[readerComp.lastItemTimes.length - 1] || 0 > minimumTimeForThroughput)){
                     readerComp.lastItem = null;
                 }
             }
