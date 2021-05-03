@@ -97,7 +97,7 @@ export class HUDSandboxController extends BaseHUDPart {
         this.root.hubGoals.upgradeLevels[id] = Math.max(
             0,
             Math.min(
-                currentLevel > 4 ? currentLevel : 4,
+                currentLevel > 4 ? currentLevel : 5,
                 maxResearchLevel,
                 (this.root.hubGoals.upgradeLevels[id] || 0) + amount
             )

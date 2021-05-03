@@ -606,7 +606,18 @@ export class ShapeDefinition extends BasicSerializableObject {
                     }
 
                     default: {
-                        assertAlways(false, "Unkown sub shape: " + subShape);
+                        context.beginPath();
+                        const dims = quadrantSize * layerScale;
+
+                        let originX = insetPadding - quadrantHalfSize;
+                        let originY = -insetPadding + quadrantHalfSize - dims;
+                        const moveInwards = dims * 0.4;
+                        const moveOutwards = dims * 0.8;
+                        context.moveTo(originX + dims, originY + moveInwards);
+                        context.lineTo(originX + dims, originY);
+                        context.lineTo(originX, originY + dims);
+                        context.closePath();
+                        break;
                     }
                 }
 
@@ -787,48 +798,59 @@ export class ShapeDefinition extends BasicSerializableObject {
      * @param {ShapeDefinition} definition
      */
     cloneAndMergeWith(definition) {
-        assert(this.layers.length == 1 && definition.layers.length == 1, "Can only merge one layer shapes");
-        const shape1 = this.layers[0];
-        const shape2 = definition.layers[0];
+        let outDefinition = new ShapeDefinition({ layers: [] });
 
-        /** @type {ShapeLayer} */
-        let outDefinition = [null, null, null, null];
-        for (let quad = 0; quad < 4; ++quad) {
-            if (!(shape1[quad] || shape2[quad])) {
-                //nothing, leave it empty
-            } else if (!(shape1[quad] && shape2[quad]) || shape1[quad].subShape == shape2[quad].subShape) {
-                // it doesn't matter which shape goes in
-                outDefinition[quad] = shape1[quad] ? shape1[quad] : shape2[quad];
-            } else {
-                const subShape1 = shape1[quad].subShape;
-                const subShape2 = shape2[quad].subShape;
+        for (let i = 0; i < this.layers.length && i < definition.layers.length; ++i) {
+            //handle one layer
+            const layer1 = this.layers[i];
+            const layer2 = definition.layers[i];
+            
 
-                let subShape = null;
+            /** @type {ShapeLayer} */
+            let layerResult = [null, null, null, null];
+            for (let quad = 0; quad < 4; ++quad) {
 
-                subShape = enumShapeMergingResults[subShape1][subShape2];
+                
 
-                const color1 = shape1[quad].color;
-                const color2 = shape2[quad].color;
-                //ok, now find the color
+                let shape = null;
                 let color = enumColors.uncolored;
-                if (!(color1 == enumColors.uncolored || color2 == enumColors.uncolored)) {
-                    //mix the colors!
-                    color = enumColorMixingResults[color1][color2];
-                } else if (!(color1 == enumColors.uncolored)) {
-                    color = color1;
-                } else if (!(color2 == enumColors.uncolored)) {
-                    color = color2;
+                if (!(layer1[quad] || layer2[quad])) {
+                    //nothing there, leave it empty
+                } else if (!layer1[quad] && layer2[quad]) {
+                    shape = layer2[quad].subShape;
+                    color = layer2[quad].color;
+                } else if (!layer2[quad] && layer1[quad]) {
+                    shape = layer1[quad].subShape;
+                    color = layer1[quad].color;
+                } else {
+                    const subShape1 = layer1[quad].subShape;
+                    const subShape2 = layer2[quad].subShape;
+                    shape = enumShapeMergingResults[subShape1][subShape2];
+                    
+                    const color1 = layer1[quad].color;
+                    const color2 = layer2[quad].color;
+                    if (!(color1 == enumColors.uncolored || color2 == enumColors.uncolored)) {
+                        //mix the colors!
+                        color = enumColorMixingResults[color1][color2];
+                    } else if (!(color1 == enumColors.uncolored)) {
+                        color = color1;
+                    } else if (!(color2 == enumColors.uncolored)) {
+                        color = color2;
+                    }
+                    
                 }
-
-                if (subShape != null) {
-                    outDefinition[quad] = {
-                        subShape: subShape,
+                if (shape != null) {
+                    layerResult[quad] = {
+                        subShape: shape,
                         color: color,
                     };
                 }
             }
+            outDefinition.layers.push(layerResult);
         }
-        return new ShapeDefinition({ layers: [outDefinition] });
+
+        
+        return outDefinition;
     }
 
     /**

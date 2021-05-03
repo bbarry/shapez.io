@@ -81,6 +81,8 @@ export const enumColorMixingResults = {
 
     // 0, 255, 0
     [c.blue]: {
+        [c.red]: c.purple,
+        [c.green]: c.cyan,
         [c.yellow]: c.white,
         [c.purple]: c.purple,
         [c.cyan]: c.cyan,
