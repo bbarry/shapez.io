@@ -800,56 +800,55 @@ export class ShapeDefinition extends BasicSerializableObject {
     cloneAndMergeWith(definition) {
         let outDefinition = new ShapeDefinition({ layers: [] });
 
-        for (let i = 0; i < this.layers.length && i < definition.layers.length; ++i) {
+        for (let i = 0; i < this.layers.length || i < definition.layers.length; ++i) {
             //handle one layer
             const layer1 = this.layers[i];
             const layer2 = definition.layers[i];
-            
 
             /** @type {ShapeLayer} */
             let layerResult = [null, null, null, null];
-            for (let quad = 0; quad < 4; ++quad) {
+            if (!(layer1 && layer2)) {
+                layerResult = layer1 ? layer1 : layer2;
+            } else {
+                for (let quad = 0; quad < 4; ++quad) {
+                    let shape = null;
+                    let color = enumColors.uncolored;
+                    if (!(layer1[quad] || layer2[quad])) {
+                        //nothing there, leave it empty
+                    } else if (!layer1[quad] && layer2[quad]) {
+                        shape = layer2[quad].subShape;
+                        color = layer2[quad].color;
+                    } else if (!layer2[quad] && layer1[quad]) {
+                        shape = layer1[quad].subShape;
+                        color = layer1[quad].color;
+                    } else {
+                        const subShape1 = layer1[quad].subShape;
+                        const subShape2 = layer2[quad].subShape;
+                        shape = enumShapeMergingResults[subShape1][subShape2];
 
-                
-
-                let shape = null;
-                let color = enumColors.uncolored;
-                if (!(layer1[quad] || layer2[quad])) {
-                    //nothing there, leave it empty
-                } else if (!layer1[quad] && layer2[quad]) {
-                    shape = layer2[quad].subShape;
-                    color = layer2[quad].color;
-                } else if (!layer2[quad] && layer1[quad]) {
-                    shape = layer1[quad].subShape;
-                    color = layer1[quad].color;
-                } else {
-                    const subShape1 = layer1[quad].subShape;
-                    const subShape2 = layer2[quad].subShape;
-                    shape = enumShapeMergingResults[subShape1][subShape2];
-                    
-                    const color1 = layer1[quad].color;
-                    const color2 = layer2[quad].color;
-                    if (!(color1 == enumColors.uncolored || color2 == enumColors.uncolored)) {
-                        //mix the colors!
-                        color = enumColorMixingResults[color1][color2];
-                    } else if (!(color1 == enumColors.uncolored)) {
-                        color = color1;
-                    } else if (!(color2 == enumColors.uncolored)) {
-                        color = color2;
+                        const color1 = layer1[quad].color;
+                        const color2 = layer2[quad].color;
+                        if (!(color1 == enumColors.uncolored || color2 == enumColors.uncolored)) {
+                            //mix the colors!
+                            color = enumColorMixingResults[color1][color2];
+                        } else if (!(color1 == enumColors.uncolored)) {
+                            color = color1;
+                        } else if (!(color2 == enumColors.uncolored)) {
+                            color = color2;
+                        }
                     }
-                    
-                }
-                if (shape != null) {
-                    layerResult[quad] = {
-                        subShape: shape,
-                        color: color,
-                    };
+                    if (shape != null) {
+                        layerResult[quad] = {
+                            subShape: shape,
+                            color: color,
+                        };
+                    }
                 }
             }
+
             outDefinition.layers.push(layerResult);
         }
 
-        
         return outDefinition;
     }
 
