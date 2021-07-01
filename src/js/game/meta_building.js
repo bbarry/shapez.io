@@ -41,6 +41,13 @@ export class MetaBuilding {
     }
 
     /**
+     * Should return the building duration
+     */
+    getBuildingDuration(variant = defaultBuildingVariant) {
+        return 1;
+    }
+
+    /**
      * Returns whether the building has the direction lock switch available
      */
     getHasDirectionLockAvailable() {

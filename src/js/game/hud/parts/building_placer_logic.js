@@ -33,6 +33,12 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
          */
         this.fakeEntity = null;
 
+        /**
+         * Array of blueplans to update all per tick
+         * @type {Set<Entity>}
+         */
+        this.blueplans = new Set();
+
         // Signals
         this.signals = {
             variantChanged: new Signal(),
@@ -131,6 +137,9 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
         this.root.signals.storyGoalCompleted.add(() => this.currentMetaBuilding.set(null));
         this.root.signals.upgradePurchased.add(() => this.signals.variantChanged.dispatch());
         this.root.signals.editModeChanged.add(this.onEditModeChanged, this);
+        this.root.signals.entityManuallyPlaced.add(entity => {
+            this.blueplans.add(entity);
+        }, this);
 
         // MOUSE BINDINGS
         this.root.camera.downPreHandler.add(this.onMouseDown, this);
@@ -261,6 +270,16 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
      * @see BaseHUDPart.update
      */
     update() {
+        this.blueplans.forEach(entity => {
+            const staticComp = entity.components.StaticMapEntity;
+            const tickRate = this.root.dynamicTickrate.currentTickRate;
+            staticComp.buildingProgress += 1 / tickRate;
+            if (!staticComp.isBlueprint) {
+                this.blueplans.delete(entity);
+                this.root.signals.entityAdded.dispatch(entity);
+            }
+        });
+
         // Abort placement if a dialog was shown in the meantime
         if (this.root.hud.hasBlockingOverlayOpen()) {
             this.abortPlacement();
@@ -686,12 +705,13 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
         }
 
         const metaBuilding = this.currentMetaBuilding.get();
+        const tile = this.root.camera.screenToWorld(pos).toTileSpace();
 
         // Placement
         if (button === enumMouseButton.left && metaBuilding) {
             this.currentlyDragging = true;
             this.currentlyDeleting = false;
-            this.lastDragTile = this.root.camera.screenToWorld(pos).toTileSpace();
+            this.lastDragTile = tile;
 
             // Place initial building, but only if direction lock is not active
             if (!this.isDirectionLockActive) {
@@ -709,7 +729,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
         ) {
             this.currentlyDragging = true;
             this.currentlyDeleting = true;
-            this.lastDragTile = this.root.camera.screenToWorld(pos).toTileSpace();
+            this.lastDragTile = tile;
             if (this.deleteBelowCursor()) {
                 return STOP_PROPAGATION;
             }
@@ -718,6 +738,16 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
         // Cancel placement
         if (button === enumMouseButton.right && metaBuilding) {
             this.currentMetaBuilding.set(null);
+        }
+
+        // Building
+        if (button === enumMouseButton.left && !metaBuilding) {
+            const contents = this.root.map.getLayerContentXY(tile.x, tile.y, this.root.currentLayer);
+            if (!contents) return;
+            const staticComp = contents.components.StaticMapEntity;
+            if (!staticComp.isBlueprint) return;
+
+            staticComp.buildingProgress++;
         }
     }
 

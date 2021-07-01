@@ -232,7 +232,7 @@ export class BeltPath extends BasicSerializableObject {
         const targetBeltComp = targetEntity.components.Belt;
 
         // Check for belts (special case)
-        if (targetBeltComp) {
+        if (targetBeltComp && !targetStaticComp.isBlueprint) {
             const beltAcceptingDirection = targetStaticComp.localDirectionToWorld(enumDirection.top);
             DEBUG &&
                 !debug_Silent &&

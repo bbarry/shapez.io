@@ -185,8 +185,10 @@ export class GameCore {
             rotationVariant: 0,
             variant: defaultBuildingVariant,
         });
+        hub.components.StaticMapEntity.finishProgress();
         this.root.map.placeStaticEntity(hub);
         this.root.entityMgr.registerEntity(hub);
+        this.root.signals.entityAdded.dispatch(hub);
     }
 
     /**

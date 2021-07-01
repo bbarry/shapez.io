@@ -145,10 +145,8 @@ export class BeltSystem extends GameSystemWithFilter {
                     const targetBeltComp = targetEntity.components.Belt;
                     const targetStaticComp = targetEntity.components.StaticMapEntity;
 
-                    if (!targetBeltComp) {
-                        // Not a belt
-                        continue;
-                    }
+                    if (!targetBeltComp) continue;
+                    if (targetStaticComp.isBlueprint) continue;
 
                     const {
                         rotation,
@@ -360,6 +358,8 @@ export class BeltSystem extends GameSystemWithFilter {
      */
     findFollowUpEntity(entity) {
         const staticComp = entity.components.StaticMapEntity;
+        if (staticComp.isBlueprint) return;
+
         const beltComp = entity.components.Belt;
 
         const followUpDirection = staticComp.localDirectionToWorld(beltComp.direction);
@@ -369,17 +369,16 @@ export class BeltSystem extends GameSystemWithFilter {
         const followUpEntity = this.root.map.getLayerContentXY(followUpTile.x, followUpTile.y, entity.layer);
 
         // Check if there's a belt at the tile we point to
-        if (followUpEntity) {
-            const followUpBeltComp = followUpEntity.components.Belt;
-            if (followUpBeltComp) {
-                const followUpStatic = followUpEntity.components.StaticMapEntity;
+        if (!followUpEntity) return;
 
-                const acceptedDirection = followUpStatic.localDirectionToWorld(enumDirection.top);
-                if (acceptedDirection === followUpDirection) {
-                    return followUpEntity;
-                }
-            }
-        }
+        const followUpBeltComp = followUpEntity.components.Belt;
+        if (!followUpBeltComp) return;
+
+        const followUpStatic = followUpEntity.components.StaticMapEntity;
+        if (followUpStatic.isBlueprint) return;
+
+        const acceptedDirection = followUpStatic.localDirectionToWorld(enumDirection.top);
+        if (acceptedDirection === followUpDirection) return followUpEntity;
 
         return null;
     }
@@ -391,6 +390,7 @@ export class BeltSystem extends GameSystemWithFilter {
      */
     findSupplyingEntity(entity) {
         const staticComp = entity.components.StaticMapEntity;
+        if (staticComp.isBlueprint) return;
 
         const supplyDirection = staticComp.localDirectionToWorld(enumDirection.bottom);
         const supplyVector = enumDirectionToVector[supplyDirection];
@@ -399,19 +399,19 @@ export class BeltSystem extends GameSystemWithFilter {
         const supplyEntity = this.root.map.getLayerContentXY(supplyTile.x, supplyTile.y, entity.layer);
 
         // Check if there's a belt at the tile we point to
-        if (supplyEntity) {
-            const supplyBeltComp = supplyEntity.components.Belt;
-            if (supplyBeltComp) {
-                const supplyStatic = supplyEntity.components.StaticMapEntity;
-                const otherDirection = supplyStatic.localDirectionToWorld(
-                    enumInvertedDirections[supplyBeltComp.direction]
-                );
+        if (!supplyEntity) return;
 
-                if (otherDirection === supplyDirection) {
-                    return supplyEntity;
-                }
-            }
-        }
+        const supplyBeltComp = supplyEntity.components.Belt;
+        if (!supplyBeltComp) return;
+
+        const supplyStatic = supplyEntity.components.StaticMapEntity;
+        if (supplyStatic.isBlueprint) return;
+
+        const otherDirection = supplyStatic.localDirectionToWorld(
+            enumInvertedDirections[supplyBeltComp.direction]
+        );
+
+        if (otherDirection === supplyDirection) return supplyEntity;
 
         return null;
     }

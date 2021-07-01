@@ -65,6 +65,7 @@ export const KEYMAPPINGS = {
         mixer: { keyCode: key("8") },
         painter: { keyCode: key("9") },
         trash: { keyCode: key("0") },
+        builder: { keyCode: key(".") },
 
         // Sandbox
         item_producer: { keyCode: key("L") },

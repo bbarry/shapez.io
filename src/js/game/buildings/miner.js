@@ -25,6 +25,10 @@ export class MetaMinerBuilding extends MetaBuilding {
         return "#b37dcd";
     }
 
+    getBuildingDuration() {
+        return 4;
+    }
+
     /**
      * @param {GameRoot} root
      * @param {string} variant

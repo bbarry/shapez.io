@@ -18,6 +18,7 @@ import { MetaItemProducerBuilding } from "../../buildings/item_producer";
 import { MetaConstantProducerBuilding } from "../../buildings/constant_producer";
 import { MetaGoalAcceptorBuilding } from "../../buildings/goal_acceptor";
 import { MetaBlockBuilding } from "../../buildings/block";
+import { MetaBuilderBuilding } from "../../buildings/builder";
 
 export class HUDBuildingsToolbar extends HUDBaseToolbar {
     constructor(root) {
@@ -37,6 +38,7 @@ export class HUDBuildingsToolbar extends HUDBaseToolbar {
                 MetaPainterBuilding,
                 MetaTrashBuilding,
                 MetaItemProducerBuilding,
+                MetaBuilderBuilding,
             ],
             secondaryBuildings: [
                 MetaStorageBuilding,

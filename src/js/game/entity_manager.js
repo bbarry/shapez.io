@@ -88,8 +88,6 @@ export class EntityManager extends BasicSerializableObject {
         // Give each entity a unique id
         entity.uid = uid ? uid : this.generateUid();
         entity.registered = true;
-
-        this.root.signals.entityAdded.dispatch(entity);
     }
 
     /**

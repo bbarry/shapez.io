@@ -20,6 +20,7 @@ import { BeltReaderComponent } from "./components/belt_reader";
 import { FilterComponent } from "./components/filter";
 import { ItemProducerComponent } from "./components/item_producer";
 import { GoalAcceptorComponent } from "./components/goal_acceptor";
+import { BuilderComponent } from "./components/builder";
 
 export function initComponentRegistry() {
     gComponentRegistry.register(StaticMapEntityComponent);
@@ -43,6 +44,7 @@ export function initComponentRegistry() {
     gComponentRegistry.register(FilterComponent);
     gComponentRegistry.register(ItemProducerComponent);
     gComponentRegistry.register(GoalAcceptorComponent);
+    gComponentRegistry.register(BuilderComponent);
 
     // IMPORTANT ^^^^^ UPDATE ENTITY COMPONENT STORAGE AFTERWARDS
 

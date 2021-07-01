@@ -41,6 +41,8 @@ export class BeltUnderlaysSystem extends GameSystemWithFilter {
             this.underlayBeltSprites.push(Loader.getSprite("sprites/belt/built/forward_" + i + ".png"));
         }
 
+        this.underlayBlueprintBeltSprite = Loader.getSprite("sprites/blueprints/belt_top.png");
+
         // Automatically recompute areas
         this.staleArea = new StaleAreaDetector({
             root,
@@ -234,6 +236,7 @@ export class BeltUnderlaysSystem extends GameSystemWithFilter {
             }
 
             const staticComp = entity.components.StaticMapEntity;
+            const isBlueprint = staticComp.isBlueprint;
             const underlays = underlayComp.underlays;
             for (let i = 0; i < underlays.length; ++i) {
                 // Extract underlay parameters
@@ -282,9 +285,10 @@ export class BeltUnderlaysSystem extends GameSystemWithFilter {
                 );
                 parameters.context.translate(x, y);
                 parameters.context.rotate(angleRadians);
-                this.underlayBeltSprites[
-                    animationIndex % this.underlayBeltSprites.length
-                ].drawCachedWithClipRect(
+                const sprite = isBlueprint
+                    ? this.underlayBlueprintBeltSprite
+                    : this.underlayBeltSprites[animationIndex % this.underlayBeltSprites.length];
+                sprite.drawCachedWithClipRect(
                     parameters,
                     -globalConfig.halfTileSize,
                     -globalConfig.halfTileSize,

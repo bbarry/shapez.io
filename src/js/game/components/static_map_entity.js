@@ -18,9 +18,34 @@ export class StaticMapEntityComponent extends Component {
             rotation: types.float,
             originalRotation: types.float,
 
+            buildingProgress: types.float,
+
             // See building_codes.js
             code: types.uint,
         };
+    }
+
+    /**
+     * Returns the effective tile size
+     * @returns {boolean}
+     */
+    get isBlueprint() {
+        return this.buildingProgress < this.getBuildingDuration();
+    }
+
+    /**
+     * Returns the effective building time
+     * @returns {Number}
+     */
+    getBuildingDuration() {
+        return getBuildingDataFromCode(this.code).buildingDuration;
+    }
+
+    /**
+     * Finished the progress
+     */
+    finishProgress() {
+        this.buildingProgress = this.getBuildingDuration();
     }
 
     /**
@@ -36,7 +61,9 @@ export class StaticMapEntityComponent extends Component {
      * @returns {AtlasSprite}
      */
     getSprite() {
-        return getBuildingDataFromCode(this.code).sprite;
+        return this.isBlueprint
+            ? getBuildingDataFromCode(this.code).blueprintSprite
+            : getBuildingDataFromCode(this.code).sprite;
     }
 
     /**
@@ -118,6 +145,7 @@ export class StaticMapEntityComponent extends Component {
         this.rotation = rotation;
         this.code = code;
         this.originalRotation = originalRotation;
+        this.buildingProgress = 0;
     }
 
     /**

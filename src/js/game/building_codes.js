@@ -11,6 +11,7 @@ import { Vector } from "../core/vector";
  *   variant?: string,
  *   rotationVariant?: number,
  *   tileSize?: Vector,
+ *   buildingDuration?: Number,
  *   sprite?: AtlasSprite,
  *   blueprintSprite?: AtlasSprite,
  *   silhouetteColor?: string
@@ -45,12 +46,14 @@ export function registerBuildingVariant(
     rotationVariant = 0
 ) {
     assert(!gBuildingVariants[code], "Duplicate id: " + code);
+    // @ts-ignore
+    const currentMeta = new meta();
     gBuildingVariants[code] = {
         metaClass: meta,
         variant,
         rotationVariant,
-        // @ts-ignore
-        tileSize: new meta().getDimensions(variant),
+        tileSize: currentMeta.getDimensions(variant),
+        buildingDuration: currentMeta.getBuildingDuration(variant),
     };
 }
 

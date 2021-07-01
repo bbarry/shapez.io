@@ -589,7 +589,7 @@ export class RegularGameMode extends GameMode {
             MetaConstantProducerBuilding,
             MetaGoalAcceptorBuilding,
             MetaBlockBuilding,
-            MetaItemProducerBuilding,
+            // MetaItemProducerBuilding,
         ];
     }
 

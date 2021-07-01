@@ -27,6 +27,7 @@ import { ItemProducerSystem } from "./systems/item_producer";
 import { ConstantProducerSystem } from "./systems/constant_producer";
 import { GoalAcceptorSystem } from "./systems/goal_acceptor";
 import { ZoneSystem } from "./systems/zone";
+import { BuilderSystem } from "./systems/builder";
 
 const logger = createLogger("game_system_manager");
 
@@ -112,6 +113,9 @@ export class GameSystemManager {
             /** @type {ZoneSystem} */
             zone: null,
 
+            /** @type {BuilderSystem} */
+            builder: null,
+
             /* typehints:end */
         };
         this.systemUpdateOrder = [];
@@ -182,6 +186,8 @@ export class GameSystemManager {
         add("constantProducer", ConstantProducerSystem);
 
         add("goalAcceptor", GoalAcceptorSystem);
+
+        add("builder", BuilderSystem);
 
         if (this.root.gameMode.getBuildableZones()) {
             add("zone", ZoneSystem);

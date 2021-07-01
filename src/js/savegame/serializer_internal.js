@@ -64,6 +64,8 @@ export class SerializerInternal {
         this.deserializeComponents(root, entity, payload.components);
 
         root.entityMgr.registerEntity(entity, payload.uid);
+
+        if (!entity.components.StaticMapEntity.isBlueprint) root.signals.entityAdded.dispatch(entity);
         root.map.placeStaticEntity(entity);
     }
 
