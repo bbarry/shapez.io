@@ -169,6 +169,7 @@ export class Blueprint {
                     root.logic.freeEntityAreaBeforeBuild(clone);
                     root.map.placeStaticEntity(clone);
                     root.entityMgr.registerEntity(clone);
+                    root.signals.entityManuallyPlaced.dispatch(clone);
                     count++;
                 }
 

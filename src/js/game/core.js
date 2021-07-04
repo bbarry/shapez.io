@@ -456,6 +456,9 @@ export class GameCore {
             // HUB Overlay
             systems.hub.draw(params);
 
+            // Builders
+            systems.builder.draw(params);
+
             // Green wires overlay
             if (root.hud.parts.wiresOverlay) {
                 root.hud.parts.wiresOverlay.draw(params);

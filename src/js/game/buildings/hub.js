@@ -5,6 +5,7 @@ import { enumItemProcessorTypes, ItemProcessorComponent } from "../components/it
 import { Entity } from "../entity";
 import { MetaBuilding } from "../meta_building";
 import { WiredPinsComponent, enumPinSlotType } from "../components/wired_pins";
+import { BuilderComponent } from "../components/builder";
 
 export class MetaHubBuilding extends MetaBuilding {
     constructor() {
@@ -42,6 +43,9 @@ export class MetaHubBuilding extends MetaBuilding {
      */
     setupEntityComponents(entity) {
         entity.addComponent(new HubComponent());
+
+        entity.addComponent(new BuilderComponent());
+
         entity.addComponent(
             new ItemProcessorComponent({
                 inputsPerCharge: 1,

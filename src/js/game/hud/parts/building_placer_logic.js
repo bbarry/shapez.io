@@ -15,6 +15,7 @@ import { enumHubGoalRewards } from "../../tutorial_goals";
 import { getBuildingDataFromCode, getCodeFromBuildingData } from "../../building_codes";
 import { MetaHubBuilding } from "../../buildings/hub";
 import { safeModulo } from "../../../core/utils";
+import { HubComponent } from "../../components/hub";
 
 /**
  * Contains all logic for the building placer - this doesn't include the rendering
@@ -38,6 +39,12 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
          * @type {Set<Entity>}
          */
         this.blueplans = new Set();
+
+        /**
+         * Array of blueplans to update all per tick
+         * @type {Set<Entity>}
+         */
+        this.builders = new Set();
 
         // Signals
         this.signals = {
@@ -270,15 +277,22 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
      * @see BaseHUDPart.update
      */
     update() {
-        this.blueplans.forEach(entity => {
-            const staticComp = entity.components.StaticMapEntity;
-            const tickRate = this.root.dynamicTickrate.currentTickRate;
-            staticComp.buildingProgress += 1 / tickRate;
-            if (!staticComp.isBlueprint) {
-                this.blueplans.delete(entity);
-                this.root.signals.entityAdded.dispatch(entity);
+        if (this.builders.size == 0) {
+            // Add hubs to builders
+            this.root.entityMgr.getAllWithComponent(HubComponent).forEach(e => {
+                this.builders.add(e);
+            });
+        }
+
+        for (const blueplan of this.blueplans) {
+            for (const builder of this.builders) {
+                const builderComp = builder.components.Builder;
+                if (builderComp.tryTracingBlueplan(blueplan)) {
+                    this.blueplans.delete(blueplan);
+                    break;
+                }
             }
-        });
+        }
 
         // Abort placement if a dialog was shown in the meantime
         if (this.root.hud.hasBlockingOverlayOpen()) {
