@@ -1,5 +1,6 @@
 import { globalConfig } from "../../core/config";
 import { DrawParameters } from "../../core/draw_parameters";
+import { Vector } from "../../core/vector";
 import { GameSystem } from "../game_system";
 import { MapChunkView } from "../map_chunk_view";
 
@@ -35,7 +36,7 @@ export class StaticMapEntitySystem extends GameSystem {
             const entity = contents[i];
 
             const staticComp = entity.components.StaticMapEntity;
-            const sprite = staticComp.getSprite();
+            const sprite = staticComp.isBlueprint ? staticComp.getBlueprintSprite() : staticComp.getSprite();
             if (!sprite) continue;
 
             // Avoid drawing an entity twice which has been drawn for
@@ -43,7 +44,7 @@ export class StaticMapEntitySystem extends GameSystem {
             if (this.drawnUids.has(entity.uid)) continue;
 
             this.drawnUids.add(entity.uid);
-            staticComp.drawSpriteOnBoundsClipped(parameters, sprite, 2);
+            staticComp.drawSpriteOnBoundsClipped(parameters, sprite, -0.1);
         }
     }
 

@@ -236,7 +236,11 @@ export class BeltUnderlaysSystem extends GameSystemWithFilter {
             }
 
             const staticComp = entity.components.StaticMapEntity;
-            const isBlueprint = staticComp.isBlueprint;
+
+            if (staticComp.isBlueprint) {
+                continue;
+            }
+
             const underlays = underlayComp.underlays;
             for (let i = 0; i < underlays.length; ++i) {
                 // Extract underlay parameters
@@ -285,9 +289,7 @@ export class BeltUnderlaysSystem extends GameSystemWithFilter {
                 );
                 parameters.context.translate(x, y);
                 parameters.context.rotate(angleRadians);
-                const sprite = isBlueprint
-                    ? this.underlayBlueprintBeltSprite
-                    : this.underlayBeltSprites[animationIndex % this.underlayBeltSprites.length];
+                const sprite = this.underlayBeltSprites[animationIndex % this.underlayBeltSprites.length];
                 sprite.drawCachedWithClipRect(
                     parameters,
                     -globalConfig.halfTileSize,

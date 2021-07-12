@@ -516,6 +516,11 @@ export class BeltSystem extends GameSystemWithFilter {
             for (let i = 0; i < contents.length; ++i) {
                 const entity = contents[i];
                 if (entity.components.Belt) {
+                    const staticComp = entity.components.StaticMapEntity;
+                    if (staticComp.isBlueprint) {
+                        continue;
+                    }
+
                     const direction = entity.components.Belt.direction;
                     let sprite = this.beltAnimations[direction][0];
 
@@ -524,18 +529,23 @@ export class BeltSystem extends GameSystemWithFilter {
                     }
 
                     // Culling happens within the static map entity component
-                    entity.components.StaticMapEntity.drawSpriteOnBoundsClipped(parameters, sprite, 0);
+                    staticComp.drawSpriteOnBoundsClipped(parameters, sprite, 0);
                 }
             }
         } else {
             for (let i = 0; i < contents.length; ++i) {
                 const entity = contents[i];
                 if (entity.components.Belt) {
+                    const staticComp = entity.components.StaticMapEntity;
+                    if (staticComp.isBlueprint) {
+                        continue;
+                    }
+
                     const direction = entity.components.Belt.direction;
                     const sprite = this.beltAnimations[direction][animationIndex % BELT_ANIM_COUNT];
 
                     // Culling happens within the static map entity component
-                    entity.components.StaticMapEntity.drawSpriteOnBoundsClipped(parameters, sprite, 0);
+                    staticComp.drawSpriteOnBoundsClipped(parameters, sprite, 0);
                 }
             }
         }
