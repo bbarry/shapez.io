@@ -29,10 +29,7 @@ export class BuilderSystem extends GameSystemWithFilter {
         for (const entity of this.allEntities) {
             const builderComp = entity.components.Builder;
             for (const builder of builderComp.builders) {
-                const w = 10;
-
-                parameters.context.fillStyle = "yellow";
-                parameters.context.fillRect(builder.x - w / 2, builder.y - w / 2, w, w);
+                builder.draw(parameters);
             }
         }
     }

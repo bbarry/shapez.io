@@ -198,14 +198,16 @@ export class EntityManager extends BasicSerializableObject {
         for (let i = 0; i < this.destroyList.length; ++i) {
             const entity = this.destroyList[i];
 
+            entity.registered = false;
+            entity.destroyed = true;
+
             // Remove from entities list
             arrayDeleteValue(this.entities, entity);
 
             // Remove from componentToEntity list
             this.unregisterEntityComponents(entity);
 
-            entity.registered = false;
-            entity.destroyed = true;
+            if (entity.components.StaticMapEntity.isBlueprint) continue;
 
             this.root.signals.entityDestroyed.dispatch(entity);
         }

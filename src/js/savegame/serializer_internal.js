@@ -65,8 +65,14 @@ export class SerializerInternal {
 
         root.entityMgr.registerEntity(entity, payload.uid);
 
-        if (!entity.components.StaticMapEntity.isBlueprint) root.signals.entityAdded.dispatch(entity);
         root.map.placeStaticEntity(entity);
+
+        if (entity.components.StaticMapEntity.isBlueprint) {
+            root.signals.entityManuallyPlaced.dispatch(entity);
+            return;
+        }
+
+        root.signals.entityAdded.dispatch(entity);
     }
 
     /////// COMPONENTS ////

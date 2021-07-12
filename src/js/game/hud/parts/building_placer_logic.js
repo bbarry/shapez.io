@@ -35,13 +35,13 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
         this.fakeEntity = null;
 
         /**
-         * Array of blueplans to update all per tick
+         * Array of blueprints to update all per tick
          * @type {Set<Entity>}
          */
-        this.blueplans = new Set();
+        this.blueprints = new Set();
 
         /**
-         * Array of blueplans to update all per tick
+         * Array of blueprints to update all per tick
          * @type {Set<Entity>}
          */
         this.builders = new Set();
@@ -144,9 +144,35 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
         this.root.signals.storyGoalCompleted.add(() => this.currentMetaBuilding.set(null));
         this.root.signals.upgradePurchased.add(() => this.signals.variantChanged.dispatch());
         this.root.signals.editModeChanged.add(this.onEditModeChanged, this);
+
         this.root.signals.entityManuallyPlaced.add(entity => {
-            this.blueplans.add(entity);
+            const isBlueprint = entity.components.StaticMapEntity.isBlueprint;
+            assert(isBlueprint, "Tried to add not blueprint building as blueprint !");
+            this.blueprints.add(entity);
         }, this);
+        this.root.signals.entityAdded.add(entity => {
+            const isBlueprint = entity.components.StaticMapEntity.isBlueprint;
+            if (this.blueprints.has(entity)) this.blueprints.delete(entity);
+            assert(!isBlueprint, "Tried to add blueprint as builder!");
+            const builderComp = entity.components.Builder;
+            if (builderComp) {
+                this.builders.add(entity);
+            }
+        }, this);
+        this.root.signals.entityQueuedForDestroy.add(entity => {
+            const builderComp = entity.components.Builder;
+            const isBlueprint = entity.components.StaticMapEntity.isBlueprint;
+            if (isBlueprint && this.blueprints.has(entity)) {
+                this.blueprints.delete(entity);
+                return;
+            } else if (!builderComp) {
+                assert(
+                    this.builders.has(entity),
+                    "Tried to delete builder from list but that builder doesn't exist on list"
+                );
+                this.builders.delete(entity);
+            }
+        });
 
         // MOUSE BINDINGS
         this.root.camera.downPreHandler.add(this.onMouseDown, this);
@@ -284,11 +310,11 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
             });
         }
 
-        for (const blueplan of this.blueplans) {
+        for (const blueprint of this.blueprints) {
             for (const builder of this.builders) {
                 const builderComp = builder.components.Builder;
-                if (builderComp.tryTracingBlueplan(blueplan)) {
-                    this.blueplans.delete(blueplan);
+                if (builderComp.tryTracingBlueprint(blueprint)) {
+                    this.blueprints.delete(blueprint);
                     break;
                 }
             }
@@ -762,6 +788,10 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
             if (!staticComp.isBlueprint) return;
 
             staticComp.buildingProgress++;
+
+            if (staticComp.isBlueprint) return;
+
+            this.root.signals.entityAdded.dispatch(contents);
         }
     }
 

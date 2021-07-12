@@ -1,11 +1,13 @@
 import { textSpanIntersectsWithPosition } from "typescript";
 import { globalConfig } from "../../core/config";
+import { DrawParameters } from "../../core/draw_parameters";
 import { Vector } from "../../core/vector";
 import { types } from "../../savegame/serialization";
 import { registerBuildingVariant } from "../building_codes";
 import { Component } from "../component";
 import { Entity } from "../entity";
 import { GameRoot } from "../root";
+import { ShapeDefinition } from "../shape_definition";
 import { StaticMapEntityComponent } from "./static_map_entity";
 
 class Builder extends Vector {
@@ -13,8 +15,10 @@ class Builder extends Vector {
      * @param {GameRoot} root
      * @param {number} x
      * @param {number} y
+     * @param {number} mag
+     * @param {ShapeDefinition} definition
      */
-    constructor(root, x, y) {
+    constructor(root, x, y, mag, definition) {
         super(x, y);
         this.root = root;
 
@@ -30,43 +34,66 @@ class Builder extends Vector {
          */
         this.tracingPos;
 
+        // Shape that we use for drawing
+        this.definition = definition;
+
         this.vel = new Vector();
         this.acc = new Vector();
+
+        this.mag = mag;
     }
 
     update() {
+        // Stop tracing if it is destroyed
+        if (
+            this.tracing &&
+            (this.tracing.queuedForDestroy || !this.tracing.components.StaticMapEntity.isBlueprint)
+        )
+            this.resetTracing();
+
         const tracing = this.tracing ? this.tracingPos : this.startingPos;
-        const mag = this.tracing ? 0.4 : 0.4;
-        const limit = this.tracing ? 2.5 : 1;
-        const pos = tracing.subScalars(this.x, this.y);
-        const norm = pos.normalize();
-        this.acc = norm.multiplyScalar(mag);
+        const path = tracing.sub(this);
+        const length = path.length();
+        const limit = this.tracing ? 2.5 : 2;
+
+        if (!this.tracing && length < 10) {
+            if (length < 1) {
+                this.x = this.startingPos.x;
+                this.y = this.startingPos.y;
+                return;
+            }
+            this.addInplace(path.divideScalar(length));
+            return;
+        }
+
+        const norm = path.normalize();
+        this.acc = norm.multiplyScalar(this.mag);
 
         this.vel.addInplace(this.acc);
+        this.vel = this.vel.limit(limit);
 
-        if (this.vel.x > limit) this.vel.x = limit;
-        if (this.vel.y > limit) this.vel.y = limit;
+        this.addInplace(this.vel);
 
-        this.x += this.vel.x;
-        this.y += this.vel.y;
-
+        // We don't build if we are not close enough
         if (!this.isWorking) return;
 
+        // Building Part
         const staticComp = this.tracing.components.StaticMapEntity;
-        if (staticComp.isBlueprint) {
-            const tickRate = this.root.dynamicTickrate.currentTickRate;
-            staticComp.buildingProgress += 1 / tickRate;
-            if (!staticComp.isBlueprint) {
-                this.root.signals.entityAdded.dispatch(this.tracing);
-                this.resetTracing();
-            }
-        }
+        if (!staticComp.isBlueprint) return;
+
+        const tickRate = this.root.dynamicTickrate.currentTickRate;
+        staticComp.buildingProgress += 1 / tickRate;
+
+        if (staticComp.isBlueprint) return;
+
+        this.root.signals.entityAdded.dispatch(this.tracing);
+        this.resetTracing();
     }
 
     get isWorking() {
         if (!this.tracing) return false;
         const staticComp = this.tracing.components.StaticMapEntity;
-        assert(staticComp.isBlueprint, "Trying to build not blueplan building!");
+        assert(staticComp.isBlueprint, "Trying to build not blueprint building!");
 
         const tileSize = globalConfig.tileSize;
         const rect = staticComp.getTileSpaceBounds().allScaled(tileSize);
@@ -75,14 +102,14 @@ class Builder extends Vector {
 
     /**
      * Tries to trace entity
-     * @param {Entity} blueplan
+     * @param {Entity} blueprint
      */
-    tryTracing(blueplan) {
+    tryTracing(blueprint) {
         if (this.tracing) return false;
 
-        const staticComp = blueplan.components.StaticMapEntity;
+        const staticComp = blueprint.components.StaticMapEntity;
         const center = staticComp.getTileSpaceBounds().getCenter().toWorldSpace();
-        this.tracing = blueplan;
+        this.tracing = blueprint;
         this.tracingPos = center.copy();
 
         return true;
@@ -94,6 +121,23 @@ class Builder extends Vector {
     resetTracing() {
         this.tracing = null;
         this.tracingPos = null;
+    }
+
+    /**
+     * @param {DrawParameters} parameters
+     */
+    draw(parameters) {
+        const tracing = this.tracing ? this.tracingPos : this.startingPos;
+        const path = tracing.sub(this);
+
+        const angle = !this.equals(tracing) ? path.multiplyScalar(-1).angle() : 0;
+
+        const ctx = parameters.context;
+        ctx.translate(this.x, this.y);
+        ctx.rotate(angle);
+        this.definition.drawCentered(0, 0, parameters);
+        ctx.rotate(-angle);
+        ctx.translate(-this.x, -this.y);
     }
 }
 
@@ -130,7 +174,8 @@ export class BuilderComponent extends Component {
         const origin = staticComp.origin.toWorldSpace();
         const tileSize = staticComp.getTileSize().toWorldSpace();
         const center = origin.addScalars(tileSize.x / 2, tileSize.y / 2);
-        this.builders.push(new Builder(root, center.x, center.y));
+        const bugprint = root.shapeDefinitionMgr.getShapeFromShortKey("Sb----Sb:CbCbCbCb:--CwCw--");
+        this.builders.push(new Builder(root, center.x, center.y, 0.4, bugprint));
     }
 
     updateBuilders() {
@@ -140,15 +185,15 @@ export class BuilderComponent extends Component {
     }
 
     /**
-     * @param {Entity} blueplan
+     * @param {Entity} blueprint
      * @returns {Boolean}
      */
-    tryTracingBlueplan(blueplan) {
-        const staticComp = blueplan.components.StaticMapEntity;
-        assert(staticComp.isBlueprint, "Trying to build not blueplan building!");
+    tryTracingBlueprint(blueprint) {
+        const staticComp = blueprint.components.StaticMapEntity;
+        assert(staticComp.isBlueprint, "Tried to trace not blueprint building!");
 
         for (const builder of this.builders) {
-            if (builder.tryTracing(blueplan)) return true;
+            if (builder.tryTracing(blueprint)) return true;
         }
 
         return false;

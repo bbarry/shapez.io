@@ -1,5 +1,5 @@
 import { globalConfig } from "./config";
-import { safeModulo } from "./utils";
+import { clamp, safeModulo } from "./utils";
 
 const tileSize = globalConfig.tileSize;
 const halfTileSize = globalConfig.halfTileSize;
@@ -330,6 +330,16 @@ export class Vector {
      */
     round() {
         return new Vector(Math.round(this.x), Math.round(this.y));
+    }
+
+    /**
+     * Limits the vector values and return a new vector
+     * @param {number} n
+     * @returns {Vector}
+     */
+    limit(n) {
+        n = Math.abs(n);
+        return new Vector(clamp(this.x, -n, n), clamp(this.y, -n, n));
     }
 
     /**

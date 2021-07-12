@@ -217,13 +217,9 @@ export class BeltSystem extends GameSystemWithFilter {
      * @param {Entity} entity
      */
     onEntityDestroyed(entity) {
-        if (!this.root.gameInitialized) {
-            return;
-        }
+        if (!this.root.gameInitialized) return;
 
-        if (!entity.components.Belt) {
-            return;
-        }
+        if (!entity.components.Belt) return;
 
         const assignedPath = entity.components.Belt.assignedPath;
         assert(assignedPath, "Entity has no belt path assigned");

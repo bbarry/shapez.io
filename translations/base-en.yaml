@@ -907,7 +907,7 @@ buildings:
     builder:
         default:
             name: Builder
-            description: Builds blueplans for you over time.
+            description: Builds blueprints for you over time.
 
 storyRewards:
     # Those are the rewards gained from completing the store
