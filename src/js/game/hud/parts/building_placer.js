@@ -51,8 +51,6 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
     initialize() {
         super.initialize();
 
-        console.log(this.blueprints);
-
         // Bind to signals
         this.signals.variantChanged.add(this.rerenderVariants, this);
         this.root.hud.signals.buildingSelectedForPlacement.add(this.startSelection, this);

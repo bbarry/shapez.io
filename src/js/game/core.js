@@ -339,7 +339,13 @@ export class GameCore {
             return false;
         }
 
-        root.systemMgr.update();
+        try {
+            root.systemMgr.update();
+        } catch (err) {
+            this.duringLogicUpdate = false;
+            root.dynamicTickrate.endTick();
+            throw err;
+        }
         // root.particleMgr.update();
 
         this.duringLogicUpdate = false;

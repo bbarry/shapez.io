@@ -13,10 +13,6 @@ export class BuilderSystem extends GameSystemWithFilter {
             const builderComp = entity.components.Builder;
             builderComp.addBuilder(this.root, staticComp);
 
-            // const mouse = this.root.app.mousePosition;
-            // const worldPos = this.root.camera.screenToWorld(mouse);
-
-            // builderComp.traceBuilders(worldPos);
             builderComp.updateBuilders();
         }
     }

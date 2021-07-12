@@ -165,7 +165,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
             if (isBlueprint && this.blueprints.has(entity)) {
                 this.blueprints.delete(entity);
                 return;
-            } else if (!builderComp) {
+            } else if (builderComp) {
                 assert(
                     this.builders.has(entity),
                     "Tried to delete builder from list but that builder doesn't exist on list"
