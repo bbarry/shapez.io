@@ -4,7 +4,8 @@
  */
 export function cachebust(path) {
     if (G_IS_BROWSER && !G_IS_STANDALONE && !G_IS_DEV) {
-        return "/yopez.io/" + path;
+        // return "/shapez/yopez.io/" + path;
+        return path + "?v=" + G_BUILD_COMMIT_HASH;
     }
     return path;
 }
