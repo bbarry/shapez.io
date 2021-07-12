@@ -1,9 +1,6 @@
-import { textSpanIntersectsWithPosition } from "typescript";
 import { globalConfig } from "../../core/config";
 import { DrawParameters } from "../../core/draw_parameters";
 import { Vector } from "../../core/vector";
-import { types } from "../../savegame/serialization";
-import { registerBuildingVariant } from "../building_codes";
 import { Component } from "../component";
 import { Entity } from "../entity";
 import { GameRoot } from "../root";
