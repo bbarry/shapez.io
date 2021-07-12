@@ -1,3 +1,4 @@
+import { DrawParameters } from "../../../core/draw_parameters";
 import { gMetaBuildingRegistry } from "../../../core/global_registries";
 import { STOP_PROPAGATION } from "../../../core/signal";
 import { makeDiv, safeModulo } from "../../../core/utils";
@@ -319,4 +320,9 @@ export class HUDBaseToolbar extends BaseHUDPart {
         ];
         return requiredBuildings.includes(metaBuilding);
     }
+
+    /**
+     * @param {DrawParameters} parameters
+     */
+    draw(parameters) {}
 }

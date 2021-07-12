@@ -44,37 +44,6 @@ export class StaticMapEntitySystem extends GameSystem {
 
             this.drawnUids.add(entity.uid);
             staticComp.drawSpriteOnBoundsClipped(parameters, sprite, 2);
-
-            if (!staticComp.isBlueprint) continue;
-
-            // Draw building progress
-            const ctx = parameters.context;
-
-            const rect = staticComp.getTileSpaceBounds().allScaled(globalConfig.tileSize);
-            const w = rect.w;
-            const h = globalConfig.tileSize / 8;
-            const x = rect.left();
-            const y = rect.bottom() - h;
-
-            const duration = staticComp.getBuildingDuration();
-            const progress = (staticComp.buildingProgress += 0);
-
-            ctx.fillStyle = "red";
-            ctx.fillRect(x, y, w, h);
-
-            ctx.fillStyle = "green";
-            ctx.fillRect(x, y, (w / duration) * progress, h);
-
-            ctx.strokeStyle = "black";
-            ctx.beginPath();
-
-            ctx.moveTo(x, y);
-            ctx.lineTo(x + w, y);
-            ctx.lineTo(x + w, y + h);
-            ctx.lineTo(x, y + h);
-
-            ctx.closePath();
-            ctx.stroke();
         }
     }
 

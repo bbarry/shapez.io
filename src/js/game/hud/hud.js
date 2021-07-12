@@ -6,6 +6,7 @@ import { MetaBuilding } from "../meta_building";
 import { GameRoot } from "../root";
 import { ShapeDefinition } from "../shape_definition";
 import { HUDBetaOverlay } from "./parts/beta_overlay";
+import { HUDBlueprintHandler } from "./parts/blueprint_handler";
 import { HUDBlueprintPlacer } from "./parts/blueprint_placer";
 import { HUDBuildingsToolbar } from "./parts/buildings_toolbar";
 import { HUDBuildingPlacer } from "./parts/building_placer";
@@ -53,6 +54,7 @@ export class GameHUD {
             settingsMenu: new HUDSettingsMenu(this.root),
             debugInfo: new HUDDebugInfo(this.root),
             dialogs: new HUDModalDialogs(this.root),
+            blueprintHandler: new HUDBlueprintHandler(this.root),
 
             // Typing hints
             /* typehints:start */
@@ -182,19 +184,8 @@ export class GameHUD {
      * @param {DrawParameters} parameters
      */
     draw(parameters) {
-        const partsOrder = [
-            "massSelector",
-            "buildingPlacer",
-            "blueprintPlacer",
-            "colorBlindHelper",
-            "changesDebugger",
-            "minerHighlight",
-        ];
-
-        for (let i = 0; i < partsOrder.length; ++i) {
-            if (this.parts[partsOrder[i]]) {
-                this.parts[partsOrder[i]].draw(parameters);
-            }
+        for (const part in this.parts) {
+            this.parts[part].draw(parameters);
         }
     }
 

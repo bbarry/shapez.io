@@ -1,4 +1,3 @@
-import { globalConfig } from "../../../core/config";
 import { gMetaBuildingRegistry } from "../../../core/global_registries";
 import { Signal, STOP_PROPAGATION } from "../../../core/signal";
 import { TrackedState } from "../../../core/tracked_state";
@@ -15,7 +14,6 @@ import { enumHubGoalRewards } from "../../tutorial_goals";
 import { getBuildingDataFromCode, getCodeFromBuildingData } from "../../building_codes";
 import { MetaHubBuilding } from "../../buildings/hub";
 import { safeModulo } from "../../../core/utils";
-import { HubComponent } from "../../components/hub";
 
 /**
  * Contains all logic for the building placer - this doesn't include the rendering
@@ -33,18 +31,6 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
          * @type {Entity}
          */
         this.fakeEntity = null;
-
-        /**
-         * Array of blueprints to update all per tick
-         * @type {Set<Entity>}
-         */
-        this.blueprints = new Set();
-
-        /**
-         * Array of blueprints to update all per tick
-         * @type {Set<Entity>}
-         */
-        this.builders = new Set();
 
         // Signals
         this.signals = {
@@ -144,35 +130,6 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
         this.root.signals.storyGoalCompleted.add(() => this.currentMetaBuilding.set(null));
         this.root.signals.upgradePurchased.add(() => this.signals.variantChanged.dispatch());
         this.root.signals.editModeChanged.add(this.onEditModeChanged, this);
-
-        this.root.signals.entityManuallyPlaced.add(entity => {
-            const isBlueprint = entity.components.StaticMapEntity.isBlueprint;
-            assert(isBlueprint, "Tried to add not blueprint building as blueprint !");
-            this.blueprints.add(entity);
-        }, this);
-        this.root.signals.entityAdded.add(entity => {
-            const isBlueprint = entity.components.StaticMapEntity.isBlueprint;
-            if (this.blueprints.has(entity)) this.blueprints.delete(entity);
-            assert(!isBlueprint, "Tried to add blueprint as builder!");
-            const builderComp = entity.components.Builder;
-            if (builderComp) {
-                this.builders.add(entity);
-            }
-        }, this);
-        this.root.signals.entityQueuedForDestroy.add(entity => {
-            const builderComp = entity.components.Builder;
-            const isBlueprint = entity.components.StaticMapEntity.isBlueprint;
-            if (isBlueprint && this.blueprints.has(entity)) {
-                this.blueprints.delete(entity);
-                return;
-            } else if (builderComp) {
-                assert(
-                    this.builders.has(entity),
-                    "Tried to delete builder from list but that builder doesn't exist on list"
-                );
-                this.builders.delete(entity);
-            }
-        });
 
         // MOUSE BINDINGS
         this.root.camera.downPreHandler.add(this.onMouseDown, this);
@@ -303,23 +260,6 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
      * @see BaseHUDPart.update
      */
     update() {
-        if (this.builders.size == 0) {
-            // Add hubs to builders
-            this.root.entityMgr.getAllWithComponent(HubComponent).forEach(e => {
-                this.builders.add(e);
-            });
-        }
-
-        for (const blueprint of this.blueprints) {
-            for (const builder of this.builders) {
-                const builderComp = builder.components.Builder;
-                if (builderComp.tryTracingBlueprint(blueprint)) {
-                    this.blueprints.delete(blueprint);
-                    break;
-                }
-            }
-        }
-
         // Abort placement if a dialog was shown in the meantime
         if (this.root.hud.hasBlockingOverlayOpen()) {
             this.abortPlacement();
