@@ -36,6 +36,7 @@ import { ClientAPI } from "./platform/api";
 import { LoginState } from "./states/login";
 import { WegameSplashState } from "./states/wegame_splash";
 import { PuzzleReportsState } from "./states/puzzle_reports";
+import { HiddenPuzzleReportsManager } from "./savegame/hidden_puzzle_reports_manager";
 
 /**
  * @typedef {import("./platform/achievement_provider").AchievementProviderInterface} AchievementProviderInterface
@@ -75,6 +76,7 @@ export class Application {
         this.ticker = new AnimationFrame();
         this.stateMgr = new StateManager(this);
         this.savegameMgr = new SavegameManager(this);
+        this.hiddenPuzzleReportsMgr = new HiddenPuzzleReportsManager(this);
         this.inputMgr = new InputDistributor(this);
         this.backgroundResourceLoader = new BackgroundResourcesLoader(this);
         this.clientApi = new ClientAPI(this);
