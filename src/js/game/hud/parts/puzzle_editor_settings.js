@@ -5,6 +5,7 @@ import { makeDiv } from "../../../core/utils";
 import { T } from "../../../translations";
 import { MetaBlockBuilding } from "../../buildings/block";
 import { MetaConstantProducerBuilding } from "../../buildings/constant_producer";
+import { MetaGoalAcceptorBuilding } from "../../buildings/goal_acceptor";
 import { StaticMapEntityComponent } from "../../components/static_map_entity";
 import { Entity } from "../../entity";
 import { PuzzleGameMode } from "../../modes/puzzle";
@@ -94,23 +95,13 @@ export class HUDPuzzleEditorSettings extends BaseHUDPart {
         }, 140);
 
         if (this.testMode) {
+            const newSolution = [];
             for (const entity of this.root.entityMgr.getAllWithComponent(StaticMapEntityComponent)) {
-                this.storedSolution.push(entity.clone());
-
-                const metaBuilding = entity.components.StaticMapEntity.getMetaBuilding();
-                const goalComp = entity.components.GoalAcceptor;
-                if (goalComp) {
-                    goalComp.clear();
+                if (this.isExcludedEntity(entity)) {
                     continue;
                 }
 
-                if (
-                    [MetaConstantProducerBuilding, MetaBlockBuilding]
-                        .map(metaClass => gMetaBuildingRegistry.findByClass(metaClass).id)
-                        .includes(metaBuilding.id)
-                ) {
-                    continue;
-                }
+                newSolution.push(entity.clone());
 
                 this.root.map.removeStaticEntity(entity);
                 this.root.entityMgr.destroyEntity(entity);
@@ -279,5 +270,18 @@ export class HUDPuzzleEditorSettings extends BaseHUDPart {
 
     getIsTestMode() {
         return this.testMode;
+    }
+
+    isExcludedEntity(entity) {
+        const metaBuilding = entity.components.StaticMapEntity.getMetaBuilding();
+
+        if (
+            [MetaConstantProducerBuilding, MetaBlockBuilding, MetaGoalAcceptorBuilding]
+                .map(metaClass => gMetaBuildingRegistry.findByClass(metaClass).id)
+                .includes(metaBuilding.id)
+        ) {
+            return true;
+        }
+        return false;
     }
 }
