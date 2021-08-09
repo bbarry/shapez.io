@@ -19,12 +19,8 @@ export class HUDPuzzlePlaySettings extends BaseHUDPart {
                 ["section"],
                 `
                         <button class="styledButton clearItems">${T.ingame.puzzleEditorSettings.clearItems}</button>
-<<<<<<< HEAD
                         <button class="styledButton resetPuzzle">${T.ingame.puzzleEditorSettings.resetPuzzle}</button>
 
-=======
-                        <button class="styledButton clearBuildings">${T.ingame.puzzleEditorSettings.resetPuzzle}</button>
->>>>>>> 2886e315 (Hide reports, automatically exit when deleted)
                 `
             );
 
