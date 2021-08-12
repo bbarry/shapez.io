@@ -174,6 +174,13 @@ export class InGameState extends GameState {
     }
 
     /**
+     * Goes back to the puzzle reports state
+     */
+    goToReports() {
+        this.saveThenGoToState("PuzzleReportsState");
+    }
+
+    /**
      * Goes back to the settings state
      */
     goToSettings() {
