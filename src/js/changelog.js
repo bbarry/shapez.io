@@ -1,7 +1,8 @@
 export const CHANGELOG = [
+    // Not finished yet
     {
         version: "1.4.3",
-        date: "unreleased",
+        date: "preview",
         entries: [
             "Edit signal dialog now has the previous signal filled (Thanks to EmeraldBlock)",
             "Further performance improvements (Thanks to PFedak)",
