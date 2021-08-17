@@ -95,13 +95,13 @@ export class HUDPuzzleEditorSettings extends BaseHUDPart {
         }, 140);
 
         if (this.testMode) {
-            const newSolution = [];
+            this.storedSolution = [];
             for (const entity of this.root.entityMgr.getAllWithComponent(StaticMapEntityComponent)) {
                 if (this.isExcludedEntity(entity)) {
                     continue;
                 }
 
-                newSolution.push(entity.clone());
+                this.storedSolution.push(entity.clone());
 
                 this.root.map.removeStaticEntity(entity);
                 this.root.entityMgr.destroyEntity(entity);
