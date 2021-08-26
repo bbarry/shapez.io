@@ -363,10 +363,7 @@ export class PuzzleMenuState extends TextualGameState {
             stats.classList.add("stats");
             elem.appendChild(stats);
 
-            if (
-                puzzle.downloads > 3 &&
-                !["official", "easy", "medium", "hard"].includes(this.activeCategory)
-            ) {
+            if (!["official", "easy", "medium", "hard"].includes(this.activeCategory)) {
                 const difficulty = document.createElement("div");
                 difficulty.classList.add("difficulty");
 
@@ -377,7 +374,10 @@ export class PuzzleMenuState extends TextualGameState {
                 difficulty.innerText = completionPercentage + "%";
                 stats.appendChild(difficulty);
 
-                if (puzzle.difficulty < 0.2) {
+                if (puzzle.difficulty === null) {
+                    difficulty.classList.add("stage--unknown");
+                    difficulty.innerText = T.puzzleMenu.difficulties.unknown;
+                } else if (puzzle.difficulty < 0.2) {
                     difficulty.classList.add("stage--easy");
                     difficulty.innerText = T.puzzleMenu.difficulties.easy;
                 } else if (puzzle.difficulty > 0.6) {
@@ -513,6 +513,7 @@ export class PuzzleMenuState extends TextualGameState {
     /**
      *
      * @param {import("../savegame/savegame_typedefs").PuzzleFullData} puzzle
+     * @param {Array<number>=} nextPuzzles
      */
     startLoadedPuzzle(puzzle, nextPuzzles) {
         const savegame = Savegame.createPuzzleSavegame(this.app);
