@@ -68,6 +68,9 @@ export class HUDShapeTooltip extends BaseHUDPart {
             const ejectorComp = this.currentEntity.components.ItemEjector;
             const staticComp = this.currentEntity.components.StaticMapEntity;
 
+            const totalArea = staticComp.getTileSpaceBounds().x * staticComp.getTileSpaceBounds().y;
+            if (totalArea < 2) return;
+
             for (let i = 0; i < ejectorComp.slots.length; ++i) {
                 const slot = ejectorComp.slots[i];
 
@@ -76,12 +79,7 @@ export class HUDShapeTooltip extends BaseHUDPart {
                 }
 
                 /** @type {Vector} */
-                let drawPos = null;
-                if (ejectorComp.slots.length == 1) {
-                    drawPos = staticComp.getTileSpaceBounds().getCenter().toWorldSpace();
-                } else {
-                    drawPos = staticComp.localTileToWorld(slot.pos).toWorldSpaceCenterOfTile();
-                }
+                const drawPos = staticComp.localTileToWorld(slot.pos).toWorldSpaceCenterOfTile();
 
                 slot.lastItem.drawItemCenteredClipped(drawPos.x, drawPos.y, parameters, 25);
             }
