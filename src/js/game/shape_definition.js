@@ -60,6 +60,10 @@ const enumShapeMergingResults = {
         [s.circle]: m.rectcircle,
         [s.star]: m.starrect,
         [s.windmill]: m.rectwindmill,
+
+        [s.rectcircle]: m.rectcircle,
+        [s.starrect]: m.starrect,
+        [s.rectwindmill]: m.rectwindmill,
     },
 
     [s.circle]: {
@@ -68,6 +72,10 @@ const enumShapeMergingResults = {
         [s.rect]: m.rectcircle,
         [s.star]: m.circlestar,
         [s.windmill]: m.circlewindmill,
+
+        [s.rectcircle]: m.rectcircle,
+        [s.circlestar]: m.circlestar,
+        [s.circlewindmill]: m.circlewindmill,
     },
 
     [s.star]: {
@@ -76,6 +84,10 @@ const enumShapeMergingResults = {
         [s.circle]: m.circlestar,
         [s.rect]: m.starrect,
         [s.windmill]: m.starwindmill,
+
+        [s.circlestar]: m.circlestar,
+        [s.starrect]: m.starrect,
+        [s.starwindmill]: m.starwindmill,
     },
 
     [s.windmill]: {
@@ -84,6 +96,10 @@ const enumShapeMergingResults = {
         [s.circle]: m.circlewindmill,
         [s.star]: m.starwindmill,
         [s.rect]: m.rectwindmill,
+
+        [s.circlewindmill]: m.circlewindmill,
+        [s.starwindmill]: m.starwindmill,
+        [s.rectwindmill]: m.rectwindmill,
     },
 };
 
@@ -824,7 +840,19 @@ export class ShapeDefinition extends BasicSerializableObject {
                     } else {
                         const subShape1 = layer1[quad].subShape;
                         const subShape2 = layer2[quad].subShape;
-                        shape = enumShapeMergingResults[subShape1][subShape2];
+                        if (subShape1 == subShape2) {
+                            shape = subShape1;
+                        } else {
+                            let lookupMerge = enumShapeMergingResults[subShape1];
+                            if (lookupMerge != null) {
+                                shape = lookupMerge[subShape2];
+                            } else {
+                                lookupMerge = enumShapeMergingResults[subShape2];
+                                if (lookupMerge != null) {
+                                    shape = lookupMerge[subShape1];
+                                }
+                            }
+                        }
 
                         const color1 = layer1[quad].color;
                         const color2 = layer2[quad].color;
